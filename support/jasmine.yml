@@ -1,5 +1,6 @@
 src_files:
  - "application.{js,coffee}"
+ - "portal.{js,coffee}"
 
 stylesheets:
 
