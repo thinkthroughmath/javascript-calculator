@@ -1,0 +1,162 @@
+$calculator_border_radius: 2px;
+$box_shadow_color: #404040;
+
+
+
+// these are all variations on a blueish-teal
+$number_specifier_lighter: #3e6372;
+$number_specifier_darker:  #1e2f36;
+$number_specifier_border:  #869da7;
+
+// orange!
+$operation_lighter: #cb8164;
+$operation_darker:  #ae5430;
+$operation_border:  #deb09e;
+
+// gray
+$other_lighter: #7c7c7c;
+$other_darker: #454545;
+$other_border: #adadad;
+
+
+
+
+@mixin simple-gradient($start, $end)
+{
+    background: $start; /* Old browsers */
+    background: -moz-linear-gradient(top,  $start 0%, $end 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$start), color-stop(100%,$end)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  $start 0%,$end 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  $start 0%,$end 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  $start 0%,$end 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  $start 0%,$end 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start', endColorstr='$end',GradientType=0 ); /* IE6-9 */
+
+}
+
+div.calculator-dialog {
+    font-family: arial;
+    background: image-url('widgets/calculator_bg.png') !important;
+
+    figure.calculator-display {
+        background-color: white;
+        text-align: right;
+        font-size: 2.5em;
+        height: 40px;
+        width: 210px;
+        margin: auto;
+        margin-bottom: 5px;
+        padding: 1px 8px 8px 1px;
+        border-radius: $calculator_border_radius;
+    }
+
+    .ui-dialog-title {
+        color: white;
+        display: inherit;
+        text-align: center;
+        width: 100%;
+        font-weight: normal;
+        margin-top: 5px;
+        text-transform: uppercase;
+    }
+
+    // overrriding things from jquery ui
+    & > * {
+        border: 0px !important;
+    }
+
+    .ui-dialog-titlebar {
+        background: transparent !important;
+        border-radius: $calculator_border_radius;
+    }
+
+    .ui-dialog-content {
+        background: transparent !important;
+    }
+
+    .ui-dialog-titlebar-close {
+        background: image-url('widgets/calculator_close.png') no-repeat !important;
+        border: 0px !important; 
+        padding: 0px;
+        .ui-icon {
+            background: transparent !important;
+        }
+    }
+
+}
+
+div.calculator {
+    width: 224px;
+    height: 336px;
+    padding: 7px;
+
+    button {
+        color: white;
+        font-size: 1.5em;
+        width: 50px;
+        height: 40px;
+        margin: 3px;
+        border-radius: $calculator_border_radius;
+        -moz-box-shadow: 0 0 5px $box_shadow_color;
+        -webkit-box-shadow: 0 0 5px $box_shadow_color;
+        box-shadow: 0 0 5px $box_shadow_color;
+    }
+    button.clear {
+        font-size: 1em;
+    }
+
+    button.number-specifier {
+        color: white;
+        border: 1px solid $number_specifier_border;
+        @include simple-gradient($number_specifier_lighter, $number_specifier_darker);
+    }
+    button.number-specifier:hover {
+        box-shadow:inset 0 0 10px $number_specifier_border;
+    }
+    button.number-specifier:active {
+        @include simple-gradient($number_specifier_darker, $number_specifier_lighter);
+    }
+
+    button.operation {
+        color: white;
+        border: 1px solid $operation_border;
+        @include simple-gradient($operation_lighter, $operation_darker);
+    }
+    button.operation:hover {
+        box-shadow:inset 0 0 10px $operation_border;
+    }
+    button.operation:active {
+        @include simple-gradient($operation_darker, $operation_lighter);
+    }
+
+    button.other {
+        border: 1px solid $other_border;
+        @include simple-gradient($other_lighter, $other_darker);
+    }
+    button.other:hover {
+        box-shadow:inset 0 0 10px $other_border;
+    }
+    button.other:active {
+        @include simple-gradient($other_darker, $other_lighter);
+    }
+
+    button.square {
+        font-family: cursive;
+        sup {
+            font-family: arial;
+            font-size: 0.6em;
+        }
+    }
+
+    button.pi {
+        font-style: italic;
+    }
+
+    button.square-root span
+    {
+        left: -2px;
+        position: relative;
+        top: -13px;
+    }
+
+}
