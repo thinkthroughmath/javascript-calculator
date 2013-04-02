@@ -630,24 +630,19 @@ window.ttm.Calculator.Negative = ttm.ClassMixer(Negative)
 
 class Square extends ExpressionComponent
   toDisplay: -> "<sup>2</sup>"
-  eval: (evaluation, pass)->
-    return @ if pass != "exponentiation"
-    prev = evaluation.previousValue()
-    if prev
-      evaluation.handledPrevious()
-      squared = parseFloat(prev) * parseFloat(prev)
-      Number.build(value: squared)
-    else
-      throw "Invalid Expression"
-  
+  invoke: (expression)->
+    value = expression.evaluate().value() || 0
+    num = Number.build value: "#{parseFloat(value) * parseFloat(value)}"
+    expression.set([num])
+
 window.ttm.Calculator.Square = ttm.ClassMixer(Square)
 
 class SquareRoot extends ExpressionComponent
   toDisplay: -> "&radic;"
-  invoke: (@expression)->
-    value = @expression.evaluate().value() || 0
+  invoke: (expression)->
+    value = expression.evaluate().value() || 0
     num = Number.build value: "#{Math.sqrt(parseFloat(value))}"
-    @expression.set([num])
+    expression.set([num])
     
 window.ttm.Calculator.SquareRoot = ttm.ClassMixer(SquareRoot)
 
