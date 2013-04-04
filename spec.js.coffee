@@ -8,7 +8,7 @@
 #= require ../../app/assets/javascripts/lib
 #= require jquery
 #= require jquery_ujs
-#= require underscore-min
+#= require ../../vendor/assets/javascripts/underscore-min
 #= require_tree ./support
 #= require_tree ./
 #= require_tree ../../app/assets/javascripts/widgets
