@@ -110,6 +110,7 @@ class Calculator
   display: (content)->
     @element.find("figure.calculator-display").html(content)
 
+    
   render: ->
     @element.append """
       <div class='calculator'>
@@ -165,22 +166,33 @@ class LogicController
 
   display: ->
     if @handler
-      val = @current_expression.display()
-      if val.length == 0
-        @handler('0')
+      if !@current_expression.isError()
+        val = @current_expression.display()
+        if val.length == 0
+          @handler('0')
+        else
+          @handler(val)
       else
-        @handler(val)
-
+        @handler(@errorMsg())
+        
   calculate: ->
+    @resetIfError()
     @current_expression.calculate()
     @display()
 
+  resetIfError: ->
+    @current_expression.isError() && @current_expression.reset()
+
   msg: (part)->
+    @resetIfError()
     if part.invoke
       part.invoke(@current_expression)
     else
       @current_expression.msg(part)
     @display()
+
+  errorMsg: ->
+    "This is an error."
 
   reset: ->
     @current_expression.reset()
@@ -468,22 +480,29 @@ class Expression
 
   reset: ->
     @expression = []
-
+    @is_error = false
+  
   calculate: ->
-    evaled = @evaluate()
-    @expression = [evaled]
-    evaled
+    try
+      evaled = @evaluate()
+      @expression = [evaled]
+      evaled
+    catch error
+      @is_error = true
 
   set: (expression)->
     @expression = expression
 
   evaluate: ->
     (new ExpressionEvaluation @expression).results()
-
+    
   display: ->
     ret = _(@expression).map((it)-> it.toDisplay()).join(' ')
     ret
 
+  isError: -> @is_error
+  setError: -> @is_error = true
+    
 window.ttm.Calculator.Expression = ttm.ClassMixer(Expression)
 
 
@@ -640,10 +659,16 @@ window.ttm.Calculator.Square = ttm.ClassMixer(Square)
 class SquareRoot extends ExpressionComponent
   toDisplay: -> "&radic;"
   invoke: (expression)->
-    value = expression.evaluate().value() || 0
-    num = Number.build value: "#{Math.sqrt(parseFloat(value))}"
-    expression.set([num])
-    
+    try
+      value = expression.evaluate().value() || 0
+      root = Math.sqrt(parseFloat(value))
+      if isNaN(root)
+        throw "invalid root"
+      num = Number.build value: "#{root}"
+      expression.set([num])
+    catch error
+      expression.setError();
+      
 window.ttm.Calculator.SquareRoot = ttm.ClassMixer(SquareRoot)
 
 class Exponent extends ExpressionComponent
@@ -657,7 +682,7 @@ class Exponent extends ExpressionComponent
       evaluation.handledSurrounding()
       Number.build(value: Math.pow(parseFloat(prev), parseFloat(next)))
     else
-      throw new "Invalid Expression"
+      throw "Invalid Expression"
     
 window.ttm.Calculator.Exponent = ttm.ClassMixer(Exponent)
 
@@ -679,7 +704,7 @@ class Addition extends ExpressionComponent
       evaluation.handledSurrounding()
       Number.build(value: (parseFloat(prev) + parseFloat(next)))
     else
-      throw new "Invalid Expression"
+      throw "Invalid Expression"
 
 window.ttm.Calculator.Addition = ttm.ClassMixer(Addition)
 
@@ -694,7 +719,7 @@ class Subtraction extends ExpressionComponent
       evaluation.handledSurrounding()
       Number.build(value: (parseFloat(prev) - parseFloat(next)))
     else
-      throw  "Invalid Expression"
+      throw "Invalid Expression"
 
   
 window.ttm.Calculator.Subtraction = ttm.ClassMixer(Subtraction)
