@@ -64,6 +64,30 @@ describe "Calculator Widget integration", ->
     expect(@handle.output_content()).toMatch /3.14/
 
 
+describe "Calculator error handling", ->
+  beforeEach ->
+    @calc = ttm.Calculator.build_widget(f())
+    @handle = JSCalculatorHandle.build(f())
+
+  describe "malformed expressions", ->
+    it "handles division", -> 
+      @handle.press_buttons("/ =")
+      @handle.assertError()
+
+  describe "invalid expressions", ->
+    it "handles square roots", ->
+      @handle.press_buttons("1 negative squareroot")
+      @handle.assertError()
+
+    it "handles division by zero", ->
+
+  it "continues after an error has occurred", ->
+    @handle.press_buttons("1 / 0 =")
+    @handle.assertError()
+
+    @handle.press_buttons("1 / 0 = 1 / 1 0 =")
+    expect(@handle.output_content()).toEqual("0.1")
+
 class JSCalculatorHandle
   initialize: ((@element)->)
   button: (which)->
@@ -86,6 +110,9 @@ class JSCalculatorHandle
     
   output_content: ->
     @output().text()
+
+  assertError: ->
+    expect(@output_content()).toEqual(window.ttm.Calculator.LogicController.prototype.errorMsg())
 
 window.ttm.ClassMixer(JSCalculatorHandle)
 
