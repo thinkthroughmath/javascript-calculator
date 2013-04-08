@@ -1,5 +1,5 @@
 $calculator_border_radius: 2px;
-$box_shadow_color: #404040;
+$box_shadow_color: #000;
 
 
 
@@ -41,10 +41,13 @@ div.calculator-dialog {
     figure.calculator-display {
         background-color: white;
         border-radius: $calculator_border_radius;
+        -webkit-box-shadow: inset 0 0 5px $box_shadow_color;
+           -moz-box-shadow: inset 0 0 5px $box_shadow_color;
+                box-shadow: inner 0 0 5px $box_shadow_color;
         font-size: 2.3em;
-        height: 43px;
+        height: 38px;
         margin: auto;
-        margin-bottom: 5px;
+        margin-bottom: 14px;
         overflow-x: auto;
         overflow-y: hidden;
         padding: 1px 8px 8px 1px;
@@ -99,13 +102,19 @@ div.calculator {
         width: 50px;
         height: 40px;
         margin: 3px;
+        text-shadow: 0.05em 0.05em 0.05em #222;
+        text-align: middle;
         border-radius: $calculator_border_radius;
-        -moz-box-shadow: 0 0 5px $box_shadow_color;
         -webkit-box-shadow: 0 0 5px $box_shadow_color;
-        box-shadow: 0 0 5px $box_shadow_color;
+           -moz-box-shadow: 0 0 5px $box_shadow_color;
+                box-shadow: 0 0 5px $box_shadow_color;
+        vertical-align: top;    
     }
     button.clear {
         font-size: 1em;
+    }
+    button:focus{
+        outline: none;
     }
 
     button.number-specifier {
