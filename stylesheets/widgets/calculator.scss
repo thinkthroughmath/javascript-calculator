@@ -37,6 +37,7 @@ $other_border: #adadad;
 div.calculator-dialog {
     font-family: arial;
     background: image-url('widgets/calculator_bg.png') !important;
+    padding: 0px;
 
     figure.calculator-display {
         background-color: white;
@@ -78,12 +79,15 @@ div.calculator-dialog {
 
     .ui-dialog-content {
         background: transparent !important;
+        padding: 0px !important;
     }
 
     .ui-dialog-titlebar-close {
         background: image-url('widgets/calculator_close.png') no-repeat !important;
-        border: 0px !important; 
+        border: 0px !important;
         padding: 0px;
+        right: -4px;
+        top: 14px;
         .ui-icon {
             background: transparent !important;
         }
@@ -108,7 +112,7 @@ div.calculator {
         -webkit-box-shadow: 0 0 5px $box_shadow_color;
            -moz-box-shadow: 0 0 5px $box_shadow_color;
                 box-shadow: 0 0 5px $box_shadow_color;
-        vertical-align: top;    
+        vertical-align: top;
     }
     button.clear {
         font-size: 1em;
