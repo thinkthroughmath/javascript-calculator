@@ -192,7 +192,7 @@ class LogicController
     @display()
 
   errorMsg: ->
-    "This is an error."
+    "Error"
 
   reset: ->
     @current_expression.reset()
