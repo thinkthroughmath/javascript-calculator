@@ -6,7 +6,7 @@ describe "Calculator Widget integration", ->
   it "performs exponentiation", ->
     @handle.press_buttons("2 ^ 2 =")
     expect(@handle.output_content()).toEqual("4")
-    
+
   it "displays what is entered", ->
     @handle.press_buttons("8")
     expect(@handle.output_content()).toEqual("8")
@@ -58,11 +58,26 @@ describe "Calculator Widget integration", ->
   it "divides", ->
     @handle.press_buttons("1 0 / 2 =")
     expect(@handle.output_content()).toEqual("5")
-    
+
   it "does pi", ->
     @handle.press_buttons("pi =")
     expect(@handle.output_content()).toMatch /3.14/
 
+  it "handles order of operations correctly", ->
+    @handle.press_buttons("1 + 1 - 2 * 2 =")
+    expect(@handle.output_content()).toMatch /-2/
+
+  describe "decimal entry", ->
+    it "displays 0 at first", ->
+      expect(@handle.output_content()).toMatch /0/
+
+    it "displays 0. when user presses a period", ->
+      @handle.press_buttons(".")
+      expect(@handle.output_content()).toEqual "0."
+
+    it "displays 0.1 when user continues to add numbers", ->
+      @handle.press_buttons(". 1")
+      expect(@handle.output_content()).toEqual "0.1"
 
 describe "Calculator error handling", ->
   beforeEach ->
@@ -70,7 +85,7 @@ describe "Calculator error handling", ->
     @handle = JSCalculatorHandle.build(f())
 
   describe "malformed expressions", ->
-    it "handles division", -> 
+    it "handles division", ->
       @handle.press_buttons("/ =")
       @handle.assertError()
 
@@ -78,7 +93,6 @@ describe "Calculator error handling", ->
     it "handles square roots", ->
       @handle.press_buttons("1 negative squareroot")
       @handle.assertError()
-
     it "handles division by zero", ->
 
   it "continues after an error has occurred", ->
@@ -99,7 +113,7 @@ class JSCalculatorHandle
       throw "Could not press button '#{which}' as it does not exist"
     else
       btn.click()
-    
+
   press_buttons: (buttons)->
     for button in buttons.split(" ")
       do (button)=>
@@ -107,7 +121,7 @@ class JSCalculatorHandle
 
   output: ->
     @element.find("figure.calculator-display")
-    
+
   output_content: ->
     @output().text()
 
@@ -123,7 +137,7 @@ buttonBuilderMock = ->
   jasmine.createSpyObj('button_builder', ['buildButton']);
 
 jqueryAppendableElementMock = ->
-  jasmine.createSpyObj('jquery_element', ['append']) 
+  jasmine.createSpyObj('jquery_element', ['append'])
 
 logicMock = ->
   jasmine.createSpyObj('logic_controller_mock', ['addPart', 'calculate', 'msg']);
