@@ -522,14 +522,14 @@ class ExpressionEvaluationPass
     @expression_index = -1
     
   perform: (pass_type)->
-    processed = for exp in @expression
+    @expression_index = 0
+    while @expression.length > @expression_index
+      exp = @expression[@expression_index]
+      eval_ret = exp.eval(@, pass_type)
+      if eval_ret
+        @expression[@expression_index] = eval_ret
       @expression_index += 1
-      if exp.isHandled()
-        exp
-      else
-        exp.eval(@, pass_type)
-    _(processed).reject (it)->
-      it.isHandled()
+    @expression
     
   previousValue: ->
     prev = @expression[@expression_index - 1]
@@ -542,47 +542,48 @@ class ExpressionEvaluationPass
       next.value()
 
   handledPrevious: ->
-    prev = @expression[@expression_index - 1]
-    prev.handled()
+    @expression.splice(@expression_index - 1, 1)
+    @expression_index -= 1
     
   handledSurrounding: ->
     @handledPrevious()
-    next = @expression[@expression_index + 1]
-    next.handled()
+    @expression.splice(@expression_index + 1, 1)
 
   subExpression: ->
     new SubExpression(@expression, @expression_index + 1)
+
+  
+
     
 class SubExpression
   constructor: (@expression, @at)->
     @subexpression = @findSubexpression()
 
   findSubexpression: ->
-    i = @at
+    @i = @at
     found = false
     rparens_to_find = 1
-    subexpression_parts = []        
-    while i < @expression.length
-      current = @expression[i]
+    subexpression_parts = []
+    while @i < @expression.length
+      current = @expression[@i]
       if current instanceof LeftParenthesis
         rparens_to_find += 1 # we encountered another subexpression
       else if current instanceof RightParenthesis
         rparens_to_find -= 1
         if rparens_to_find == 0
-          current.handled()
           found = true
           break
       else 
         subexpression_parts.push(current)
-      i += 1
+      @i += 1
     if not found
       throw "There was a problem with your parentheses"
     else
       subexpression_parts
 
-  markHandled: ->
-    for exp in @subexpression
-      exp.handled()
+  removeFromExpression: ->
+    @expression.splice(@at, @i)
+
   eval: ->
     (new ExpressionEvaluation(@subexpression)).results()
 
@@ -674,7 +675,7 @@ window.ttm.Calculator.SquareRoot = ttm.ClassMixer(SquareRoot)
 class Exponent extends ExpressionComponent
   toDisplay: -> "^"
   eval: (evaluation, pass)->
-    return @ if pass != "exponentiation"
+    return if pass != "exponentiation"
     
     prev = evaluation.previousValue()
     next = evaluation.nextValue()
@@ -696,7 +697,7 @@ window.ttm.Calculator.Pi = ttm.ClassMixer(Pi)
 class Addition extends ExpressionComponent
   toDisplay: -> "+"
   eval: (evaluation, pass)->
-    return @ if pass != "addition"
+    return if pass != "addition"
     
     prev = evaluation.previousValue()
     next = evaluation.nextValue()
@@ -710,9 +711,10 @@ window.ttm.Calculator.Addition = ttm.ClassMixer(Addition)
 
 class Subtraction extends ExpressionComponent
   toDisplay: -> "-"
+
   eval: (evaluation, pass)->
-    return @ if pass != "addition"
-    
+    return if pass != "addition"
+
     prev = evaluation.previousValue()
     next = evaluation.nextValue()
     if prev && next
@@ -721,12 +723,12 @@ class Subtraction extends ExpressionComponent
     else
       throw "Invalid Expression"
 
-  
 window.ttm.Calculator.Subtraction = ttm.ClassMixer(Subtraction)
+
 
 class Multiplication extends ExpressionComponent
   eval: (evaluation, pass)->
-    return @ if pass != "multiplication"
+    return if pass != "multiplication"
     prev = evaluation.previousValue()
     next = evaluation.nextValue()
     if prev && next
@@ -741,7 +743,7 @@ window.ttm.Calculator.Multiplication = ttm.ClassMixer(Multiplication)
 class Division extends ExpressionComponent
   toDisplay: -> "&divide;"
   eval: (evaluation, pass)->
-    return @ if pass != "multiplication"
+    return if pass != "multiplication"
     prev = evaluation.previousValue()
     next = evaluation.nextValue()
     if prev && next
@@ -756,18 +758,23 @@ class Decimal extends ExpressionComponent
   toDisplay: -> "."
   invoke: (expression)->
     last = expression.last()
+    unless last
+      expression.msg(Number.build(value: 0))
+      last = expression.last()
     if last instanceof Number
       last.setFutureAsDecimal()
-
+    else 
+      throw "Invalid Action"
+      
 window.ttm.Calculator.Decimal = ttm.ClassMixer(Decimal)
 
 class LeftParenthesis extends ExpressionComponent
   toDisplay: -> "("
   eval: (expression, pass)->
-    return @ if pass != "parenthetical"
+    return if pass != "parenthetical"
     subexpr = expression.subExpression()
     evaluated = subexpr.eval()
-    subexpr.markHandled() # mark the closing parenthesis as handled
+    subexpr.removeFromExpression()
     evaluated
 
 window.ttm.Calculator.LeftParenthesis = ttm.ClassMixer(LeftParenthesis)
@@ -778,3 +785,8 @@ class RightParenthesis extends ExpressionComponent
 
 window.ttm.Calculator.RightParenthesis = ttm.ClassMixer(RightParenthesis)
 
+expressionToString = (expr)->
+  str = _(expr).map((exp)->
+    exp.toDisplay()
+    ).join("")
+  $("<div>#{str}</div>").text()
