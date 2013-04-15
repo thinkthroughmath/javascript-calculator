@@ -115,7 +115,8 @@ div.calculator {
         vertical-align: top;
     }
     button.clear {
-        font-size: 1em;
+        font-size: .75em;
+        text-transform: uppercase;
     }
     button:focus{
         outline: none;
@@ -157,22 +158,27 @@ div.calculator {
     }
 
     button.square {
-        font-family: cursive;
+        font-family: "Times New Roman", serif;
+        font-style: italic;
         sup {
             font-family: arial;
             font-size: 0.6em;
+            font-style: normal;
+            margin-left: .15em;
         }
     }
 
     button.pi {
         font-style: italic;
+        font-family: "Times New Roman", serif;
+        font-size: 1.85em;
     }
 
     button.square-root span
     {
         left: -2px;
         position: relative;
-        top: -13px;
+        top: -14px;
     }
 
 }
