@@ -39,6 +39,7 @@ define "calculator",
       errorMsg: -> "Error"
 
       updateCurrentExpression: (new_exp)->
+        @reset_on_next_number = false
         @expression_history.push @current_expression
         @current_expression = new_exp
         @display()
@@ -82,16 +83,16 @@ define "calculator",
         @updateCurrentExpression @math.expression.build()
 
       equalsClick: ->
-        @reset_on_next_number = true
         @updateCurrentExpressionWithCommand @math.commands.calculate.build()
+        @reset_on_next_number = true
 
       squareClick: ->
-        @reset_on_next_number = true
         @updateCurrentExpressionWithCommand @math.commands.square.build()
+        @reset_on_next_number = true
 
       squareRootClick: ->
-        @reset_on_next_number = true
         @updateCurrentExpressionWithCommand @math.commands.square_root.build()
+        @reset_on_next_number = true
 
       lparenClick: ->
         @updateCurrentExpressionWithCommand @math.commands.left_parenthesis.build()
