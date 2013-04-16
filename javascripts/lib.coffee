@@ -1,6 +1,7 @@
 #= require almond
 
 window.ttm ||= {}
+window.decorators ||= {}
 
 ttm.ClassMixer = (klass)->
   klass.build = ->
