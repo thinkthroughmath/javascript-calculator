@@ -66,13 +66,9 @@ describe "Math Library", ->
     describe "the decimal command", ->
       it "correctly adds a decimal to the value", ->
         exp = @math.expression.build()
-        console.log exp
         exp = @math.commands.number.build(value: 1).invoke(exp)
-        console.log exp
         exp = @math.commands.decimal.build().invoke(exp)
-        console.log exp
         exp = @math.commands.number.build(value: 1).invoke(exp)
-        console.log exp
         expect_value(exp, '1.1')
 
     describe "NumberCommand", ->
