@@ -10,9 +10,6 @@
 #= require jquery_ujs
 #= require ../../vendor/assets/javascripts/underscore-min
 #= require_tree ./support
-#= require_tree ./
 #= require_tree ../../app/assets/javascripts/widgets
+#= require_tree ./
 #= require ../../app/assets/javascripts/data_warehouse
-
-
-

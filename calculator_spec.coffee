@@ -1,27 +1,46 @@
+#= require widgets/calculator
+#= require lib/math
+#= require almond
+
+
+
 describe "Calculator Widget integration", ->
   beforeEach ->
-    @calc = ttm.Calculator.build_widget(f())
-    @handle = JSCalculatorHandle.build(f())
-
-  it "performs exponentiation", ->
-    @handle.press_buttons("2 ^ 2 =")
-    expect(@handle.output_content()).toEqual("4")
+    calculator = require("calculator")
+    math = require("lib/math")
+    @calc = calculator.build_widget(f(), math.expression)
+    @handle = require("calc_handle").build(f(), calculator)
 
   it "displays what is entered", ->
     @handle.press_buttons("8")
     expect(@handle.output_content()).toEqual("8")
 
+
+  it "automatically clears when another number starts getting entered after a calculation", ->
+    @handle.press_buttons("2 ^ 2 = 1")
+    expect(@handle.output_content()).toEqual("1")
+
+
   it "will display decimal numbers correctly", ->
     @handle.press_buttons("1 . 0 1")
     expect(@handle.output_content()).toEqual("1.01")
+
+  it "performs exponentiation", ->
+    @handle.press_buttons("2 ^ 2 =")
+    expect(@handle.output_content()).toEqual("4")
 
   it "clears", ->
     @handle.press_buttons("8 clear")
     expect(@handle.output_content()).toEqual("0")
 
-  it "multiplies", ->
-    @handle.press_buttons("8 * 8 =")
-    expect(@handle.output_content()).toEqual("64")
+  describe "multiplication", ->
+    it "handles a typical case", ->
+      @handle.press_buttons("8 * 8 =")
+      expect(@handle.output_content()).toEqual("64")
+
+    it "handles the edge case", ->
+      @handle.press_buttons("0 * 1 =")
+      expect(@handle.output_content()).toEqual("0")
 
   it "adds", ->
     @handle.press_buttons("1 2 3 + 1 2 3 =")
@@ -79,10 +98,17 @@ describe "Calculator Widget integration", ->
       @handle.press_buttons(". 1")
       expect(@handle.output_content()).toEqual "0.1"
 
+    it "handles pressing decimal after an operator", ->
+      @handle.press_buttons(". 1 + . 1")
+
+      expect(@handle.output_content()).toEqual "0.1 + 0.1"
+
 describe "Calculator error handling", ->
   beforeEach ->
-    @calc = ttm.Calculator.build_widget(f())
-    @handle = JSCalculatorHandle.build(f())
+    calculator = require("calculator")
+    math = require("lib/math")
+    @calc = calculator.build_widget(f(), math.expression)
+    @handle = require("calc_handle").build(f(), calculator)
 
   describe "malformed expressions", ->
     it "handles division", ->
@@ -96,42 +122,46 @@ describe "Calculator error handling", ->
     it "handles division by zero", ->
 
   it "continues after an error has occurred", ->
-    @handle.press_buttons("1 / 0 =")
-    @handle.assertError()
-
-    @handle.press_buttons("1 / 0 = 1 / 1 0 =")
+    @handle.press_buttons("1 negative squareroot 1 / 1 0 =")
     expect(@handle.output_content()).toEqual("0.1")
 
-class JSCalculatorHandle
-  initialize: ((@element)->)
-  button: (which)->
-    @element.find("button[value='#{which}']")
-
-  press_button: (which)->
-    btn = @button(which)
-    if btn.length == 0
-      throw "Could not press button '#{which}' as it does not exist"
-    else
-      btn.click()
-
-  press_buttons: (buttons)->
-    for button in buttons.split(" ")
-      do (button)=>
-        @press_button(button)
-
-  output: ->
-    @element.find("figure.calculator-display")
-
-  output_content: ->
-    @output().text()
-
-  assertError: ->
-    expect(@output_content()).toEqual(window.ttm.Calculator.LogicController.prototype.errorMsg())
-
-window.ttm.ClassMixer(JSCalculatorHandle)
 
 
-num = (it)-> ttm.Calculator.Number.build(value: it)
+
+
+define "calc_handle", ['lib/class_mixer'], (class_mixer)->
+  class JSCalculatorHandle
+    initialize: ((@element, @calculator_constructor)->)
+    button: (which)->
+      @element.find("button[value='#{which}']")
+
+    press_button: (which)->
+      btn = @button(which)
+      if btn.length == 0
+        throw "Could not press button '#{which}' as it does not exist"
+      else
+        btn.click()
+
+    press_buttons: (buttons)->
+      for button in buttons.split(" ")
+        do (button)=>
+          @press_button(button)
+
+    output: ->
+      @element.find("figure.calculator-display")
+
+    output_content: ->
+      @output().text()
+
+    assertError: ->
+      expect(@output_content()).toEqual(@calculator_constructor.prototype.errorMsg())
+
+  class_mixer(JSCalculatorHandle)
+
+  return JSCalculatorHandle
+
+
+num = (it)-> math.build_number(it)
 
 buttonBuilderMock = ->
   jasmine.createSpyObj('button_builder', ['buildButton']);
