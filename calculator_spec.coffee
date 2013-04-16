@@ -16,10 +16,14 @@ describe "Calculator Widget integration", ->
     expect(@handle.output_content()).toEqual("8")
 
 
-  it "automatically clears when another number starts getting entered after a calculation", ->
-    @handle.press_buttons("2 ^ 2 = 1")
-    expect(@handle.output_content()).toEqual("1")
+  describe "clearing after calculation", ->
+    it "automatically clears when another number starts getting entered after a calculation", ->
+      @handle.press_buttons("2 ^ 2 = 1")
+      expect(@handle.output_content()).toEqual("1")
 
+    it "preserves numbers for future calculations", ->
+      @handle.press_buttons("2 ^ 2 = + 1 =")
+      expect(@handle.output_content()).toEqual("5")
 
   it "will display decimal numbers correctly", ->
     @handle.press_buttons("1 . 0 1")
