@@ -434,6 +434,7 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
 
   class_mixer(_ImplicitMultiplication)
 
+
   class _OverrideIfOperatorOrAppend
     initialize: (@expression)->
     with: (operator)->
