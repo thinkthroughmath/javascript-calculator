@@ -20,8 +20,8 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
       @expression.push part
 
     # returns part of an expression
-    last: ->
-      _.last(@expression)
+    last: (from_end=0)->
+      @expression[@expression.length - 1 - from_end]
 
     first: ->
       _.first(@expression)
@@ -143,16 +143,16 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
       (new ExpressionEvaluation(@subexpression)).results()
 
   class ExpressionComponent
-    handled: ->
-      @is_handled = true
-    isHandled: ->
-      @is_handled
+    isOperator: -> false
+    isNumber: -> false
     eval: -> @
 
   class Number extends ExpressionComponent
     initialize: (@opts)->
       @val = @opts.value
-
+      
+    isNumber: -> true
+    
     negated: ->
       value = @val * -1
       Number.build(value: value)
@@ -204,23 +204,9 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
 
   class_mixer(Number)
 
-  class Square extends ExpressionComponent
-    toDisplay: -> "<sup>2</sup>"
-    eval: (evaluation, pass)->
-      return if pass != "exponentiation"
-      prev = evaluation.previousValue()
-      if prev
-        evaluation.handledPrevious()
-        squared = parseFloat(prev) * parseFloat(prev)
-        Number.build(value: squared)
-      else
-        throw "Invalid Expression"
-
-  class_mixer(Square)
-
-
   class Exponentiation extends ExpressionComponent
-    toDisplay: -> "^"
+    isOperator: -> true
+    toDisplay: -> '&circ;'
     eval: (evaluation, pass)->
       return if pass != "exponentiation"
 
@@ -236,13 +222,14 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
 
   class Pi extends ExpressionComponent
     toDisplay: -> "&pi;"
-    eval: ->
+    eval: ()->
       Number.build(value: Math.PI)
 
   class_mixer(Pi)
 
   class Addition extends ExpressionComponent
     toDisplay: -> "+"
+    isOperator: -> true
     eval: (evaluation, pass)->
       return if pass != "addition"
 
@@ -258,6 +245,7 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
 
   class Subtraction extends ExpressionComponent
     toDisplay: -> "-"
+    isOperator: -> true
     eval: (evaluation, pass)->
       return if pass != "addition"
 
@@ -273,6 +261,7 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
   class_mixer(Subtraction)
 
   class Multiplication extends ExpressionComponent
+    isOperator: -> true
     eval: (evaluation, pass)->
       return if pass != "multiplication"
       prev = evaluation.previousValue()
@@ -287,6 +276,7 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
   class_mixer(Multiplication)
 
   class Division extends ExpressionComponent
+    isOperator: -> true
     toDisplay: -> "&divide;"
     eval: (evaluation, pass)->
       return if pass != "multiplication"
@@ -317,6 +307,9 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
 
   class_mixer(RightParenthesis)
 
+  ##############
+  # commands!
+  ###############
 
   class CalculateCommand
     invoke: (expression)->
@@ -353,7 +346,9 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
   class NumberCommand
     initialize: (@opts)->
       @val = @opts.value
+
     invoke: (expression)->
+      expression = _ImplicitMultiplication.build().onNeitherOperatorNorNumber(expression)
       last = expression.last()
       if last instanceof Number
         new_last = last.concatenate(@val)
@@ -398,7 +393,10 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
 
   class LeftParenthesisCommand
     invoke: (expression)->
-      expression.cloneAndAppend(LeftParenthesis.build())
+      _ImplicitMultiplication.build().
+        onNumeric(expression).
+        cloneAndAppend(LeftParenthesis.build())
+
   class_mixer(LeftParenthesisCommand)
 
   class RightParenthesisCommand
@@ -411,14 +409,34 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
       expression.cloneAndAppend(Division.build())
   class_mixer(DivisionCommand)
 
+
+  class _ImplicitMultiplication
+    onNumeric: (expression)->
+      last = expression.last()
+      if last && last.isNumber()
+        expression.cloneAndAppend(Multiplication.build())
+      else
+        expression
+
+    onNeitherOperatorNorNumber: (expression)->
+      last = expression.last()
+      if last and !last.isNumber()  and !last.isOperator() and !(last instanceof LeftParenthesis)
+        expression.cloneAndAppend(Multiplication.build())
+      else
+        expression
+
+  class_mixer(_ImplicitMultiplication)
+
   class PiCommand
     invoke: (expression)->
-      expression.cloneAndAppend(Pi.build())
+      _ImplicitMultiplication.build().
+        onNumeric(expression).
+        cloneAndAppend(Pi.build())
+
   class_mixer(PiCommand)
 
   class SquareRootCommand
     invoke: (expression)->
-
       value = expression.evaluate().value() || 0
       root = Math.sqrt(parseFloat(value))
       unless isNaN(root)
