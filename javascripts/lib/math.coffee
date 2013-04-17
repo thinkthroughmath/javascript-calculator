@@ -150,9 +150,9 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
   class Number extends ExpressionComponent
     initialize: (@opts)->
       @val = @opts.value
-      
+
     isNumber: -> true
-    
+
     negated: ->
       value = @val * -1
       Number.build(value: value)
@@ -350,7 +350,7 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
     invoke: (expression)->
       expression = _ImplicitMultiplication.build().onNeitherOperatorNorNumber(expression)
       last = expression.last()
-      if last instanceof Number
+      if last && last.isNumber()
         new_last = last.concatenate(@val)
         expression.cloneAndReplaceLast(new_last)
       else
@@ -361,24 +361,28 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
 
   class ExponentiationCommand
     invoke: (expression)->
-      expression.cloneAndAppend(Exponentiation.build())
+      _OverrideIfOperatorOrAppend.build(expression).
+        with Exponentiation.build()
 
   class_mixer(ExponentiationCommand)
 
   class MultiplicationCommand
     invoke: (expression)->
-      expression.cloneAndAppend(Multiplication.build())
+      _OverrideIfOperatorOrAppend.build(expression).
+        with Multiplication.build()
   class_mixer(MultiplicationCommand)
 
   class AdditionCommand
     invoke: (expression)->
-      expression.cloneAndAppend(Addition.build())
+      _OverrideIfOperatorOrAppend.build(expression).
+        with Addition.build()
   class_mixer(AdditionCommand)
 
 
   class SubtractionCommand
     invoke: (expression)->
-      expression.cloneAndAppend(Subtraction.build())
+      _OverrideIfOperatorOrAppend.build(expression).
+        with Subtraction.build()
   class_mixer(SubtractionCommand)
 
   class NegationCommand
@@ -406,7 +410,8 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
 
   class DivisionCommand
     invoke: (expression)->
-      expression.cloneAndAppend(Division.build())
+      _OverrideIfOperatorOrAppend.build(expression).
+        with Division.build()
   class_mixer(DivisionCommand)
 
 
@@ -426,6 +431,16 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
         expression
 
   class_mixer(_ImplicitMultiplication)
+
+  class _OverrideIfOperatorOrAppend
+    initialize: (@expression)->
+    with: (operator)->
+      last = @expression.last()
+      if last && last.isOperator()
+        @expression.cloneAndReplaceLast(operator)
+      else
+        @expression.cloneAndAppend(operator)
+  class_mixer(_OverrideIfOperatorOrAppend)
 
   class PiCommand
     invoke: (expression)->
