@@ -91,19 +91,35 @@ describe "Calculator Widget integration", ->
       @handle.press_buttons("( 2 ) 1 0 0 =")
       expect(@handle.output_content()).toEqual("200")
 
+    it "correctly handles side by side parentheticals", ->
+      @handle.press_buttons("8 ( 9 ) ( 8 ) =")
+      expect(@handle.output_content()).toEqual("576")
+
   it "divides", ->
     @handle.press_buttons("1 0 / 2 =")
     expect(@handle.output_content()).toEqual("5")
-
 
   describe "pi", ->
     it "does pi", ->
       @handle.press_buttons("pi =")
       expect(@handle.output_content()).toMatch /3.14/
 
+    it "multiplies pis side by side", ->
+      @handle.press_buttons("pi pi =")
+      expect(@handle.output_content()).toMatch /9.86/
+
+    it "handles the sample instance presented by mario", ->
+      @handle.press_buttons("2 pi ( 1 + 3 ) =")
+      expect(@handle.output_content()).toMatch /25.13/
+
+    it "handles another compilcated example", ->
+      @handle.press_buttons("pi 2 pi ( 1 + 3 ) ( 1 0 ) =")
+      expect(@handle.output_content()).toMatch /789.57/
+
     it "multiplies pi", ->
       @handle.press_buttons("5 pi =")
       expect(@handle.output_content()).toMatch /15.708/
+
     it "multiplies pi reversed", ->
       @handle.press_buttons("pi 5 =")
       expect(@handle.output_content()).toMatch /15.708/
