@@ -118,15 +118,20 @@ describe "Math Library", ->
         expect(new_exp.last().value()).toEqual "-1"
 
     describe "LeftParenthesisCommand", ->
+      beforeEach ->
+        exp = @math.expression.build_with_content([
+          @math.components.number.build(value: '1')
+        ])
+        @new_exp = @math.commands.left_parenthesis.build().invoke(exp)
+
       it_plays_command_role (test)->
         test.math.commands.left_parenthesis.build()
 
       it "adds a parenthesis to the expression", ->
-        exp = @math.expression.build_with_content([
-          @math.components.number.build(value: '1')
-        ])
-        new_exp = @math.commands.left_parenthesis.build().invoke(exp)
-        expect(new_exp.last() instanceof @math.components.left_parenthesis).toBeTruthy()
+        expect(@new_exp.last() instanceof @math.components.left_parenthesis).toBeTruthy()
+
+      it "adds a multiplication to the expression when the previous item is a number", ->
+        expect(@new_exp.last(1) instanceof @math.components.multiplication).toBeTruthy()
 
     describe "RightParenthesisCommand", ->
       it_plays_command_role (test)->
@@ -155,12 +160,13 @@ describe "Math Library", ->
       it_plays_command_role (test)->
         test.math.commands.pi.build()
 
-      it "adds a pi to the expression", ->
+      it "adds a mulitplication and pi to the expression", ->
         exp = @math.expression.build_with_content([
           @math.components.number.build(value: '1')
         ])
         new_exp = @math.commands.pi.build().invoke(exp)
         expect(new_exp.last() instanceof @math.components.pi).toBeTruthy()
+        expect(new_exp.last(1) instanceof @math.components.multiplication).toBeTruthy()
 
     describe "SquareRootCommand", ->
       it_plays_command_role (test)->
