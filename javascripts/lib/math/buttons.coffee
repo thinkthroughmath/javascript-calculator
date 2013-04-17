@@ -19,7 +19,7 @@ define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer', 'lib/math'
       @button({
         value: '^'
         label: '&circ;'
-        class: 'other'
+        class: 'other exponent'
       }, opts)
 
     negative: (opts)->

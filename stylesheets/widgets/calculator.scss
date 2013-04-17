@@ -146,6 +146,10 @@ div.calculator {
         @include simple-gradient($operation_darker, $operation_lighter);
     }
 
+    button.other.exponent {
+        font-size: 2.5em;
+    }
+
     button.other {
         border: 1px solid $other_border;
         @include simple-gradient($other_lighter, $other_darker);
