@@ -15,7 +15,6 @@ describe "Calculator Widget integration", ->
     @handle.press_buttons("8")
     expect(@handle.output_content()).toEqual("8")
 
-
   describe "clearing after calculation", ->
     it "automatically clears when another number starts getting entered after a calculation", ->
       @handle.press_buttons("2 ^ 2 = 1")
@@ -74,17 +73,35 @@ describe "Calculator Widget integration", ->
     @handle.press_buttons("1 1 negative")
     expect(@handle.output_content()).toEqual("-11")
 
-  it "supports parenthetical expressions", ->
-    @handle.press_buttons("1 0 * ( 2 + 4 ) =")
-    expect(@handle.output_content()).toEqual("60")
+  describe "parentheses", ->
+    it "supports parenthetical expressions", ->
+      @handle.press_buttons("1 0 * ( 2 + 4 ) =")
+      expect(@handle.output_content()).toEqual("60")
+
+    it "supports implicit multiplication", ->
+      @handle.press_buttons("1 0 ( 2 ) =")
+      expect(@handle.output_content()).toEqual("20")
+
+    it "supports implicit multiplication reversed", ->
+      @handle.press_buttons("( 2 ) 1 0 0 =")
+      expect(@handle.output_content()).toEqual("200")
 
   it "divides", ->
     @handle.press_buttons("1 0 / 2 =")
     expect(@handle.output_content()).toEqual("5")
 
-  it "does pi", ->
-    @handle.press_buttons("pi =")
-    expect(@handle.output_content()).toMatch /3.14/
+
+  describe "pi", ->
+    it "does pi", ->
+      @handle.press_buttons("pi =")
+      expect(@handle.output_content()).toMatch /3.14/
+
+    it "multiplies pi", ->
+      @handle.press_buttons("5 pi =")
+      expect(@handle.output_content()).toMatch /15.708/
+    it "multiplies pi reversed", ->
+      @handle.press_buttons("pi 5 =")
+      expect(@handle.output_content()).toMatch /15.708/
 
   it "handles order of operations correctly", ->
     @handle.press_buttons("1 + 1 - 2 * 2 =")
