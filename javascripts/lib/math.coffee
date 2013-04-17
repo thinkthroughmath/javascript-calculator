@@ -110,6 +110,7 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
     subExpression: ->
       new SubExpression(@expression, @expression_index + 1)
 
+  # TODO rewrite this in a functional style
   class SubExpression
     constructor: (@expression, @at)->
       @subexpression = @findSubexpression()
@@ -137,7 +138,7 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
         subexpression_parts
 
     removeFromExpression: ->
-      @expression.splice(@at, @i)
+      removed = @expression.splice(@at, @i-@at+1)
 
     eval: ->
       (new ExpressionEvaluation(@subexpression)).results()
@@ -297,6 +298,7 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
       subexpr = expression.subExpression()
       evaluated = subexpr.eval()
       subexpr.removeFromExpression()
+
       evaluated
 
   class_mixer(LeftParenthesis)
@@ -418,7 +420,7 @@ define "lib/math", ["lib/class_mixer"], (class_mixer)->
   class _ImplicitMultiplication
     onNumeric: (expression)->
       last = expression.last()
-      if last && last.isNumber()
+      if last && (last.isNumber() || last instanceof RightParenthesis || last instanceof Pi)
         expression.cloneAndAppend(Multiplication.build())
       else
         expression
