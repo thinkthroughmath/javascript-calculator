@@ -108,7 +108,7 @@ describe "Calculator Widget integration", ->
       @handle.press_buttons("pi pi =")
       expect(@handle.output_content()).toMatch /9.86/
 
-    it "handles the sample instance presented by mario", ->
+    it "handles a more complicated example", ->
       @handle.press_buttons("2 pi ( 1 + 3 ) =")
       expect(@handle.output_content()).toMatch /25.13/
 
