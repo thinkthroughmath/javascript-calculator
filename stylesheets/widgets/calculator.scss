@@ -34,6 +34,40 @@ $other_border: #adadad;
 
 }
 
+
+.ie div.calculator-dialog figure.calculator-display {
+    height: 45px;
+}
+
+.ie div.calculator {
+    height: 354px;
+
+    button {
+        filter: none;
+    }
+
+    button.number-specifier {
+        color: white;
+        border: 1px solid $number_specifier_border;
+        background: $number_specifier_lighter !important;
+        filter: none !important;
+    }
+
+    button.operation {
+        color: white;
+        border: 1px solid $operation_border;
+        background: $operation_lighter;
+        filter: none !important;
+    }
+    button.other {
+        border: 1px solid $other_border;
+        background: $other_lighter;
+        filter: none !important;
+    }
+
+}
+
+
 div.calculator-dialog {
     font-family: arial;
     background: image-url('widgets/calculator_bg.png') !important;
@@ -46,7 +80,7 @@ div.calculator-dialog {
            -moz-box-shadow: inset 0 0 5px $box_shadow_color;
                 box-shadow: inner 0 0 5px $box_shadow_color;
         font-size: 2.3em;
-        height: 38px;
+        height: 45px;
         margin: auto;
         margin-bottom: 14px;
         overflow-x: auto;

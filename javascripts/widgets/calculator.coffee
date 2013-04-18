@@ -213,10 +213,11 @@ define "calculator",
         @layout = ButtonLayout.build buttons
 
         @render()
-#        @logic.onResultChange ((new_val)=> @display(new_val))
 
       display: (content)->
-        @element.find("figure.calculator-display").html(content)
+        disp = @element.find("figure.calculator-display")
+        disp.html(content)
+        disp.scrollLeft(9999999)
 
       render: ->
         @element.append """
