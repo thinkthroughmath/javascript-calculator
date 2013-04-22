@@ -1,5 +1,5 @@
 #= require lib/math
-
+#= require lib/math/buttons
 
 it_plays_command_role = (subject, math)->
   describe "acting as an expression command", ->
@@ -13,7 +13,6 @@ it_plays_command_role = (subject, math)->
       ret = @subject.invoke(@math.expression.build())
       unless ret instanceof @math.expression
         throw "The return value was not an instance of the expression builder"
-
 
 expect_value = (expression, value)->
   expect(expression.display()).toEqual value
@@ -36,6 +35,10 @@ describe "Math Library", ->
       )
       new_exp = exp.calculate()
       expect(new_exp.isError()).toBeTruthy()
+
+    describe "building from string", ->
+      it "will build a number", ->
+        @math.expression.build_from_string("1")
 
   describe "expression components", ->
     describe "numbers", ->
@@ -177,3 +180,27 @@ describe "Math Library", ->
         ])
         new_exp = @math.commands.square_root.build().invoke(exp)
         expect(new_exp.last().value()).toEqual '2'
+
+  describe "buttons", ->
+    beforeEach ->
+      @btn_lib = require 'lib/math/buttons'
+      @buttons = @btn_lib.makeBuilder element: f()
+    describe "variables", ->
+      beforeEach ->
+        @variable = {name: "face", variable_identifier: 124}
+        @btn = @buttons.variables
+          variables: [@variable]
+
+      it "renders a set of variables", ->
+        _(@btn).each (button)->
+          button.render()
+        expect(f().text()).toMatch /face/
+
+      it "sends its passed object along to its clicked handler", ->
+        spy = jasmine.createSpy('variable_btn_click')
+        _(@btn).each (button)->
+          button.render(click: spy)
+        f().find('button').first().click()
+
+        expect(spy.calls[0].args[0].variable).toEqual @variable
+

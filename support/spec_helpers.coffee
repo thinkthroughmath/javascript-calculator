@@ -16,3 +16,10 @@ window.f = (html="")->
   if html.length > 0
     cont.html(html)
   cont
+
+
+#beforeEach ->
+#  @addMatchers(
+#    toInclude: (value)->
+#      _(@).find((it)-> it == value)
+#  )
