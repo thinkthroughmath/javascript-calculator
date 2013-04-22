@@ -114,6 +114,16 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer', 'lib/m
         class: 'pi other'
       }, opts)
 
+    variables: (opts)->
+      variables =
+        for v in opts.variables
+          do (v)=>
+            @button({
+              value: "#{v.name}"
+              class: 'variable other'
+              variable: v
+            }, opts)
+      variables
 
     button: (type_opts, opts)->
       ui_elements.button_builder.build(

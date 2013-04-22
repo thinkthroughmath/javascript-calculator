@@ -5,6 +5,9 @@
 ttm.define "lib/math", ["lib/class_mixer"], (class_mixer)->
   class Expression
 
+    @build_from_string: (exp)->
+      BuildExpressionFromString.build(exp).buildExpression()
+
     @build_with_content: (content)->
       @build(expression: content)
 
@@ -61,6 +64,14 @@ ttm.define "lib/math", ["lib/class_mixer"], (class_mixer)->
     setError: -> @is_error = true
 
   class_mixer(Expression)
+
+
+  class BuildExpressionFromString
+    initialize: (@exp_string)->
+    buildExpression: ->
+      exp = Expression.build()
+      parts = @exp_string.split(" ")
+  class_mixer(BuildExpressionFromString)
 
   class ExpressionEvaluation
     constructor: (@expression)->

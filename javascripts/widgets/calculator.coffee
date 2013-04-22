@@ -220,13 +220,12 @@ ttm.define "calculator",
         disp.scrollLeft(9999999)
 
       render: ->
-        @element.append """
-          <div class='calculator'>
-            <figure class='calculator-display'>0</figure>
-          </div>
-        """
+        @element.append "<div class='calculator'></div>"
         calc_div = @element.find('div.calculator')
+        calc_div.append "<figure class='calculator-display'>0</figure>"
+
         @layout.render calc_div
+
     class_mixer(CalculatorView)
 
 
