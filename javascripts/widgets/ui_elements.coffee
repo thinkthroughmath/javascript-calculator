@@ -3,7 +3,7 @@
 #= require jquery
 
 
-ttm.define 'widgets/ui_elements', ['lib/class_mixer', 'jquery'], (class_mixer, $)->
+ttm.define 'widgets/ui_elements', ['lib/class_mixer'], (class_mixer)->
   class Button
     initialize: (@opts={})->
     render: (opts={})->
