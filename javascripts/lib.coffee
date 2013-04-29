@@ -1,4 +1,5 @@
-#= require almond
+#= require almond_wrapper
+#= require underscore-min
 
 window.ttm ||= {}
 window.decorators ||= {}
@@ -12,5 +13,5 @@ ttm.ClassMixer = (klass)->
   klass
 
 
-define "lib/class_mixer", ->
+ttm.define "lib/class_mixer", ->
   return ttm.ClassMixer

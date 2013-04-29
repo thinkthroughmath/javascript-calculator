@@ -1,9 +1,9 @@
-#= require almond
+#= require almond_wrapper
 #= require lib
 #= require jquery
 
 
-define 'widgets/ui_elements', ['lib/class_mixer', 'jquery'], (class_mixer, $)->
+ttm.define 'widgets/ui_elements', ['lib/class_mixer', 'jquery'], (class_mixer, $)->
   class Button
     initialize: (@opts={})->
     render: (opts={})->

@@ -1,8 +1,8 @@
-#= require almond
+#= require almond_wrapper
 #= require lib
 
 
-define "lib/math", ["lib/class_mixer"], (class_mixer)->
+ttm.define "lib/math", ["lib/class_mixer"], (class_mixer)->
   class Expression
 
     @build_with_content: (content)->

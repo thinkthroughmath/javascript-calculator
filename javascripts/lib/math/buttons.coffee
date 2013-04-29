@@ -1,9 +1,8 @@
-#= require almond
+#= require almond_wrapper
 #= require widgets/ui_elements
 #= require lib
 
-define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer', 'lib/math'], (ui_elements, class_mixer, math)->
-  # number specifiers
+ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer', 'lib/math'], (ui_elements, class_mixer, math)->
 
   class ButtonBuilder
     initialize: (@opts={})->

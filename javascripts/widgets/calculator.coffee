@@ -1,10 +1,10 @@
-#= require almond
+#= require almond_wrapper
 #= require lib
 #= require lib/math
 #= require lib/math/buttons
 #= require widgets/ui_elements
 
-define "calculator",
+ttm.define "calculator",
   ["lib/class_mixer", "lib/math", "widgets/ui_elements", "lib/math/buttons"],
   (class_mixer, math, ui_elements, math_buttons)->
 
