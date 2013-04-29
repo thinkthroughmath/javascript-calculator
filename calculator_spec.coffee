@@ -1,6 +1,6 @@
 #= require widgets/calculator
 #= require lib/math
-#= require almond
+#= require almond_wrapper
 
 
 
@@ -171,7 +171,7 @@ describe "Calculator error handling", ->
 
 
 
-define "calc_handle", ['lib/class_mixer'], (class_mixer)->
+ttm.define "calc_handle", ['lib/class_mixer'], (class_mixer)->
   class JSCalculatorHandle
     initialize: ((@element, @calculator_constructor)->)
     button: (which)->
