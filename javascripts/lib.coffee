@@ -2,7 +2,8 @@
 #= require underscore-min
 
 window.ttm ||= {}
-window.decorators ||= {}
+window.ttm.decorators ||= {}
+window.ttm.lib ||= {}
 
 ttm.ClassMixer = (klass)->
   klass.build = ->
