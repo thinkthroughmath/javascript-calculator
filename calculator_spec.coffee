@@ -3,8 +3,6 @@
 #= require lib/math
 
 
-
-
 describe "Calculator Widget integration", ->
   beforeEach ->
     calculator = ttm.require("calculator")
@@ -172,7 +170,7 @@ describe "Calculator error handling", ->
 
 
 
-ttm.define "calc_handle", ['lib/class_mixer'], (class_mixer)->
+define "calc_handle", ['lib/class_mixer'], (class_mixer)->
   class JSCalculatorHandle
     initialize: ((@element, @calculator_constructor)->)
     button: (which)->
