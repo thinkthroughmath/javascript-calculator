@@ -21,7 +21,7 @@ expect_value = (expression, value)->
 
 describe "Math Library", ->
   beforeEach ->
-    @math = ttm.require('lib/math')
+    @math = require('lib/math')
 
   describe "Expression", ->
     it "assigns components from its construtor", ->

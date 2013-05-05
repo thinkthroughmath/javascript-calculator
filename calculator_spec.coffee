@@ -1,14 +1,13 @@
-#= require almond_wrapper
 #= require widgets/calculator
 #= require lib/math
-
+#= require almond_wrapper
 
 describe "Calculator Widget integration", ->
   beforeEach ->
-    calculator = ttm.require("calculator")
-    math = ttm.require("lib/math")
+    calculator = require("calculator")
+    math = require("lib/math")
     @calc = calculator.build_widget(f(), math.expression)
-    @handle = ttm.require("calc_handle").build(f(), calculator)
+    @handle = require("calc_handle").build(f(), calculator)
 
   it "displays what is entered", ->
     @handle.press_buttons("8")
@@ -146,10 +145,10 @@ describe "Calculator Widget integration", ->
 
 describe "Calculator error handling", ->
   beforeEach ->
-    calculator = ttm.require("calculator")
-    math = ttm.require("lib/math")
+    calculator = require("calculator")
+    math = require("lib/math")
     @calc = calculator.build_widget(f(), math.expression)
-    @handle = ttm.require("calc_handle").build(f(), calculator)
+    @handle = require("calc_handle").build(f(), calculator)
 
   describe "malformed expressions", ->
     it "handles division", ->
