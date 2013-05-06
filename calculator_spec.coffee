@@ -1,6 +1,6 @@
 #= require widgets/calculator
 #= require lib/math
-#= require almond
+#= require almond_wrapper
 
 describe "Calculator Widget integration", ->
   beforeEach ->
