@@ -18,8 +18,16 @@ window.f = (html="")->
   cont
 
 
-#beforeEach ->
-#  @addMatchers(
-#    toInclude: (value)->
-#      _(@).find((it)-> it == value)
-#  )
+beforeEach ->
+  @addMatchers(
+    toBeInstanceOf: (type)->
+      @message = ->
+        "Expected #{@actual} to be an instance of #{type.name}"
+      @actual instanceof type
+    toBeEqualTo: (other)->
+      @message = ->
+        "Expected #{@actual}.isEqual(#{type}) to be true"
+      @actual.isEqual(other)
+  )
+
+

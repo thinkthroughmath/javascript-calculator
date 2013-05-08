@@ -2,10 +2,8 @@
 #= require widgets/calculator
 #= require lib/math
 
-
-
-
-describe "Calculator Widget integration", ->
+# TODO move most of these to the evaluation class
+describe "Calculator Widget features", ->
   beforeEach ->
     calculator = ttm.require("calculator")
     math = ttm.require("lib/math")
@@ -17,7 +15,7 @@ describe "Calculator Widget integration", ->
     expect(@handle.output_content()).toEqual("8")
 
   describe "multiple sequential operator button presses", ->
-    it "automatically clears when another number starts getting entered after a calculation", ->
+    it "automatically uses the last entered command", ->
       @handle.press_buttons("2 + - * / ^ 1 0 =")
       expect(@handle.output_content()).toEqual("1024")
 
