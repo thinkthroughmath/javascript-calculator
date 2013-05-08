@@ -1,5 +1,5 @@
 #= require lib/math
-#= require lib/math/buttons
+#= require lib/math/build_expression_from_javascript_object
 
 it_plays_command_role = (subject, math)->
   describe "acting as an expression command", ->
@@ -21,6 +21,38 @@ describe "Math Library", ->
   beforeEach ->
     @math = ttm.require('lib/math')
 
+  describe "Equation", ->
+    it "responds to last", ->
+      eq = @math.equation.build()
+      expect(eq.last()).toEqual null
+
+    it "responds to append", ->
+      eq = @math.equation.build()
+      x = eq.append(@math.components.number.build(value: 10))
+      expect(x.last().value()).toEqual '10'
+
+    it "responds to replaceLast", ->
+      tt = @math.components.number.build(value: '22')
+      eq = @math.equation.build(@math.expression.buildWithContent [tt])
+      x = eq.replaceLast(@math.components.number.build(value: '10'))
+      expect(x.last().value()).toEqual '10'
+
+  describe "Equation", ->
+    it "responds to last", ->
+      eq = @math.equation.build()
+      expect(eq.last()).toEqual null
+
+    it "responds to append", ->
+      eq = @math.equation.build()
+      x = eq.append(@math.components.number.build(value: 10))
+      expect(x.last().value()).toEqual '10'
+
+    it "responds to replaceLast", ->
+      tt = @math.components.number.build(value: '22')
+      eq = @math.equation.build(@math.expression.buildWithContent [tt])
+      x = eq.replaceLast(@math.components.number.build(value: '10'))
+      expect(x.last().value()).toEqual '10'
+
   describe "Expression", ->
     it "assigns components from its construtor", ->
       exp = @math.expression.build(
@@ -29,17 +61,6 @@ describe "Math Library", ->
         ])
       expect_value(exp, '10')
 
-    it "sets an error state on an invalid expression", ->
-      exp = @math.expression.build_with_content(
-        [@math.components.division.build()]
-      )
-      new_exp = exp.calculate()
-      expect(new_exp.isError()).toBeTruthy()
-
-    describe "building from string", ->
-      it "will build a number", ->
-        @math.expression.build_from_string("1")
-
   describe "expression components", ->
     describe "numbers", ->
       describe "negation", ->
@@ -47,6 +68,16 @@ describe "Math Library", ->
           num = @math.components.number.build(value: 10)
           neg_num = num.negated()
           expect(neg_num.value()).toEqual("-10")
+
+    describe "exponentiation", ->
+      it "", ->
+        comps = @math.components
+        @math.expression.buildWithContent(
+          [ comps.number.build(value: '10'),
+            comps.exponentiation.build(),
+            comps.number.build(value: '2'),
+            ]
+        )
 
   describe "expression commands", ->
     describe "the square command", ->
@@ -87,7 +118,7 @@ describe "Math Library", ->
         test.math.commands.multiplication.build()
 
       it "adds multiplication to the end of the expression", ->
-        exp = @math.expression.build_with_content([
+        exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
 
@@ -100,7 +131,7 @@ describe "Math Library", ->
         test.math.commands.subtraction.build()
 
       it "adds subtraction to the end of the expression", ->
-        exp = @math.expression.build_with_content([
+        exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
 
@@ -113,7 +144,7 @@ describe "Math Library", ->
         test.math.commands.negation.build()
 
       it "will negate the last element", ->
-        exp = @math.expression.build_with_content([
+        exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
         new_exp = @math.commands.negation.build().invoke(exp)
@@ -121,7 +152,7 @@ describe "Math Library", ->
 
     describe "LeftParenthesisCommand", ->
       beforeEach ->
-        exp = @math.expression.build_with_content([
+        exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
         @new_exp = @math.commands.left_parenthesis.build().invoke(exp)
@@ -140,7 +171,7 @@ describe "Math Library", ->
         test.math.commands.right_parenthesis.build()
 
       it "adds a parenthesis to the expression", ->
-        exp = @math.expression.build_with_content([
+        exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
         new_exp = @math.commands.right_parenthesis.build().invoke(exp)
@@ -152,7 +183,7 @@ describe "Math Library", ->
         test.math.commands.division.build()
 
       it "adds a division to the expression", ->
-        exp = @math.expression.build_with_content([
+        exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
         new_exp = @math.commands.division.build().invoke(exp)
@@ -163,7 +194,7 @@ describe "Math Library", ->
         test.math.commands.pi.build()
 
       it "adds a mulitplication and pi to the expression", ->
-        exp = @math.expression.build_with_content([
+        exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
         new_exp = @math.commands.pi.build().invoke(exp)
@@ -175,7 +206,7 @@ describe "Math Library", ->
         test.math.commands.square_root.build()
 
       it "finds the square root of an expression", ->
-        exp = @math.expression.build_with_content([
+        exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '4')
         ])
         new_exp = @math.commands.square_root.build().invoke(exp)
@@ -183,7 +214,7 @@ describe "Math Library", ->
 
   describe "buttons", ->
     beforeEach ->
-      @btn_lib = require 'lib/math/buttons'
+      @btn_lib = ttm.require 'lib/math/buttons'
       @buttons = @btn_lib.makeBuilder element: f()
     describe "variables", ->
       beforeEach ->
