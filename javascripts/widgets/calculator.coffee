@@ -4,6 +4,8 @@
 #= require lib/math/buttons
 #= require widgets/ui_elements
 
+
+
 ttm.define "calculator",
   ["lib/class_mixer", "lib/math", "widgets/ui_elements", "lib/math/buttons"],
   (class_mixer, math, ui_elements, math_buttons)->
@@ -59,10 +61,10 @@ ttm.define "calculator",
         @updateCurrentExpressionWithCommand cmd
 
       exponentClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.exponentiation.build()
+        @updateCurrentExpressionWithCommand @math.commands.exponentiate_last.build()
 
       negativeClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.negation.build()
+        @updateCurrentExpressionWithCommand @math.commands.negate_last.build()
 
       additionClick: ->
         @updateCurrentExpressionWithCommand @math.commands.addition.build()
