@@ -5,7 +5,7 @@ describe "math expression evaluation", ->
   beforeEach ->
     @evaluation = ttm.require("lib/math/expression_evaluation")
     @math = ttm.require("lib/math")
-    @exp = ttm.require('lib/math/build_expression_from_javascript_object')
+    @exp = ttm.require('lib/math/build_expression_from_javascript_object').buildExpression
 
   it "evaluates a simple addition", ->
     exp = @exp(2, '+', 7)

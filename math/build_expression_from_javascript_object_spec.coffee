@@ -3,7 +3,7 @@
 
 describe "BuildExpressionFromJavascriptObject", ->
   beforeEach ->
-    @builder = ttm.require('lib/math/build_expression_from_javascript_object')
+    @builder = ttm.require('lib/math/build_expression_from_javascript_object').buildExpression
     @components = ttm.require('lib/math/expression_components')
 
   it "builds an empty expression", ->
