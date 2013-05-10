@@ -9,17 +9,16 @@ describe "lib/object_refinement", ->
       class XTypeToRefine
         normal: -> 'x'
 
-      refinement = ttm.require('lib/object_refinement').build()
-      refinement.forType(ATypeToRefine, {refined: -> 'a'})
-      refinement.forType(BTypeToRefine, {refined: -> 'b'})
+      @refinement = ttm.require('lib/object_refinement').build()
+      @refinement.forType(ATypeToRefine, {refined: -> 'a'})
+      @refinement.forType(BTypeToRefine, {refined: -> 'b'})
 
       @a = new ATypeToRefine
       @b = new BTypeToRefine
       @x = new XTypeToRefine
 
-      @ap = refinement.refine(@a)
-      @bp = refinement.refine(@b)
-      @xp = refinement.refine(@x)
+      @ap = @refinement.refine(@a)
+      @bp = @refinement.refine(@b)
 
 
 
@@ -32,5 +31,21 @@ describe "lib/object_refinement", ->
         expect(@ap.refined()).toEqual "a"
         expect(@bp.refined()).toEqual "b"
 
-    it "does nothing to a class that has no applicable refinement", ->
-      expect(@xp.refined).toEqual undefined
+
+    describe "without a default refinement", ->
+      beforeEach ->
+        @xp = @refinement.refine(@x)
+
+      it "does nothing to a class that has no applicable refinement", ->
+        expect(@xp.refined).toEqual undefined
+
+    describe "with a default refinement", ->
+      beforeEach ->
+        @refinement.forDefault({refined: -> 'default'})
+        @xp = @refinement.refine(@x)
+
+      it "adds the default refinement to objects that have no refinements", ->
+        expect(@xp.refined()).toEqual "default"
+
+
+
