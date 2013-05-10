@@ -47,27 +47,36 @@ ttm.define "lib/object_refinement", ['lib/class_mixer'], (class_mixer)->
     forType: (type, methods)->
       @refinements.push RefinementByType.build(type, methods)
 
+    forDefault: (methods)->
+      @default_refinement = RefinementDeclaration.build(methods)
+
     refine: (component)->
       for refinement in @refinements
         if refinement.isApplicable(component)
           return refinement.apply(component)
-      component
+      if @default_refinement
+        @default_refinement.apply(component)
+      else
+        component
 
   class_mixer Refinement
 
   class RefinementDeclaration
+    initialize: (@methods)->
     apply: (subject)->
       refinement_class = ->
       refinement_class.prototype = subject
       ret = new refinement_class
       _.extend(ret, @methods)
       ret
+  class_mixer RefinementDeclaration
 
   class RefinementByType extends RefinementDeclaration
     initialize: (@type, @methods)->
 
     isApplicable: (subject)->
       subject instanceof @type
+
 
   class_mixer RefinementByType
 
