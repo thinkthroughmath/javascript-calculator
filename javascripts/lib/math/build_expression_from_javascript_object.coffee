@@ -14,6 +14,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         @addition_builder = @opts.addition_builder || components.addition
         @division_builder = @opts.division_builder || components.division
         @exponentiation_builder = @opts.exponentiation_builder || components.exponentiation
+
       process: (object_to_convert)->
         if object_to_convert.length != undefined && typeof object_to_convert != "string"
           exp = @expression_builder.build()
@@ -35,7 +36,9 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
 
     class_mixer BuildExpressionFromJavascriptObject
 
-    builder = ->
+
+    BuildExpressionFromJavascriptObject.buildExpression = ->
       builder = BuildExpressionFromJavascriptObject.build()
       builder.process(arguments)
-    return builder
+
+    return BuildExpressionFromJavascriptObject
