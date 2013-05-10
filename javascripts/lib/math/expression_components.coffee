@@ -30,8 +30,6 @@ ttm.define "lib/math/expression_components",
         for k, v of @opts
           @[k] = v
 
-      #msg: (part)->
-      #  @expression.push part
 
       # returns part of an expression
       last: (from_end=0)->
@@ -43,6 +41,9 @@ ttm.define "lib/math/expression_components",
         @expression[n]
       reset: ->
         @expression = []
+      size: ->
+        _(@expression).size();
+
 
       set: (expression)->
         @expression = expression
@@ -128,7 +129,7 @@ ttm.define "lib/math/expression_components",
     class_mixer(Number)
 
     class Exponentiation extends ExpressionComponent
-      initialize: (@opts)->
+      initialize: (@opts={})->
 
       isOperator: -> true
       toDisplay: -> '&circ;'
