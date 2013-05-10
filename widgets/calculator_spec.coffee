@@ -14,31 +14,32 @@ describe "Calculator Widget features", ->
     @handle.press_buttons("8")
     expect(@handle.output_content()).toEqual("8")
 
+  it "performs exponentiation", ->
+    @handle.press_buttons("2 ^ 2 =")
+    expect(@handle.output_content()).toEqual("4")
+
   describe "multiple sequential operator button presses", ->
     it "automatically uses the last entered command", ->
       @handle.press_buttons("2 + - * / ^ 1 0 =")
       expect(@handle.output_content()).toEqual("1024")
 
-  describe "clearing after calculation", ->
-    it "automatically clears when another number starts getting entered after a calculation", ->
-      @handle.press_buttons("2 ^ 2 = 1 2 3")
-      expect(@handle.output_content()).toEqual("123")
-
-    it "preserves numbers for future calculations", ->
-      @handle.press_buttons("2 ^ 2 = + 1 3 5 =")
-      expect(@handle.output_content()).toEqual("139")
-
   it "will display decimal numbers correctly", ->
     @handle.press_buttons("1 . 0 1")
     expect(@handle.output_content()).toEqual("1.01")
 
-  it "performs exponentiation", ->
-    @handle.press_buttons("2 ^ 2 =")
-    expect(@handle.output_content()).toEqual("4")
+  describe "clearing", ->
+    it "works", ->
+      @handle.press_buttons("8 clear")
+      expect(@handle.output_content()).toEqual("0")
 
-  it "clears", ->
-    @handle.press_buttons("8 clear")
-    expect(@handle.output_content()).toEqual("0")
+    describe "clearing after a calculation", ->
+      it "automatically clears when another number starts getting entered after a calculation", ->
+        @handle.press_buttons("2 + 2 = 1 2 3")
+        expect(@handle.output_content()).toEqual("123")
+
+      it "preserves numbers for future calculations", ->
+        @handle.press_buttons("2 + 2 = + 1 3 5 =")
+        expect(@handle.output_content()).toEqual("139")
 
   describe "multiplication", ->
     it "handles a typical case", ->
