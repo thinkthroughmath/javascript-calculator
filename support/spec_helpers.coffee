@@ -22,12 +22,18 @@ beforeEach ->
   @addMatchers(
     toBeInstanceOf: (type)->
       @message = ->
-        "Expected #{@actual} to be an instance of #{type.name}"
-      @actual instanceof type
-    toBeEqualTo: (other)->
+        if @actual == undefined
+          "Expected undefined to be an instance of #{type.name}"
+        else
+          "Expected #{@actual.constructor.name}(#{jasmine.pp @actual}) to be an instance of #{type.name}"
+
+      @actual && @actual instanceof type
+
+    toBeAnEqualExpressionTo: (other)->
+
       @message = ->
-        "Expected #{@actual}.isEqual(#{type}) to be true"
-      @actual.isEqual(other)
+        "Expected #{@actual}.isEqual(#{jasmine.pp other}) to be true"
+      @actual && other && ttm.require('lib/math/expression_equality').isEqual(@actual, other)
   )
 
 
