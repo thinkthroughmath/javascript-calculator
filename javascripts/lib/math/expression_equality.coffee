@@ -8,11 +8,13 @@ ttm.define 'lib/math/expression_equality',
   (class_mixer, object_refinement, comps)->
     ref = object_refinement.build()
 
-
     buildIsEqual = (for_type)->
       (other)->
         if other instanceof for_type
-          @_simpleIsEqual(other)
+          if @_simpleIsEqual
+            @_simpleIsEqual(other)
+          else
+            true
         else if other instanceof comps.expression
           ref.refine(other).isEqual @
         else
@@ -46,16 +48,35 @@ ttm.define 'lib/math/expression_equality',
     })
 
     ref.forType(comps.addition, {
-      isEqual: (buildIsEqual(comps.addition)),
-      _simpleIsEqual: (other)-> true # two additions are always equal to one another
+      isEqual: (buildIsEqual(comps.addition))
       })
+
+    ref.forType(comps.multiplication, {
+      isEqual: (buildIsEqual(comps.multiplication))
+      })
+
+
+    ref.forType(comps.blank, {
+      isEqual: (buildIsEqual(comps.blank))
+      })
+
+    ref.forType(comps.exponentiation, {
+      isEqual: (buildIsEqual(comps.exponentiation)),
+      _simpleIsEqual: (other)->
+        ref.refine(@base()).isEqual(other.base()) and
+          ref.refine(@power()).isEqual(other.power())
+      })
+
+    ref.forDefault({
+      isEqual: -> console.log(@); throw "NOT IMPLEMENTED"
+    })
+
 
     class ExpressionEquality
       initialize: (@first)->
       isEqual: (@second)->
         firstp = ref.refine @first
         firstp.isEqual @second
-
 
     class_mixer ExpressionEquality
 
