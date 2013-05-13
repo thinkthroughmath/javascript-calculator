@@ -89,3 +89,41 @@ describe "expression equality", ->
           @comps.addition.build()
         )).toEqual true
 
+
+  describe "blank elements", ->
+    it "accepts vs a blank element", ->
+      expect(
+        @isEqual(
+          @comps.blank.build(),
+          @comps.blank.build(),
+        )).toEqual true
+
+    it "rejects against numbers", ->
+      expect(
+        @isEqual(
+          @comps.blank.build(),
+          @comps.number.build(value: 1)
+        )).toEqual false
+    it "accepts against expressions that contain a single blank element", ->
+      throw "TODO fill this in!"
+
+
+  describe "exponentiation", ->
+    it "accepts exponents with same base and power", ->
+      a = @exp_builder('^': [11, 22])
+      b = @exp_builder('^': [11, 22])
+      expect(a).toBeAnEqualExpressionTo b
+
+    it "rejects exponents with differing bases", ->
+      new_exp = @exp_builder('^': [11, 32])
+      expected = @exp_builder('^': [12, 32])
+      expect(new_exp).not.toBeAnEqualExpressionTo(expected)
+
+    it "rejects exponents different powers",->
+      new_exp = @exp_builder('^': [10, 32])
+      expected = @exp_builder('^': [10, 22])
+      expect(new_exp).not.toBeAnEqualExpressionTo(expected)
+
+
+
+
