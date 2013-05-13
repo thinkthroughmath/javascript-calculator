@@ -7,8 +7,9 @@
 
 
 ttm.define "calculator",
-  ["lib/class_mixer", "lib/math", "widgets/ui_elements", "lib/math/buttons"],
-  (class_mixer, math, ui_elements, math_buttons)->
+  ["lib/class_mixer", "lib/math", "widgets/ui_elements", "lib/math/buttons", 'lib/math/expression_to_string'],
+  (class_mixer, math, ui_elements, math_buttons,
+    expression_to_string)->
 
     open_widget_dialog = (element)->
       if element.empty()
@@ -28,7 +29,7 @@ ttm.define "calculator",
 
       displayValue: ->
         if !@current_expression.isError()
-          val = @current_expression.display()
+          val = expression_to_string.toString(@current_expression)
           if val.length == 0
             '0'
           else
@@ -37,7 +38,8 @@ ttm.define "calculator",
           @errorMsg()
 
       display: ->
-        @view.display(@displayValue())
+        to_disp = @displayValue()
+        @view.display(to_disp)
 
       errorMsg: -> "Error"
 
@@ -57,7 +59,7 @@ ttm.define "calculator",
           @reset_on_next_number = false
           @updateCurrentExpression @math.expression.build()
 
-        cmd = @math.commands.number.build(value: button_options.value)
+        cmd = @math.commands.add_number_to_end.build(value: button_options.value)
         @updateCurrentExpressionWithCommand cmd
 
       exponentClick: ->
@@ -117,39 +119,39 @@ ttm.define "calculator",
 
     class_mixer(Calculator)
 
-    class LogicController
-      initialize: (@expression)->
-        @current_expression = @expression.build()
+    # class LogicController
+    #   initialize: (@expression)->
+    #     @current_expression = @expression.build()
 
-      onResultChange: ((@handler)->)
+    #   onResultChange: ((@handler)->)
 
-      calculate: ->
-        @resetIfError()
-        @current_expression.calculate()
-        @display()
+    #   calculate: ->
+    #     @resetIfError()
+    #     @current_expression.calculate()
+    #     @display()
 
-      resetIfError: ->
-        @current_expression.isError() && @current_expression.reset()
+    #   resetIfError: ->
+    #     @current_expression.isError() && @current_expression.reset()
 
-      numberClick: ->
-      msg: (part)->
-        @resetIfError()
-        if part.invoke
-          part.invoke(@current_expression)
-        else
-          @current_expression.msg(part)
-        @display()
+    #   numberClick: ->
+    #   msg: (part)->
+    #     @resetIfError()
+    #     if part.invoke
+    #       part.invoke(@current_expression)
+    #     else
+    #       @current_expression.msg(part)
+    #     @display()
 
 
-      reset: ->
-        @current_expression.reset()
-        @display()
+    #   reset: ->
+    #     @current_expression.reset()
+    #     @display()
 
-      buttonPressed: (component)->
-        component.action(@current_expression)
-        @display()
+    #   buttonPressed: (component)->
+    #     component.action(@current_expression)
+    #     @display()
 
-    class_mixer(LogicController)
+    # class_mixer(LogicController)
 
 
 
