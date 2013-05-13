@@ -21,12 +21,8 @@ ttm.define "lib/math/expression_evaluation",
       {
         eval: (evaluation, pass)->
           return if pass != "exponentiation"
-
-          prev = evaluation.previousValue()
-          next = evaluation.nextValue()
-          if prev && next
-            evaluation.handledSurrounding()
-            comps.number.build(value: Math.pow(parseFloat(prev), parseFloat(next)))
+          if @base() && @power()
+            comps.number.build(value: Math.pow(@base().toCalculable(), @power().toCalculable()))
           else
             throw new MalformedExpressionError("Invalid Expression")
       });
@@ -132,11 +128,13 @@ ttm.define "lib/math/expression_evaluation",
         expr = ExpressionEvaluationPass.build(expr).perform("addition")
         eval_result = _(expr).first()
         new_content = if eval_result then [eval_result] else []
-        @comps.expression.buildWithContent new_content
+        new_exp = @comps.expression.buildWithContent new_content
+        new_exp
 
       resultingExpression: ->
         try
           evaled = @_calcResultingExpression()
+          evaled
         catch e
           if(e instanceof MalformedExpressionError)
             @comps.expression.buildError()

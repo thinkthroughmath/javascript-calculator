@@ -2,7 +2,8 @@
 #= require lib/math/expression_evaluation
 
 ttm.define "lib/math/expression_manipulation",
-  ["lib/class_mixer", 'lib/math/expression_components', 'lib/math/expression_evaluation'],
+  ["lib/class_mixer", 'lib/math/expression_components',
+    'lib/math/expression_evaluation'],
   (class_mixer, comps, expression_evaluation)->
 
     class ExpressionManipulation
@@ -37,30 +38,37 @@ ttm.define "lib/math/expression_manipulation",
           expression.append(new_last)
     class_mixer(DecimalExpressionManipulation)
 
-    class NumberExpressionManipulation
+    class AddNumberToEndExpressionManipulation
       initialize: (@opts)->
         @val = @opts.value
 
       invoke: (expression)->
         expression = _ImplicitMultiplication.build().onNeitherOperatorNorNumber(expression)
         last = expression.last()
+        number_with_this_val = comps.number.build(value: @val)
         if last && last instanceof comps.number
           new_last = last.concatenate(@val)
           expression.replaceLast(new_last)
+        else if last && last instanceof comps.exponentiation
+          power = last.power()
+          if power instanceof comps.blank
+            new_last = last.updatePower(number_with_this_val)
+          else
+            new_last = last.updatePower(power.concatenate(@val))
+          expression.replaceLast(new_last)
         else
-          new_last = comps.number.build(value: 0)
-          expression.append(comps.number.build(value: @val))
+          expression.append(number_with_this_val)
 
-    class_mixer(NumberExpressionManipulation)
+    class_mixer(AddNumberToEndExpressionManipulation)
 
     class ExponentiateLastExpressionManipulation
       baseForExponent: (expression)->
         last = expression.last()
         last
-
       invoke: (expression)->
-        base = @baseForExponent(expression)
-        expression.replaceLast(comps.exponentiation.build(base: base))
+        [expression, subexpression] = _TrailingOperatorHandling.build(expression).remove()
+        base = subexpression || @baseForExponent(expression)
+        expression.replaceLast(comps.exponentiation.build(base: base, power: comps.blank.build()))
 
     class_mixer(ExponentiateLastExpressionManipulation)
 
@@ -86,7 +94,7 @@ ttm.define "lib/math/expression_manipulation",
       invoke: (expression)->
         last = expression.last()
         if last
-          expression.replaceLast(last.negated())
+            expression.replaceLast(last.negated())
         else
           expression
 
@@ -161,14 +169,23 @@ ttm.define "lib/math/expression_manipulation",
     class_mixer(_OverrideIfOperatorOrAppend)
 
 
-
-
+    class _TrailingOperatorHandling
+      initialize: (@expression)->
+      remove: ->
+        last = @expression.last()
+        if last && last.isOperator()
+          preceeding = last.preceedingSubexpression()
+          without_last = @expression.withoutLast()
+          [without_last, preceeding]
+        else
+          [@expression, null]
+    class_mixer(_TrailingOperatorHandling)
 
     exports =
       calculate: CalculateExpressionManipulation
       square: SquareExpressionManipulation
       decimal: DecimalExpressionManipulation
-      number: NumberExpressionManipulation
+      add_number_to_end: AddNumberToEndExpressionManipulation
       exponentiate_last: ExponentiateLastExpressionManipulation
       multiplication: MultiplicationExpressionManipulation
       addition: AdditionExpressionManipulation

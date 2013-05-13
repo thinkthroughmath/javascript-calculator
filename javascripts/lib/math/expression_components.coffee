@@ -1,7 +1,7 @@
-
 ttm.define "lib/math/expression_components",
-  ["lib/class_mixer"],
-  (class_mixer)->
+  ["lib/class_mixer", 'lib/object_refinement'],
+  (class_mixer, object_refinement)->
+
     class Equation
       initialize: (@expression)->
         @expression ||= Expression.build()
@@ -19,18 +19,22 @@ ttm.define "lib/math/expression_components",
     class_mixer(Equation)
 
 
-    class Expression
+
+    class ExpressionComponent
+      isOperator: -> false
+      isNumber: -> false
+      preceedingSubexpression: -> false
+
+    class Expression extends ExpressionComponent
       @buildWithContent: (content)->
         @build(expression: content)
       @buildError: (content)->
         @build(is_error: true)
 
-      initialize: (@opts)->
+      initialize: (opts)->
         @reset()
-        for k, v of @opts
+        for k, v of opts
           @[k] = v
-
-
       # returns part of an expression
       last: (from_end=0)->
         @expression[@expression.length - 1 - from_end]
@@ -41,33 +45,27 @@ ttm.define "lib/math/expression_components",
         @expression[n]
       reset: ->
         @expression = []
+
       size: ->
         _(@expression).size();
 
-
       set: (expression)->
         @expression = expression
-
-      display: ->
-        ret = _(@expression).map((it)-> it.toDisplay()).join(' ')
-        ret
-
-      cloneAndAppend: (new_last)->
-        throw "cloneAndAppend depricated"
 
       append: (new_last)->
         expr = _.clone(@expression)
         expr.push new_last
         Expression.build(expression: expr)
 
-      cloneAndReplaceLast:  ->
-        throw "cloneAndReplaceLast depricated"
-
       replaceLast: (new_last)->
         expr = _.clone(@expression)
         expr[expr.length - 1] = new_last
         Expression.build(expression: expr)
 
+      withoutLast: ->
+        expr = _.clone(@expression)
+        expr = expr.slice(0, expr.length-1)
+        Expression.build(expression: expr)
 
       isError: -> @is_error
       setError: -> @is_error = true
@@ -75,13 +73,9 @@ ttm.define "lib/math/expression_components",
     class_mixer(Expression)
 
 
-    class ExpressionComponent
-      isOperator: -> false
-      isNumber: -> false
-
     class Number extends ExpressionComponent
-      initialize: (@opts)->
-        @val = @opts.value
+      initialize: (opts)->
+        @val = opts.value
 
       isNumber: -> true
 
@@ -89,53 +83,46 @@ ttm.define "lib/math/expression_components",
         value = @val * -1
         Number.build(value: value)
 
-      toDisplay: ->
-        if @hasDecimal()
-          @valueAtPrecision()
-        else
-          if @future_as_decimal
-            "#{@opts.value}."
-          else
-            "#{@opts.value}"
+      toCalculable: ->
+        parseFloat(@val)
 
       clone: ->
         Number.build(value: @val)
 
-      value: -> @toDisplay()
+      value: -> @val
 
       # privates below
 
-      valueAtPrecision: ->
-        number_decimal_places = 4
-        parts = "#{@val}".split(".")
-        if parts[1].length > number_decimal_places
-          "#{((@val*1).toFixed(number_decimal_places) * 1)}"
-        else
-          "#{@val}"
-
       concatenate: (number)->
-        new_val = if @future_as_decimal
+        new_val =
+          if @future_as_decimal
             "#{@val}.#{number}"
           else
             "#{@val}#{number}"
-        Number.build(value: new_val)
+        Number.build(value: parseFloat(new_val))
 
       setFutureAsDecimal: ->
         @future_as_decimal = true unless @hasDecimal()
 
       hasDecimal: ->
-        /\./.test(@opts.value)
+        /\./.test(@val)
 
     class_mixer(Number)
 
     class Exponentiation extends ExpressionComponent
-      initialize: (@opts={})->
-
+      initialize: (opts={})->
+        @baseval = opts.base
+        @powerval = opts.power
       isOperator: -> true
-      toDisplay: -> '&circ;'
 
-      base: -> @opts.base
-      power: -> @opts.power
+      base: -> @baseval
+      power: -> @powerval
+
+      preceedingSubexpression: -> @base()
+
+      updatePower: (power)->
+        @klass.build base: @base(), power: power
+
     class_mixer(Exponentiation)
 
     class Pi extends ExpressionComponent
@@ -144,7 +131,7 @@ ttm.define "lib/math/expression_components",
     class_mixer(Pi)
 
     class Addition extends ExpressionComponent
-      toDisplay: -> "+"
+
       isOperator: -> true
     class_mixer(Addition)
 
