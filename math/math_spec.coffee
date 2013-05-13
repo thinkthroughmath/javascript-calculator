@@ -1,60 +1,6 @@
 #= require lib/math
 
-expect_value = (expression, value)->
-  expect(expression.display()).toEqual value
-
 describe "Math Library", ->
-  beforeEach ->
-    @math = ttm.require('lib/math')
-
-  describe "Equation", ->
-    it "responds to last", ->
-      eq = @math.equation.build()
-      expect(eq.last()).toEqual null
-
-    it "responds to append", ->
-      eq = @math.equation.build()
-      x = eq.append(@math.components.number.build(value: 10))
-      expect(x.last().value()).toEqual '10'
-
-    it "responds to replaceLast", ->
-      tt = @math.components.number.build(value: '22')
-      eq = @math.equation.build(@math.expression.buildWithContent [tt])
-      x = eq.replaceLast(@math.components.number.build(value: '10'))
-      expect(x.last().value()).toEqual '10'
-
-  describe "Equation", ->
-    it "responds to last", ->
-      eq = @math.equation.build()
-      expect(eq.last()).toEqual null
-
-    it "responds to append", ->
-      eq = @math.equation.build()
-      x = eq.append(@math.components.number.build(value: 10))
-      expect(x.last().value()).toEqual '10'
-
-    it "responds to replaceLast", ->
-      tt = @math.components.number.build(value: '22')
-      eq = @math.equation.build(@math.expression.buildWithContent [tt])
-      x = eq.replaceLast(@math.components.number.build(value: '10'))
-      expect(x.last().value()).toEqual '10'
-
-  describe "Expression", ->
-    it "assigns components from its construtor", ->
-      exp = @math.expression.build(
-        expression: [
-          @math.components.number.build(value: '10')
-        ])
-      expect_value(exp, '10')
-
-  describe "expression components", ->
-    describe "numbers", ->
-      describe "negation", ->
-        it "converts a number to a negative version", ->
-          num = @math.components.number.build(value: 10)
-          neg_num = num.negated()
-          expect(neg_num.value()).toEqual("-10")
-
   describe "buttons", ->
     beforeEach ->
       @btn_lib = ttm.require 'lib/math/buttons'
@@ -77,4 +23,5 @@ describe "Math Library", ->
         f().find('button').first().click()
 
         expect(spy.calls[0].args[0].variable).toEqual @variable
+
 
