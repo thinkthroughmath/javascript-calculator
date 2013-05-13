@@ -36,17 +36,43 @@ describe "expression manipulations", ->
       it "provides the exponentiation its base", ->
         expect(@new_exp.first().base()).toBeAnEqualExpressionTo @exp_builder(10)
 
+    describe "on an expression that currently has an addition at the end", ->
+      it "'drops' the addition", ->
+        exp = @exp_builder(10, '+')
+        new_exp = @manip.exponentiate_last.build().invoke(exp)
+        expect(new_exp).toBeAnEqualExpressionTo @exp_builder('^': [10, null])
 
-    describe "on an expression that currently is an addition", ->
+    describe "on an expression that has a trailing exponent", ->
+      it "ignores the previous exponentiation", ->
+        exp = @exp_builder('^': [10, null])
+        new_exp = @manip.exponentiate_last.build().invoke(exp)
+        expect(new_exp).toBeAnEqualExpressionTo @exp_builder('^': [10, null])
+
+  describe "add number to end of expression", ->
+    describe "when the last element in the expression is a parenthesis", ->
       beforeEach ->
-        @exp = @exp_builder(10)
+        @exp = @exp_builder([1])
 
-      it "", ->
+      it "adds a multiplication symbol between elements", ->
+        exp = @manip.add_number_to_end.build(value: 11).invoke(@exp)
+        other = @exp_builder([1], '*', 11)
+        expect(exp).toBeAnEqualExpressionTo other
+
+
+    describe "when the command to be manipulated has an exponentiation ", ->
+      describe "with no power", ->
+        beforeEach ->
+          @exp = @exp_builder('^': [10, null])
+
+        it "inserts the number into the exponentiation", ->
+          new_exp = @manip.add_number_to_end.build(value: 11).invoke(@exp)
+          expected = @exp_builder({'^': [10,11]})
+          expect(new_exp).toBeAnEqualExpressionTo expected
 
   describe "(moved over from other test file)", ->
     describe "the square command", ->
       beforeEach ->
-        @square = @math.commands.square.build()
+        @square = @manip.square.build()
 
       it_plays_command_role (test)->
         test.square
