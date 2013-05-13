@@ -47,5 +47,6 @@ describe "lib/object_refinement", ->
       it "adds the default refinement to objects that have no refinements", ->
         expect(@xp.refined()).toEqual "default"
 
-
+    it "provides a way to get the unrefined object", ->
+      expect(@ap.unrefined()).toEqual @a
 
