@@ -114,7 +114,7 @@ describe "Calculator Widget features", ->
 
     it "handles another compilcated example", ->
       @handle.press_buttons("pi 2 pi ( 1 + 3 ) ( 1 0 ) =")
-      expect(@handle.output_content()).toMatch /789.57/
+      expect(@handle.output_content()).toMatch /789.5684/
 
     it "multiplies pi", ->
       @handle.press_buttons("5 pi =")
