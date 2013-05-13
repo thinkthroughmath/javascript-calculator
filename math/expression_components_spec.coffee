@@ -30,11 +30,15 @@ describe "Expression Components", ->
       @expect_value(exp, '10')
 
   describe "numbers", ->
-    describe "negation", ->
-      it "converts a number to a negative version", ->
-        num = @comps.number.build(value: 10)
-        neg_num = num.negated()
-        expect(neg_num.value()).toEqual -10
+    beforeEach ->
+      @n = @comps.number.build
+    it "returns a number with a negative version", ->
+      num = @comps.number.build(value: 10)
+      neg_num = num.negated()
+      expect(neg_num.value()).toEqual -10
 
+    it "supports concatenation", ->
+      expect(@n(value: 1).concatenate(0).concatenate(1).value()).toEqual '101'
 
-
+    it "supports concatenation with a decimal", ->
+      expect(@n(value: 1).futureAsDecimal().concatenate(0).concatenate(1).value()).toEqual '1.01'
