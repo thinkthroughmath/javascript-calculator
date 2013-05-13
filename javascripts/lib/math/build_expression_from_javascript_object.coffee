@@ -14,8 +14,11 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         @addition_builder = @opts.addition_builder || components.addition
         @division_builder = @opts.division_builder || components.division
         @exponentiation_builder = @opts.exponentiation_builder || components.exponentiation
+        @blank_builder = @opts.blank_builder || components.blank
+        @multiplication_builder = @opts.multiplication_builder || components.multiplication
 
       process: (object_to_convert)->
+        return @blank_builder.build() unless object_to_convert
         if object_to_convert.length != undefined && typeof object_to_convert != "string"
           exp = @expression_builder.build()
           for x in object_to_convert
@@ -28,6 +31,8 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
               switch object_to_convert
                 when "+" then @addition_builder.build()
                 when "/" then @division_builder.build()
+                when "*" then @multiplication_builder.build()
+
             when "object" then @convertObject(object_to_convert)
 
       convertObject: (object)->

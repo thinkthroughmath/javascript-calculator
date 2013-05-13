@@ -170,8 +170,13 @@ ttm.define "lib/math/expression_components",
 
     class RightParenthesis extends ExpressionComponent
       toDisplay: -> ")"
-
     class_mixer(RightParenthesis)
+
+
+    class Blank extends ExpressionComponent
+      toDisplay: -> ""
+    class_mixer(Blank)
+
     components =
       expression: Expression
       equation: Equation
@@ -184,5 +189,6 @@ ttm.define "lib/math/expression_components",
       left_parenthesis: LeftParenthesis
       right_parenthesis: RightParenthesis
       pi: Pi
+      blank: Blank
 
     return components
