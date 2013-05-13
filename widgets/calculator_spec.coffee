@@ -19,7 +19,7 @@ describe "Calculator Widget features", ->
     expect(@handle.output_content()).toEqual("4")
 
   describe "multiple sequential operator button presses", ->
-    it "automatically uses the last entered command", ->
+    it "automatically uses the last entered operator", ->
       @handle.press_buttons("2 + - * / ^ 1 0 =")
       expect(@handle.output_content()).toEqual("1024")
 
