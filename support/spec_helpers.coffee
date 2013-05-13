@@ -1,6 +1,26 @@
 # a number of jasmine-jquery helpers / extensions
 # it totally used to do this natively, but now doesn't...
 
+
+
+class_mixer = ttm.require('lib/class_mixer')
+
+class RegexpSpecFilter
+  initialize: (@regexp)->
+  forSpec: (spec)->
+    spec.getFullName().toLowerCase().match @regexp
+
+class_mixer RegexpSpecFilter
+
+override_spec_filter_with = RegexpSpecFilter.build(/calc/)
+override_spec_filter_with = false
+
+if override_spec_filter_with
+  env = jasmine.getEnv()
+  env.specFilter = (spec)->
+    override_spec_filter_with.forSpec spec
+
+
 jasmine.getFixtures().findContainer = ->
   $(document.body).find("##{@containerId}")
 
