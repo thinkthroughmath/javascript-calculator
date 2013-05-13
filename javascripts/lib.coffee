@@ -67,7 +67,7 @@ ttm.define "lib/object_refinement", ['lib/class_mixer'], (class_mixer)->
       refinement_class = ->
       refinement_class.prototype = subject
       ret = new refinement_class
-      _.extend(ret, @methods)
+      _.extend(ret, {unrefined: -> subject }, @methods)
       ret
   class_mixer RefinementDeclaration
 
@@ -76,8 +76,7 @@ ttm.define "lib/object_refinement", ['lib/class_mixer'], (class_mixer)->
 
     isApplicable: (subject)->
       subject instanceof @type
-
-
   class_mixer RefinementByType
+
 
   return Refinement
