@@ -76,6 +76,7 @@ ttm.define "lib/math/expression_components",
     class Number extends ExpressionComponent
       initialize: (opts)->
         @val = opts.value
+        @future_as_decimal = opts.future_as_decimal
 
       isNumber: -> true
 
@@ -86,12 +87,16 @@ ttm.define "lib/math/expression_components",
       toCalculable: ->
         parseFloat(@val)
 
-      clone: ->
-        Number.build(value: @val)
+      clone: (opts={})->
+        opts = _.extend({},
+          {
+            value: @val
+            future_as_decimal: @future_as_decimal
+          },
+          opts)
+        Number.build(opts)
 
       value: -> @val
-
-      # privates below
 
       concatenate: (number)->
         new_val =
@@ -99,10 +104,11 @@ ttm.define "lib/math/expression_components",
             "#{@val}.#{number}"
           else
             "#{@val}#{number}"
-        Number.build(value: parseFloat(new_val))
+        Number.build(value: new_val)
 
-      setFutureAsDecimal: ->
-        @future_as_decimal = true unless @hasDecimal()
+      futureAsDecimal: ->
+        future_as_decimal = !@hasDecimal()
+        @clone(future_as_decimal: future_as_decimal)
 
       hasDecimal: ->
         /\./.test(@val)

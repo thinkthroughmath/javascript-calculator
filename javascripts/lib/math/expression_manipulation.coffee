@@ -30,11 +30,11 @@ ttm.define "lib/math/expression_manipulation",
         last = expression.last()
         if last instanceof comps.number
           new_last = last.clone()
-          new_last.setFutureAsDecimal()
+          new_last = new_last.futureAsDecimal()
           expression.replaceLast(new_last)
         else
           new_last = comps.number.build(value: 0)
-          new_last.setFutureAsDecimal()
+          new_last = new_last.futureAsDecimal()
           expression.append(new_last)
     class_mixer(DecimalExpressionManipulation)
 
