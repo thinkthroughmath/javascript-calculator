@@ -14,16 +14,15 @@ it_plays_command_role = (subject, math)->
       unless ret instanceof @math.expression
         throw "The return value was not an instance of the expression builder"
 
-
-expect_value = (expression, value)->
-  expect(expression.display()).toEqual value
-
 describe "expression manipulations", ->
   beforeEach ->
     @math = ttm.require('lib/math')
     @components = ttm.require('lib/math/expression_components')
     @manip = ttm.require('lib/math/expression_manipulation')
     @exp_builder = ttm.require('lib/math/build_expression_from_javascript_object').buildExpression
+    @expression_to_string = ttm.require('lib/math/expression_to_string').toString
+    @expect_value = (expression, value)->
+      expect(@expression_to_string(expression)).toEqual value
 
   describe "exponentiate last element", ->
     describe "on a single number-only expression", ->
@@ -55,71 +54,69 @@ describe "expression manipulations", ->
       it "returns a squared expression", ->
         exp = @exp_builder(10)
         squared = @square.invoke(exp)
-        expect_value(squared, '100')
+        @expect_value(squared, '100')
 
     describe "the decimal command", ->
       it "correctly adds a decimal to the value", ->
         exp = @math.expression.build()
-        exp = @math.commands.number.build(value: 1).invoke(exp)
-        exp = @math.commands.decimal.build().invoke(exp)
-        exp = @math.commands.number.build(value: 1).invoke(exp)
-        expect_value(exp, '1.1')
+        exp = @manip.add_number_to_end.build(value: 1).invoke(exp)
+        exp = @manip.decimal.build().invoke(exp)
+        exp = @manip.add_number_to_end.build(value: 1).invoke(exp)
+        @expect_value(exp, '1.1')
 
     describe "NumberCommand", ->
       it_plays_command_role (test)->
-        test.math.commands.number.build(value: 5)
+        test.manip.add_number_to_end.build(value: 5)
 
     describe "DecimalCommand", ->
       it_plays_command_role (test)->
-        test.math.commands.decimal.build(value: 5)
-
+        test.manip.decimal.build(value: 5)
 
     describe "MultiplicationCommand", ->
       it_plays_command_role (test)->
-        test.math.commands.multiplication.build()
+        test.manip.multiplication.build()
 
       it "adds multiplication to the end of the expression", ->
         exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
-
-        new_exp = @math.commands.multiplication.build().invoke(exp)
+        new_exp = @manip.multiplication.build().invoke(exp)
         expect(new_exp.last() instanceof @math.components.multiplication).toEqual true
 
 
     describe "SubtractionCommand", ->
       it_plays_command_role (test)->
-        test.math.commands.subtraction.build()
+        test.manip.subtraction.build()
 
       it "adds subtraction to the end of the expression", ->
         exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
 
-        new_exp = @math.commands.subtraction.build().invoke(exp)
+        new_exp = @manip.subtraction.build().invoke(exp)
 
         expect(new_exp.last() instanceof @math.components.subtraction).toEqual true
 
     describe "NegationCommand", ->
       it_plays_command_role (test)->
-        test.math.commands.negate_last.build()
+        test.manip.negate_last.build()
 
       it "will negate the last element", ->
         exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
-        new_exp = @math.commands.negate_last.build().invoke(exp)
-        expect(new_exp.last().value()).toEqual "-1"
+        new_exp = @manip.negate_last.build().invoke(exp)
+        expect(new_exp.last().value()).toEqual -1
 
     describe "LeftParenthesisCommand", ->
       beforeEach ->
         exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
-        @new_exp = @math.commands.left_parenthesis.build().invoke(exp)
+        @new_exp = @manip.left_parenthesis.build().invoke(exp)
 
       it_plays_command_role (test)->
-        test.math.commands.left_parenthesis.build()
+        test.manip.left_parenthesis.build()
 
       it "adds a parenthesis to the expression", ->
         expect(@new_exp.last() instanceof @math.components.left_parenthesis).toBeTruthy()
@@ -129,48 +126,47 @@ describe "expression manipulations", ->
 
     describe "RightParenthesisCommand", ->
       it_plays_command_role (test)->
-        test.math.commands.right_parenthesis.build()
+        test.manip.right_parenthesis.build()
 
       it "adds a parenthesis to the expression", ->
         exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
-        new_exp = @math.commands.right_parenthesis.build().invoke(exp)
+        new_exp = @manip.right_parenthesis.build().invoke(exp)
         expect(new_exp.last() instanceof @math.components.right_parenthesis).toBeTruthy()
-
 
     describe "DivisionCommand", ->
       it_plays_command_role (test)->
-        test.math.commands.division.build()
+        test.manip.division.build()
 
       it "adds a division to the expression", ->
         exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
-        new_exp = @math.commands.division.build().invoke(exp)
+        new_exp = @manip.division.build().invoke(exp)
         expect(new_exp.last() instanceof @math.components.division).toBeTruthy()
 
     describe "PiCommand", ->
       it_plays_command_role (test)->
-        test.math.commands.pi.build()
+        test.manip.pi.build()
 
       it "adds a mulitplication and pi to the expression", ->
         exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
-        new_exp = @math.commands.pi.build().invoke(exp)
+        new_exp = @manip.pi.build().invoke(exp)
         expect(new_exp.last() instanceof @math.components.pi).toBeTruthy()
         expect(new_exp.last(1) instanceof @math.components.multiplication).toBeTruthy()
 
     describe "SquareRootCommand", ->
       it_plays_command_role (test)->
-        test.math.commands.square_root.build()
+        test.manip.square_root.build()
 
       it "finds the square root of an expression", ->
         exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '4')
         ])
-        new_exp = @math.commands.square_root.build().invoke(exp)
+        new_exp = @manip.square_root.build().invoke(exp)
         expect(new_exp.last().value()).toEqual '2'
 
 

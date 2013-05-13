@@ -2,11 +2,11 @@
 #= require lib/math/expression_equality
 
 
-
 describe "expression equality", ->
   beforeEach ->
     @comps = ttm.require('lib/math/expression_components')
     @isEqual = ttm.require('lib/math/expression_equality').isEqual
+    @exp_builder = ttm.require('lib/math/build_expression_from_javascript_object').buildExpression
 
   describe "numbers", ->
     it "with different values are different", ->
@@ -25,15 +25,10 @@ describe "expression equality", ->
 
     describe "checking against an expression", ->
       it "matches if the first element in the expression matches", ->
-        expect(
-          @isEqual(
-            @comps.number.build(value: 10),
-            @comps.expression.build(expression: [
+        expect(@comps.number.build(value: 10)).toBeAnEqualExpressionTo(
+          @comps.expression.build(expression: [
               @comps.number.build(value: 10)
-              ])
-          )).toEqual true
-
-
+              ]))
 
   describe "expression comparison", ->
     it "accepts for empty expressions", ->
