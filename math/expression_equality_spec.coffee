@@ -105,8 +105,16 @@ describe "expression equality", ->
           @comps.number.build(value: 1)
         )).toEqual false
     it "accepts against expressions that contain a single blank element", ->
-      throw "TODO fill this in!"
-
+      expect(
+        @isEqual(
+          @comps.blank.build(),
+          @exp_builder(null)
+        )).toEqual true
+      expect(
+        @isEqual(
+          @exp_builder(null),
+          @comps.blank.build()
+        )).toEqual true
 
   describe "exponentiation", ->
     it "accepts exponents with same base and power", ->
