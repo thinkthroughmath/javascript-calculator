@@ -35,6 +35,13 @@ ttm.define 'lib/math/expression_to_string',
         "&times;"
       });
 
+    ref.forType(comps.division, {
+      toString: ->
+        "/"
+      toHTMLString: ->
+        "&divide;"
+      })
+
     ref.forType(comps.subtraction, {
       toString: ->
         "*"
@@ -43,12 +50,20 @@ ttm.define 'lib/math/expression_to_string',
       })
 
     ref.forType(comps.expression, {
-      toString: ->
-        @mapconcatWithMethod('toString')
-      toHTMLString: ->
-        @mapconcatWithMethod('toHTMLString')
+      toString: (wrap_with_parentheses=true)->
+        ret = @mapconcatWithMethod('toString')
+        @maybeWrapWithParentheses(ret, wrap_with_parentheses)
+      toHTMLString: (wrap_with_parentheses=true)->
+        ret = @mapconcatWithMethod('toHTMLString')
+        @maybeWrapWithParentheses(ret, wrap_with_parentheses)
+
       mapconcatWithMethod: (method)->
         _(@expression).map((it)-> ref.refine(it)[method]()).join(' ')
+      maybeWrapWithParentheses: (str, do_wrap)->
+        if do_wrap
+          "( #{str} )"
+        else
+          str
       });
 
     ref.forType(comps.blank, {
@@ -79,13 +94,12 @@ ttm.define 'lib/math/expression_to_string',
           "#{@val}"
       })
 
-
     class ExpressionToString
       initialize: (@expression)->
       toString: ->
-        ref.refine(@expression).toString()
+        ref.refine(@expression).toString(false)
       toHTMLString: ->
-        ref.refine(@expression).toHTMLString()
+        ref.refine(@expression).toHTMLString(false)
 
     class_mixer ExpressionToString
 
