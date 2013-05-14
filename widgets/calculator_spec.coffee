@@ -10,9 +10,14 @@ describe "Calculator Widget features", ->
     @calc = calculator.build_widget(f(), math.expression)
     @handle = ttm.require("calc_handle").build(f(), calculator)
 
+
   it "displays what is entered", ->
     @handle.press_buttons("8")
     expect(@handle.output_content()).toEqual("8")
+
+  it "displays html entities", ->
+    @handle.press_buttons("8 * 8")
+    expect(@handle.output_content()).not.toMatch /\*/
 
   it "performs exponentiation", ->
     @handle.press_buttons("2 ^ 2 =")
