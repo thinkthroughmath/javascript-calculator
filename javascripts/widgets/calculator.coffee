@@ -29,7 +29,7 @@ ttm.define "calculator",
 
       displayValue: ->
         if !@current_expression.isError()
-          val = expression_to_string.toString(@current_expression)
+          val = expression_to_string.toHTMLString(@current_expression)
           if val.length == 0
             '0'
           else
