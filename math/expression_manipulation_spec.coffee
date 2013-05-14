@@ -34,7 +34,7 @@ describe "expression manipulations", ->
         expect(@new_exp.first()).toBeInstanceOf @components.exponentiation
 
       it "provides the exponentiation its base", ->
-        expect(@new_exp.first().base()).toBeAnEqualExpressionTo @exp_builder(10)
+        expect(@new_exp.first().base()).toBeAnEqualExpressionTo @exp_builder(10).first()
 
     describe "on an expression that currently has an addition at the end", ->
       it "'drops' the addition", ->
@@ -84,12 +84,18 @@ describe "expression manipulations", ->
       expect(exp).toBeInstanceOf @math.components.expression
       expect(exp.isOpen()).toEqual true
 
-  describe "closing a sub expression", ->
+  describe "closing a sub expression WIP", ->
     it "takes an open subexpression and closes it", ->
-      @exp = @exp_builder()
-      new_exp = @manip.open_sub_expression.build().invoke(@exp)
-      expected = @exp_builder({open_sub_expression: []})
+      exp = @exp_builder({open_expression: []})
+      new_exp = @manip.close_sub_expression.build().invoke(exp)
+      expect(new_exp).toBeAnEqualExpressionTo @exp_builder([])
+
+    it "correctly handles nested open subexpressions", ->
+      exp = @exp_builder({open_expression: [{open_expression: []}]})
+      new_exp = @manip.close_sub_expression.build().invoke(exp)
+      expected = @exp_builder([[1]])
       expect(new_exp).toBeAnEqualExpressionTo expected
+      #throw "should not accept"
 
   describe "(moved over from other test file)", ->
     describe "the square command", ->
