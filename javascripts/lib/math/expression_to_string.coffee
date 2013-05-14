@@ -2,14 +2,14 @@ ttm.define 'lib/math/expression_to_string',
   ['lib/class_mixer', 'lib/object_refinement', 'lib/math/expression_components'],
   (class_mixer, object_refinement, comps)->
 
-
     ref = object_refinement.build()
-
     ref.forDefault({
       toString: ->
-        '?'
+        #console.log "toString not handled for #{AP @unrefined()}"
+        "?"
       toHTMLString: ->
-        '?'
+        #console.log "toHTMLString not handled for #{AP @unrefined()}"
+        "?"
       })
 
     ref.forType(comps.addition, {
@@ -23,11 +23,24 @@ ttm.define 'lib/math/expression_to_string',
       power: ->
         ref.refine(@unrefined().power()).toString()
       toString: ->
-        "#{@base()}^#{@power()}"
+        "#{@base()} ^ #{@power()}"
       toHTMLString: ->
-        "#{@base()}&circ;#{@power()}"
+        "#{@base()} &circ; #{@power()}"
       });
 
+    ref.forType(comps.multiplication, {
+      toString: ->
+        "*"
+      toHTMLString: ->
+        "&times;"
+      });
+
+    ref.forType(comps.subtraction, {
+      toString: ->
+        "*"
+      toHTMLString: ->
+        "&times;"
+      })
 
     ref.forType(comps.expression, {
       toString: ->
@@ -37,6 +50,11 @@ ttm.define 'lib/math/expression_to_string',
       mapconcatWithMethod: (method)->
         _(@expression).map((it)-> ref.refine(it)[method]()).join(' ')
       });
+
+    ref.forType(comps.blank, {
+      toString: -> ""
+      toHTMLString: -> ""
+      })
 
     ref.forType(comps.number, {
       toString: ->
