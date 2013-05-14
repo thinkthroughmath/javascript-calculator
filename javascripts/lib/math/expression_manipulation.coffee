@@ -100,6 +100,20 @@ ttm.define "lib/math/expression_manipulation",
 
     class_mixer(NegationExpressionManipulation)
 
+    class OpenSubExpressionManipulation
+      invoke: (expression)->
+        _ImplicitMultiplication.build().
+          onNumeric(expression).
+          append(comps.expression.build().open())
+    class_mixer(OpenSubExpressionManipulation)
+
+
+    class CloseOpenSubExpressionManipulation
+      invoke: (expression)->
+        _ImplicitMultiplication.build().
+          onNumeric(expression).
+          append(comps.expression.build().open())
+
     class LeftParenthesisExpressionManipulation
       invoke: (expression)->
         _ImplicitMultiplication.build().
@@ -191,6 +205,7 @@ ttm.define "lib/math/expression_manipulation",
       addition: AdditionExpressionManipulation
       subtraction: SubtractionExpressionManipulation
       negate_last: NegationExpressionManipulation
+      open_sub_expression: OpenSubExpressionManipulation
       left_parenthesis: LeftParenthesisExpressionManipulation
       right_parenthesis: RightParenthesisExpressionManipulation
       division: DivisionExpressionManipulation

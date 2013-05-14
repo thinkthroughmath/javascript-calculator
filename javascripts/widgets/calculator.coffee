@@ -100,7 +100,7 @@ ttm.define "calculator",
         @reset_on_next_number = true
 
       lparenClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.left_parenthesis.build()
+        @updateCurrentExpressionWithCommand @math.commands.open_sub_expression.build()
 
       rparenClick: ->
         @updateCurrentExpressionWithCommand @math.commands.right_parenthesis.build()

@@ -18,8 +18,6 @@ ttm.define "lib/math/expression_components",
         @expression.display()
     class_mixer(Equation)
 
-
-
     class ExpressionComponent
       isOperator: -> false
       isNumber: -> false
@@ -28,21 +26,37 @@ ttm.define "lib/math/expression_components",
     class Expression extends ExpressionComponent
       @buildWithContent: (content)->
         @build(expression: content)
+
       @buildError: (content)->
         @build(is_error: true)
 
-      initialize: (opts)->
-        @reset()
-        for k, v of opts
-          @[k] = v
+      initialize: (opts={})->
+        defaults =
+          is_open: false
+          expression: []
+          is_error: false
+        opts = _.extend({}, defaults, opts)
+        @expression = opts.expression
+        @is_error = opts.is_error
+        @is_open = opts.is_open
+
+      clone: (new_vals={})->
+        data =
+          expression: _.clone(@expression)
+          is_error: @is_error
+          is_open: @is_open
+        @klass.build(_.extend({}, data, new_vals))
+
       # returns part of an expression
       last: (from_end=0)->
         @expression[@expression.length - 1 - from_end]
 
       first: ->
         _.first(@expression)
+
       nth: (n)->
         @expression[n]
+
       reset: ->
         @expression = []
 
@@ -61,15 +75,15 @@ ttm.define "lib/math/expression_components",
         expr = _.clone(@expression)
         expr[expr.length - 1] = new_last
         Expression.build(expression: expr)
-
       withoutLast: ->
         expr = _.clone(@expression)
         expr = expr.slice(0, expr.length-1)
         Expression.build(expression: expr)
-
       isError: -> @is_error
-      setError: -> @is_error = true
 
+      isOpen: -> @is_open
+      open: -> @clone(is_open: true)
+      close: -> @clone(is_open: false)
     class_mixer(Expression)
 
 
@@ -164,7 +178,6 @@ ttm.define "lib/math/expression_components",
     class RightParenthesis extends ExpressionComponent
       toDisplay: -> ")"
     class_mixer(RightParenthesis)
-
 
     class Blank extends ExpressionComponent
       toDisplay: -> ""

@@ -56,12 +56,13 @@ ttm.define 'lib/math/expression_to_string',
       toHTMLString: (wrap_with_parentheses=true)->
         ret = @mapconcatWithMethod('toHTMLString')
         @maybeWrapWithParentheses(ret, wrap_with_parentheses)
-
       mapconcatWithMethod: (method)->
         _(@expression).map((it)-> ref.refine(it)[method]()).join(' ')
       maybeWrapWithParentheses: (str, do_wrap)->
         if do_wrap
-          "( #{str} )"
+          opening_paren = "( "
+          closing_paren = if @isOpen() then "" else " )"
+          "#{opening_paren}#{str}#{closing_paren}"
         else
           str
       });

@@ -21,9 +21,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         return @blank_builder.build() unless object_to_convert
         if object_to_convert.length != undefined && typeof object_to_convert != "string"
           exp = @expression_builder.build()
-          for x in object_to_convert
-            exp = exp.append(@process(x))
-          exp
+          @processExpression(exp, object_to_convert)
         else
           switch typeof(object_to_convert)
             when "number" then @number_builder.build(value: object_to_convert)
@@ -32,12 +30,25 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
                 when "+" then @addition_builder.build()
                 when "/" then @division_builder.build()
                 when "*" then @multiplication_builder.build()
-
             when "object" then @convertObject(object_to_convert)
+
+
+      # privates
+
+      processExpression: (exp, parts)->
+        for x in parts
+          exp = exp.append(@process(x))
+        exp
 
       convertObject: (object)->
         if (it = object['^'])
           @exponentiation_builder.build(base: @process(it[0]), power: @process(it[1]))
+        else if (it = object['open_expression'])
+          exp = @expression_builder.build()
+          @processExpression(exp, it).open()
+
+
+
 
     class_mixer BuildExpressionFromJavascriptObject
 
