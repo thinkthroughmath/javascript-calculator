@@ -12,14 +12,14 @@ class RegexpSpecFilter
 
 class_mixer RegexpSpecFilter
 
-override_spec_filter_with = RegexpSpecFilter.build(/calc/)
+override_spec_filter_with = RegexpSpecFilter.build(/opening/)
+override_spec_filter_with = RegexpSpecFilter.build(/wip/)
 override_spec_filter_with = false
 
 if override_spec_filter_with
   env = jasmine.getEnv()
   env.specFilter = (spec)->
     override_spec_filter_with.forSpec spec
-
 
 jasmine.getFixtures().findContainer = ->
   $(document.body).find("##{@containerId}")

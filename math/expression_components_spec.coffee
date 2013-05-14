@@ -29,6 +29,23 @@ describe "Expression Components", ->
         ])
       @expect_value(exp, '10')
 
+    describe "'openness'/'incompleteness'", ->
+      beforeEach ->
+        @exp = @comps.expression.build()
+
+      it "responds to isOpen with 'false' by default", ->
+        expect(@exp.isOpen()).toEqual false
+
+      it "has an opening method which returns an open expression", ->
+        open_exp = @exp.open()
+        expect(open_exp.isOpen()).toEqual true
+        expect(open_exp).toBeInstanceOf @comps.expression
+
+      it "has a closing method which returns a closed expression", ->
+        exp = @exp.open().close()
+        expect(exp.isOpen()).toEqual false
+        expect(exp).toBeInstanceOf @comps.expression
+
   describe "numbers", ->
     beforeEach ->
       @n = @comps.number.build

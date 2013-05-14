@@ -53,8 +53,12 @@ describe "BuildExpressionFromJavascriptObject", ->
       expect(exponentiation.power()).toBeInstanceOf @components.blank
 
   it "handles parenthetical sub-expressions via arrays", ->
-      expression = @builder []
-      sub_exp = expression.first()
-      expect(expression).toBeInstanceOf @components.expression
-      expect(sub_exp).toBeInstanceOf @components.expression
+    expression = @builder []
+    sub_exp = expression.first()
+    expect(expression).toBeInstanceOf @components.expression
+    expect(sub_exp).toBeInstanceOf @components.expression
 
+  it "uses object syntax with label 'open_expression' to signify an open expression", ->
+    expression = @builder open_expression: [10]
+    sub_exp = expression.first()
+    expect(sub_exp.isOpen()).toEqual(true)

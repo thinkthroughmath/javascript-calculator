@@ -35,3 +35,7 @@ describe "expression to string conversion", ->
       exp = @builder([10, '*',  10])
       expect(@to_string(exp)).toEqual "( 10 * 10 )"
       expect(@to_html_string(exp)).toEqual "( 10 &times; 10 )"
+
+    it "displays open sub-expressions with a single parenthesis", ->
+      exp = @builder({open_expression: [10, '*',  10]})
+      expect(@to_string(exp)).toEqual "( 10 * 10"

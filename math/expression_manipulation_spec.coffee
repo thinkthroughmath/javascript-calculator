@@ -69,6 +69,28 @@ describe "expression manipulations", ->
           expected = @exp_builder({'^': [10,11]})
           expect(new_exp).toBeAnEqualExpressionTo expected
 
+  describe "opening a new sub expression", ->
+    it "adds a sub-expression to the expression", ->
+      @exp = @exp_builder(1, '+')
+      new_exp = @manip.open_sub_expression.build().invoke(@exp)
+      expected = @exp_builder(1, '+', [])
+      expect(new_exp).toBeAnEqualExpressionTo expected
+
+    it "adds an expression that isOpen", ->
+      @exp = @exp_builder(1, '+')
+      new_exp = @manip.open_sub_expression.build().invoke(@exp)
+
+      exp = new_exp.nth(2)
+      expect(exp).toBeInstanceOf @math.components.expression
+      expect(exp.isOpen()).toEqual true
+
+  describe "closing a sub expression", ->
+    it "takes an open subexpression and closes it", ->
+      @exp = @exp_builder()
+      new_exp = @manip.open_sub_expression.build().invoke(@exp)
+      expected = @exp_builder({open_sub_expression: []})
+      expect(new_exp).toBeAnEqualExpressionTo expected
+
   describe "(moved over from other test file)", ->
     describe "the square command", ->
       beforeEach ->
