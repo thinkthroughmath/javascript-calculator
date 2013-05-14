@@ -23,13 +23,6 @@ describe "expression equality", ->
           @comps.number.build(value: 10)
           )).toEqual true
 
-    describe "checking against an expression", ->
-      it "matches if the first element in the expression matches", ->
-        expect(@comps.number.build(value: 10)).toBeAnEqualExpressionTo(
-          @comps.expression.build(expression: [
-              @comps.number.build(value: 10)
-              ]))
-
   describe "expression comparison", ->
     it "accepts for empty expressions", ->
       expect(
@@ -61,26 +54,6 @@ describe "expression equality", ->
             ])
           )).toEqual false
 
-
-    describe "comparing an expression against non-expressions", ->
-      it "accepts if the first part of the sub expression is equal to what it is comparing against ", ->
-        expect(
-          @isEqual(
-            @comps.expression.build(expression: [
-              @comps.number.build(value: 10)
-              ]),
-            @comps.number.build(value: 10)
-          )).toEqual true
-
-      it "rejects if the first part of the sub expression is not equal", ->
-        expect(
-          @isEqual(
-            @comps.expression.build(expression: [
-              @comps.number.build(value: 10)
-              ]),
-            @comps.number.build(value: 11)
-          )).toEqual false
-
   describe "addition", ->
     it "accepts two addition symbols", ->
       expect(
@@ -104,17 +77,6 @@ describe "expression equality", ->
           @comps.blank.build(),
           @comps.number.build(value: 1)
         )).toEqual false
-    it "accepts against expressions that contain a single blank element", ->
-      expect(
-        @isEqual(
-          @comps.blank.build(),
-          @exp_builder(null)
-        )).toEqual true
-      expect(
-        @isEqual(
-          @exp_builder(null),
-          @comps.blank.build()
-        )).toEqual true
 
   describe "exponentiation", ->
     it "accepts exponents with same base and power", ->
