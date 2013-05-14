@@ -3,7 +3,7 @@
 #= require lib/math
 #= require lib/math/buttons
 #= require widgets/ui_elements
-
+#= require lib/math/expression_to_string
 
 
 ttm.define "calculator",
