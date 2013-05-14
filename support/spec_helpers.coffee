@@ -57,3 +57,5 @@ beforeEach ->
   )
 
 
+window.AP = (object)->
+  "#{object.constructor.name}(#{jasmine.pp object})"
