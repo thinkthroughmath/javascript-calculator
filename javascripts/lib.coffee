@@ -1,6 +1,14 @@
 #= require almond_wrapper
 #= require underscore-min
 
+
+window.AP = (object)->
+  str = "#{object.constructor.name}"
+  str += "{ "
+  for key, value of object
+    str += "#{key}: #{value}"
+  str += " }"
+  str
 window.ttm ||= {}
 window.ttm.decorators ||= {}
 window.ttm.lib ||= {}
