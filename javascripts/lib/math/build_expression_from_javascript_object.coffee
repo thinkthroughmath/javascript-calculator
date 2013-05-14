@@ -32,9 +32,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
                 when "*" then @multiplication_builder.build()
             when "object" then @convertObject(object_to_convert)
 
-
       # privates
-
       processExpression: (exp, parts)->
         for x in parts
           exp = exp.append(@process(x))
@@ -46,9 +44,8 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         else if (it = object['open_expression'])
           exp = @expression_builder.build()
           @processExpression(exp, it).open()
-
-
-
+        else
+          throw "Build Exp not recognized"
 
     class_mixer BuildExpressionFromJavascriptObject
 
