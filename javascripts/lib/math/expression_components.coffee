@@ -144,17 +144,17 @@ ttm.define "lib/math/expression_components",
     class Subtraction extends ExpressionComponent
       toDisplay: -> "-"
       isOperator: -> true
+      toString: -> "[object Multiplication]"
     class_mixer(Subtraction)
 
     class Multiplication extends ExpressionComponent
       isOperator: -> true
-
-      toDisplay: -> "&times;"
+      toString: -> "Mult()"
     class_mixer(Multiplication)
 
     class Division extends ExpressionComponent
       isOperator: -> true
-      toDisplay: -> "&divide;"
+      toString: -> "Div()"
     class_mixer(Division)
 
     class LeftParenthesis extends ExpressionComponent
