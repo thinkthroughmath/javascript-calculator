@@ -23,10 +23,15 @@ describe "expression to string conversion", ->
       expect(@to_string(exp)).toEqual "10 ^ "
       expect(@to_html_string(exp)).toEqual "10 &circ; "
 
-  it "displays correctly for multiplication", ->
-    exp = @builder(10, '*',  10)
-    expect(@to_string(exp)).toEqual "10 * 10"
-    expect(@to_html_string(exp)).toEqual "10 &times; 10"
+  describe "multiplication", ->
+    it "", ->
+      exp = @builder(10, '*',  10)
+      expect(@to_string(exp)).toEqual "10 * 10"
+      expect(@to_html_string(exp)).toEqual "10 &times; 10"
 
 
-
+  describe "sub-expressions", ->
+    it "displays them as parentheses", ->
+      exp = @builder([10, '*',  10])
+      expect(@to_string(exp)).toEqual "( 10 * 10 )"
+      expect(@to_html_string(exp)).toEqual "( 10 &times; 10 )"
