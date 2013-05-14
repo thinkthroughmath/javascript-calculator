@@ -31,14 +31,9 @@ ttm.define 'lib/math/expression_equality',
         else
           false
 
-      isNonExpressionEqual: (other)->
-        @size() == 1 && ref.refine(@first()).isEqual(other)
-
       isEqual: (other)->
         if other instanceof comps.expression
           @isExpressionEqual(other)
-        else
-          @isNonExpressionEqual(other)
     })
 
     ref.forType(comps.number, {
