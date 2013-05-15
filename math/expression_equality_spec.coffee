@@ -54,6 +54,16 @@ describe "expression equality", ->
             ])
           )).toEqual false
 
+    it "rejects expressions that are of different lengths", ->
+      expect(
+        @isEqual(
+          @comps.expression.build(expression: []),
+          @comps.expression.build(expression: [
+              @comps.number.build(value: 10)
+            ])
+          )).toEqual false
+
+
   describe "addition", ->
     it "accepts two addition symbols", ->
       expect(
@@ -77,6 +87,7 @@ describe "expression equality", ->
           @comps.blank.build(),
           @comps.number.build(value: 1)
         )).toEqual false
+
 
   describe "exponentiation", ->
     it "accepts exponents with same base and power", ->
