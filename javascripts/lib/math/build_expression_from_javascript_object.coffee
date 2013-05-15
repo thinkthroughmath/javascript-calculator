@@ -19,9 +19,9 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
 
       process: (object_to_convert)->
         return @blank_builder.build() unless object_to_convert
-        if object_to_convert.length != undefined && typeof object_to_convert != "string"
+        if object_to_convert instanceof Array
           exp = @expression_builder.build()
-          @processExpression(exp, object_to_convert)
+          @processExpressionParts(exp, object_to_convert)
         else
           switch typeof(object_to_convert)
             when "number" then @number_builder.build(value: object_to_convert)
@@ -52,6 +52,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
 
     BuildExpressionFromJavascriptObject.buildExpression = ->
       builder = BuildExpressionFromJavascriptObject.build()
-      builder.process(arguments)
+      arguments_as_array = Array.prototype.slice.call(arguments, 0)
+      builder.process(arguments_as_array)
 
     return BuildExpressionFromJavascriptObject
