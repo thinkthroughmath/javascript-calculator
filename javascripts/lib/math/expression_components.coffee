@@ -72,18 +72,26 @@ ttm.define "lib/math/expression_components",
         Expression.build(expression: expr)
 
       replaceLast: (new_last)->
-        expr = _.clone(@expression)
-        expr[expr.length - 1] = new_last
-        Expression.build(expression: expr)
+        @withoutLast().append(new_last)
+
       withoutLast: ->
         expr = _.clone(@expression)
         expr = expr.slice(0, expr.length-1)
         Expression.build(expression: expr)
+
       isError: -> @is_error
 
       isOpen: -> @is_open
       open: -> @clone(is_open: true)
       close: -> @clone(is_open: false)
+
+      toString: ->
+        tf = (it)-> it ? "t" : "f"
+        subexpressions = _(@expression).chain().map((it)->
+          it.toString()).join(", ").value()
+        "Expr(o: #{tf @is_open}, e: #{tf @is_error}, exp: [#{subexpressions}])"
+
+
     class_mixer(Expression)
 
 
@@ -91,6 +99,9 @@ ttm.define "lib/math/expression_components",
       initialize: (opts)->
         @val = opts.value
         @future_as_decimal = opts.future_as_decimal
+
+      toString: ->
+        "N(#{@val})"
 
       isNumber: -> true
 
@@ -151,14 +162,13 @@ ttm.define "lib/math/expression_components",
     class_mixer(Pi)
 
     class Addition extends ExpressionComponent
-
       isOperator: -> true
     class_mixer(Addition)
 
     class Subtraction extends ExpressionComponent
       toDisplay: -> "-"
       isOperator: -> true
-      toString: -> "[object Multiplication]"
+      toString: -> "Sub()"
     class_mixer(Subtraction)
 
     class Multiplication extends ExpressionComponent
