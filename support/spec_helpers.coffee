@@ -50,9 +50,9 @@ beforeEach ->
       @actual && @actual instanceof type
 
     toBeAnEqualExpressionTo: (other)->
-
       @message = ->
-        "Expected #{@actual}.isEqual(#{jasmine.pp other}) to be true"
+        # debugger
+        "Expected #{@actual.toString()} to be equal to #{other.toString()}"
       @actual && other && ttm.require('lib/math/expression_equality').isEqual(@actual, other)
   )
 
