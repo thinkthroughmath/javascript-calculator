@@ -16,7 +16,7 @@ ttm.define "calculator",
         Calculator.build_widget(element)
       element.dialog(dialogClass: "calculator-dialog", title: "Calculator")
       element.dialog("open")
-      element.dialog({ position: { my: 'right bottom', at: 'right bottom', of: window, offset: '0 -57' }})
+      element.dialog({ position: { my: 'right center', at: 'right center', of: window}})
 
     class Calculator
       @build_widget: (element)->
