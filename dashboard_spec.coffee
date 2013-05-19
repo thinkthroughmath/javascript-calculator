@@ -3,8 +3,8 @@
 
 describe "Dashboard - getData()", ->
   beforeEach ->
-    @dashboard = Dashboard
     jasmine.Ajax.useMock()
+    @dashboard = Dashboard
 
   describe "when the report is ready on the first iteration", ->
     it "should return the dashboard data", ->
@@ -22,6 +22,8 @@ describe "Dashboard - getData()", ->
 
       runs ->
         request = mostRecentAjaxRequest()
+        expect(request.url).toBe('/dashboard/queries/REPORT_ID/ready')
+        expect(request.method).toBe('GET')
         request.response { status: 200, responseText: '{"is_ready": true, "data":"DATA" }' }
 
         expect(that.data).toEqual 'DATA'
