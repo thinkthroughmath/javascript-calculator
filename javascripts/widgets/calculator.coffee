@@ -63,7 +63,7 @@ ttm.define "calculator",
           @reset_on_next_number = false
           @updateCurrentExpression @math.expression.build()
 
-        cmd = @math.commands.add_number_to_end.build(value: button_options.value)
+        cmd = @math.commands.append_number.build(value: button_options.value)
         @updateCurrentExpressionWithCommand cmd
 
       exponentClick: ->
@@ -73,10 +73,10 @@ ttm.define "calculator",
         @updateCurrentExpressionWithCommand @math.commands.negate_last.build()
 
       additionClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.addition.build()
+        @updateCurrentExpressionWithCommand @math.commands.append_addition.build()
 
       multiplicationClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.multiplication.build()
+        @updateCurrentExpressionWithCommand @math.commands.append_multiplication.build()
 
       divisionClick: ->
         @updateCurrentExpressionWithCommand @math.commands.division.build()
@@ -107,7 +107,7 @@ ttm.define "calculator",
         @updateCurrentExpressionWithCommand @math.commands.open_sub_expression.build()
 
       rparenClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.right_parenthesis.build()
+        @updateCurrentExpressionWithCommand @math.commands.close_sub_expression.build()
 
       piClick: ->
         @updateCurrentExpressionWithCommand @math.commands.pi.build()

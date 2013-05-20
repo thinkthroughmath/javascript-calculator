@@ -187,16 +187,8 @@ ttm.define "lib/math/expression_components",
       toString: -> "Div()"
     class_mixer(Division)
 
-    class LeftParenthesis extends ExpressionComponent
-      toDisplay: -> "("
-    class_mixer(LeftParenthesis)
-
-    class RightParenthesis extends ExpressionComponent
-      toDisplay: -> ")"
-    class_mixer(RightParenthesis)
-
     class Blank extends ExpressionComponent
-      toDisplay: -> ""
+      toString: -> "Blnk()"
     class_mixer(Blank)
 
     components =
@@ -208,8 +200,6 @@ ttm.define "lib/math/expression_components",
       division: Division
       subtraction: Subtraction
       exponentiation: Exponentiation
-      left_parenthesis: LeftParenthesis
-      right_parenthesis: RightParenthesis
       pi: Pi
       blank: Blank
 
