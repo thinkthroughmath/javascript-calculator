@@ -33,7 +33,8 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
             when "object" then @convertObject(object_to_convert)
 
       # privates
-      processExpression: (exp, parts)->
+      processExpressionParts: (exp, parts)->
+        throw "Expression parts must be an instance of array" unless parts instanceof Array
         for x in parts
           exp = exp.append(@process(x))
         exp
@@ -42,8 +43,12 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         if (it = object['^'])
           @exponentiation_builder.build(base: @process(it[0]), power: @process(it[1]))
         else if (it = object['open_expression'])
-          exp = @expression_builder.build()
-          @processExpression(exp, it).open()
+          processed_exp = @process(it)
+          if it instanceof Array
+            val = processed_exp.open()
+          else
+            val = @expression_builder.build(expression: [processed_exp], is_open: true)
+          val
         else
           throw "Build Exp not recognized"
 
