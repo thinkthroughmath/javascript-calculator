@@ -13,15 +13,16 @@ ttm.define "logger", ['lib/class_mixer'], (class_mixer)->
       current_str = "#{@level}: "
       for arg in @args
         if typeof arg is 'string'
-          current_str += " #{@arg}"
+          current_str += " #{arg}"
         else
           ret.push current_str unless current_str.length == 0
           current_str = ""
           ret.push arg
+      ret.push current_str unless current_str.length == 0
       ret
     display: (force_string)->
       if force_string
-        @createStrMsg()
+        [@createStrMsg()]
       else
         @createArrMsg()
 
@@ -51,7 +52,7 @@ ttm.define "logger", ['lib/class_mixer'], (class_mixer)->
       @entries.push entry
 
       if @log_entry_display_types.indexOf(type) != -1
-        @console_log entry.display(@stringify_objects)
+        @console_log.apply(null, entry.display(@stringify_objects))
 
     typesForLevel: (level)->
       switch level
