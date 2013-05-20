@@ -38,6 +38,9 @@ window.f = (html="")->
   cont
 
 
+window.logger = -> window._logger ||= ttm.require('logger').build(stringify_objects: false)
+logger().setLogLevel('firehose')
+
 beforeEach ->
   @addMatchers(
     toBeInstanceOf: (type)->
@@ -51,7 +54,6 @@ beforeEach ->
 
     toBeAnEqualExpressionTo: (other)->
       @message = ->
-        # debugger
         "Expected #{@actual.toString()} to be equal to #{other.toString()}"
       @actual && other && ttm.require('lib/math/expression_equality').isEqual(@actual, other)
   )
