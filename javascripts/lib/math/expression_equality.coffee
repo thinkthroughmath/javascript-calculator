@@ -1,15 +1,18 @@
 #= require lib
+#= require lib/logger
 #= require lib/math/expression_components
 #= require lib/math/expression_equality
 #= require almond_wrapper
 
 ttm.define 'lib/math/expression_equality',
-  ['lib/class_mixer', 'lib/object_refinement', 'lib/math/expression_components'],
-  (class_mixer, object_refinement, comps)->
+  ['lib/class_mixer', 'lib/object_refinement', 'lib/math/expression_components', 'logger'],
+  (class_mixer, object_refinement, comps, logger_builder)->
     ref = object_refinement.build()
 
+    logger = logger_builder.build(stringify_objects: false)
+
     buildIsEqual = (for_type)->
-      (other)->
+      x = (other)->
         if other instanceof for_type
           if @_simpleIsEqual
             @_simpleIsEqual(other)
@@ -19,15 +22,20 @@ ttm.define 'lib/math/expression_equality',
           ref.refine(other).isEqual @
         else
           false
+      logger.instrument(name: "buildIsEqual function", fn: x)
 
     ref.forType(comps.expression, {
       isExpressionEqual: (other)->
-        if _(@expression).size() == _(@expression).size()
-          contains_unequal =
-            _.chain(@expression).map((element, i)->
-              ref.refine(element).isEqual(other.nth(i))
-            ).contains(false).value()
-          !contains_unequal
+        logger.info("isExpressionEqual", @unrefined(), other)
+        if @is_error == other.is_error && @is_open == other.is_open
+          if _(@expression).size() == _(other.expression).size()
+            contains_unequal =
+              _.chain(@expression).map((element, i)->
+                ref.refine(element).isEqual(other.nth(i))
+              ).contains(false).value()
+            !contains_unequal
+          else
+            false
         else
           false
 
@@ -39,7 +47,11 @@ ttm.define 'lib/math/expression_equality',
     ref.forType(comps.number, {
       isEqual: (buildIsEqual(comps.number)),
       _simpleIsEqual: (other)->
-        @value() == other.value()
+        # this is bad; TODO fix
+        # The real "todo" here is that
+        # numbers are internally of questionable state.
+        # Im not entirely sure how to state that number expresison components are equal
+        "#{@value()}" == "#{other.value()}"
     })
 
     ref.forType(comps.addition, {

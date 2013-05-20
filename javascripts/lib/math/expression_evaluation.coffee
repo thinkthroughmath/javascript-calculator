@@ -1,7 +1,10 @@
-ttm.define "lib/math/expression_evaluation",
-  ['lib/class_mixer', 'lib/object_refinement'],
-  (class_mixer, object_refinement)->
+#= require lib/logger
 
+ttm.define "lib/math/expression_evaluation",
+  ['lib/class_mixer', 'lib/object_refinement', 'logger'],
+  (class_mixer, object_refinement, logger_builder)->
+
+    logger = logger_builder.build(stringify_objects: false)
 
     MalformedExpressionError = (message)->
       @name = 'MalformedExpressionError'
@@ -27,11 +30,6 @@ ttm.define "lib/math/expression_evaluation",
             throw new MalformedExpressionError("Invalid Expression")
       });
 
-    refinement.forType(comps.expression,
-      {
-        eval: (evaluation, pass)->
-          @first()
-      });
 
     refinement.forType(comps.pi,
       {
@@ -52,8 +50,6 @@ ttm.define "lib/math/expression_evaluation",
           else
             throw new MalformedExpressionError("Invalid Expression")
       });
-
-
 
     refinement.forType(comps.subtraction,
       {
@@ -99,51 +95,41 @@ ttm.define "lib/math/expression_evaluation",
 
       });
 
-    refinement.forType(comps.left_parenthesis,
+    refinement.forType(comps.expression,
       {
-        eval: (expression, pass)->
-          return if pass != "parenthetical"
-          subexpr = expression.subExpression()
-          evaluated = subexpr.eval()
-          subexpr.removeFromExpression()
-          evaluated
-      });
-
-
-    refinement.forType(comps.right_parenthesis,
-      {
-        eval: (expression, pass)->
-          throw new MalformedExpressionError("Parentheses mismatch")
+        eval: ->
+          expr = @expression
+          logger.info("before parenthetical", expr)
+          expr = ExpressionEvaluationPass.build(expr).perform("parenthetical")
+          logger.info("before exponentiation", expr)
+          expr = ExpressionEvaluationPass.build(expr).perform("exponentiation")
+          logger.info("before multiplication", expr)
+          expr = ExpressionEvaluationPass.build(expr).perform("multiplication")
+          logger.info("before addition", expr)
+          expr = ExpressionEvaluationPass.build(expr).perform("addition")
+          logger.info("before returning", expr)
+          _(expr).first()
       });
 
     class ExpressionEvaluation
       initialize: (@expression, @opts={})->
         @comps = @opts.comps || comps
 
-      _calcResultingExpression: ->
-        expr = @expression.expression
-        expr = ExpressionEvaluationPass.build(expr).perform("parenthetical")
-        expr = ExpressionEvaluationPass.build(expr).perform("exponentiation")
-        expr = ExpressionEvaluationPass.build(expr).perform("multiplication")
-        expr = ExpressionEvaluationPass.build(expr).perform("addition")
-        eval_result = _(expr).first()
-        new_content = if eval_result then [eval_result] else []
-        new_exp = @comps.expression.buildWithContent new_content
-        new_exp
-
       resultingExpression: ->
+        results = false
         try
-          evaled = @_calcResultingExpression()
-          evaled
+          results = @evaluate()
         catch e
-          if(e instanceof MalformedExpressionError)
-            @comps.expression.buildError()
-          else
-            throw e
+          throw e unless e instanceof MalformedExpressionError
 
-      resultingValue: ->
-        item = @resultingExpression().first()
-        if item then item.value() else @comps.number.build value: '0'
+        if results
+          @comps.expression.build(expression: [results])
+        else
+          @comps.expression.buildError()
+
+      evaluate: ()->
+        refined = refinement.refine(@expression)
+        results = refined.eval()
 
     class_mixer(ExpressionEvaluation)
 
@@ -182,42 +168,5 @@ ttm.define "lib/math/expression_evaluation",
         @handledPrevious()
         @expression.splice(@expression_index + 1, 1)
 
-      subExpression: ->
-        new SubExpressionEvaluation(@expression, @expression_index + 1)
-
     class_mixer(ExpressionEvaluationPass)
-
-    # TODO rewrite this in a functional style
-    class SubExpressionEvaluation
-      constructor: (@expression, @at)->
-        @subexpression = @findSubexpression()
-
-      findSubexpression: ->
-        @i = @at
-        found = false
-        rparens_to_find = 1
-        subexpression_parts = []
-        while @i < @expression.length
-          current = @expression[@i]
-          if current instanceof comps.left_parenthesis
-            rparens_to_find += 1 # we encountered another subexpression
-          else if current instanceof comps.right_parenthesis
-            rparens_to_find -= 1
-            if rparens_to_find == 0
-              found = true
-              break
-          else
-            subexpression_parts.push(current)
-          @i += 1
-        if not found
-          throw "There was a problem with your parentheses"
-        else
-          comps.expression.buildWithContent subexpression_parts
-
-      removeFromExpression: ->
-        removed = @expression.splice(@at, @i-@at+1)
-
-      eval: ->
-        ExpressionEvaluation.build(@subexpression).resultingExpression()
-
     return ExpressionEvaluation

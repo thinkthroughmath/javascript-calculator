@@ -4,12 +4,15 @@
 #= require lib/math/buttons
 #= require widgets/ui_elements
 #= require lib/math/expression_to_string
+#= require lib/logger
 
 
 ttm.define "calculator",
-  ["lib/class_mixer", "lib/math", "widgets/ui_elements", "lib/math/buttons", 'lib/math/expression_to_string'],
+  ["lib/class_mixer", "lib/math", "widgets/ui_elements", "lib/math/buttons", 'lib/math/expression_to_string', 'logger'],
   (class_mixer, math, ui_elements, math_buttons,
-    expression_to_string)->
+    expression_to_string, logger_builder)->
+
+    logger = logger_builder.build()
 
     open_widget_dialog = (element)->
       if element.empty()
@@ -20,9 +23,9 @@ ttm.define "calculator",
 
     class Calculator
       @build_widget: (element)->
-        Calculator.build(element, math)
+        Calculator.build(element, math, logger)
 
-      initialize: (@element, @math)->
+      initialize: (@element, @math, @logger)->
         @view = CalculatorView.build(@, @element, @math)
         @current_expression = @math.expression.build()
         @expression_history = []
@@ -39,6 +42,7 @@ ttm.define "calculator",
 
       display: ->
         to_disp = @displayValue()
+        logger.info("calculator display #{to_disp}")
         @view.display(to_disp)
 
       errorMsg: -> "Error"

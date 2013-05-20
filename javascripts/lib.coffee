@@ -1,6 +1,6 @@
 #= require almond_wrapper
 #= require underscore-min
-
+#= require lib/logger
 
 window.AP = (object)->
   str = "#{object.constructor.name}"
@@ -20,7 +20,6 @@ ttm.ClassMixer = (klass)->
     it
   klass.prototype.klass = klass
   klass
-
 
 ttm.define "lib/class_mixer", ->
   return ttm.ClassMixer
