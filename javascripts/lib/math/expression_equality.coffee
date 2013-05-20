@@ -12,7 +12,7 @@ ttm.define 'lib/math/expression_equality',
     logger = logger_builder.build(stringify_objects: false)
 
     buildIsEqual = (for_type)->
-      x = (other)->
+      isEqualFunction = (other)->
         if other instanceof for_type
           if @_simpleIsEqual
             @_simpleIsEqual(other)
@@ -22,7 +22,8 @@ ttm.define 'lib/math/expression_equality',
           ref.refine(other).isEqual @
         else
           false
-      logger.instrument(name: "buildIsEqual function", fn: x)
+      logger.instrument(name: "buildIsEqual function", fn: isEqualFunction)
+
 
     ref.forType(comps.expression, {
       isExpressionEqual: (other)->
@@ -73,6 +74,7 @@ ttm.define 'lib/math/expression_equality',
         ref.refine(@base()).isEqual(other.base()) and
           ref.refine(@power()).isEqual(other.power())
       })
+
 
     ref.forDefault({
       isEqual: -> console.log(@); throw "NOT IMPLEMENTED"
