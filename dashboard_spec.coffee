@@ -1,10 +1,10 @@
-#= require dashboard
+#= require lib/dashboard_poller
 #= require mock-ajax
 
 describe "Dashboard - getData()", ->
   beforeEach ->
     jasmine.Ajax.useMock()
-    @dashboard = Dashboard
+    @dashboard = ttm.lib.DashboardPoller.build()
 
   describe "when the report is ready on the first iteration", ->
     it "should return the dashboard data", ->
