@@ -58,7 +58,22 @@ describe "BuildExpressionFromJavascriptObject", ->
     expect(expression).toBeInstanceOf @components.expression
     expect(sub_exp).toBeInstanceOf @components.expression
 
-  it "uses object syntax with label 'open_expression' to signify an open expression", ->
-    expression = @builder open_expression: [10]
-    sub_exp = expression.first()
-    expect(sub_exp.isOpen()).toEqual(true)
+  describe "open expressions", ->
+    it "uses object syntax with label 'open_expression' to signify an open expression", ->
+      expression = @builder open_expression: [10]
+      sub_exp = expression.first()
+      expect(sub_exp.isOpen()).toEqual(true)
+
+    it "correctly constructs nested open expressions", ->
+      expression = @builder open_expression: open_expression: [10]
+
+      first_open = expression.first()
+      expect(first_open.isOpen()).toEqual(true)
+
+      second_open = first_open.first()
+      expect(second_open.isOpen()).toEqual(true)
+
+      ten = second_open.first()
+      expect(ten.value()).toEqual 10
+
+
