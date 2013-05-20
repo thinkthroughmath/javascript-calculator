@@ -155,14 +155,19 @@ ttm.define "lib/math/expression_components",
       updatePower: (power)->
         @klass.build base: @base(), power: power
 
+      toString: ->
+        "Exp(b: #{@base().toString()}, p: #{@power().toString()})"
+
+
     class_mixer(Exponentiation)
 
     class Pi extends ExpressionComponent
       toDisplay: -> "&pi;"
-
+      toString: -> "PI()"
     class_mixer(Pi)
 
     class Addition extends ExpressionComponent
+      toDisplay: -> "Add()"
       isOperator: -> true
     class_mixer(Addition)
 
