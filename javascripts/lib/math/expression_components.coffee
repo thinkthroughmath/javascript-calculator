@@ -22,6 +22,7 @@ ttm.define "lib/math/expression_components",
       isOperator: -> false
       isNumber: -> false
       preceedingSubexpression: -> false
+      clone: -> @ # by default, cloning does nothing
 
     class Expression extends ExpressionComponent
       @buildWithContent: (content)->
@@ -42,7 +43,7 @@ ttm.define "lib/math/expression_components",
 
       clone: (new_vals={})->
         data =
-          expression: _.clone(@expression)
+          expression: _.map(@expression, (it)-> it.clone())
           is_error: @is_error
           is_open: @is_open
         @klass.build(_.extend({}, data, new_vals))
@@ -69,7 +70,7 @@ ttm.define "lib/math/expression_components",
       append: (new_last)->
         expr = _.clone(@expression)
         expr.push new_last
-        Expression.build(expression: expr)
+        @clone(expression: expr)
 
       replaceLast: (new_last)->
         @withoutLast().append(new_last)
@@ -77,7 +78,7 @@ ttm.define "lib/math/expression_components",
       withoutLast: ->
         expr = _.clone(@expression)
         expr = expr.slice(0, expr.length-1)
-        Expression.build(expression: expr)
+        @clone(expression: expr)
 
       isError: -> @is_error
 
