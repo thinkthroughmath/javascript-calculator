@@ -41,8 +41,8 @@ ttm.define "lib/math/expression_manipulation",
           expression.append(new_last)
 
       invoke: (expression)->
-        _FinalOpenSubExpressionApplcation.build((expr)=> @onFinalExpression(expr)).
-          invokeOrDefault(expression)
+        _FinalOpenSubExpressionApplication.build(expression).
+          invokeOrDefault((expr)=> @onFinalExpression(expr))
 
     class_mixer(AppendDecimal)
 
@@ -68,37 +68,59 @@ ttm.define "lib/math/expression_manipulation",
           expression.append(number_with_this_val)
 
       invoke: (expression)->
-        _FinalOpenSubExpressionApplcation.build((expr)=> @onFinalExpression(expr)).
-          invokeOrDefault(expression)
+        _FinalOpenSubExpressionApplication.build(expression).
+          invokeOrDefault((expr)=> @onFinalExpression(expr))
 
     class_mixer(AppendNumber)
 
     class ExponentiateLast
       initialize: (@opts={})->
+
+      baseExpression: (base)->
+        comps.expression.build(expression: [base])
+
+      powerExpression: ()->
+        power = if @opts.power
+          comps.expression.build expression: [
+            comps.number.build(value: @opts.power)
+          ]
+        else
+          comps.expression.build expression: []
+
+        if @opts.power_closed
+          power
+        else
+          power.open()
+
       invoke: (expression)->
         last = expression.last()
 
         # in the first case, our base case comes
         # from the contents of a previous part of the expression
         if it = last.preceedingSubexpression()
-          base = it
+          base = @baseExpression(it)
 
         # if the previous element is an operator but has no sub-expression,
         # then we are dropping the operator and use the number prior to the operator
         else if last.isOperator()
           expression = expression.withoutLast() #remove useless operator
-          base = expression.last()
+          base = @baseExpression(expression.last())
 
         # otherwise, our base is just the number before
         else
-          base = expression.last()
+          base = @baseExpression(expression.last())
 
-        power = if @opts.power then comps.number.build(value: @opts.power) else comps.blank.build()
+
+        power = @powerExpression()
+
+
 
         expression.replaceLast(
           comps.exponentiation.build(base: base, power: power))
 
     class_mixer(ExponentiateLast)
+
+    class SquareLast
 
 
     class AppendMultiplication
@@ -106,36 +128,34 @@ ttm.define "lib/math/expression_manipulation",
         _OverrideIfOperatorOrAppend.build(expression).with comps.multiplication.build()
 
       invoke: (expression)->
-        _FinalOpenSubExpressionApplcation.build((expr)=> @appendAction(expr)).
-          invokeOrDefault(expression)
+        _FinalOpenSubExpressionApplication.build(expression).
+          invokeOrDefault((expr)=> @appendAction(expr))
 
     class_mixer(AppendMultiplication)
 
 
     class AppendDivision
       invoke: (expression)->
-        _FinalOpenSubExpressionApplcation.build((expr)=>
-          _OverrideIfOperatorOrAppend.build(expr).with comps.division.build()).
-          invokeOrDefault(expression)
+        _FinalOpenSubExpressionApplication.build(expression).
+          invokeOrDefault((expr)=>
+            _OverrideIfOperatorOrAppend.build(expr).with comps.division.build())
     class_mixer(AppendDivision)
 
 
     class AppendAddition
       invoke: (expression)->
-        _FinalOpenSubExpressionApplcation.build(
-          (expression)->
-            _OverrideIfOperatorOrAppend.build(expression).with comps.addition.build()
-          ).invokeOrDefault(expression)
+        _FinalOpenSubExpressionApplication.build(expression).
+          invokeOrDefault((expression)->
+            _OverrideIfOperatorOrAppend.build(expression).with comps.addition.build())
 
     class_mixer(AppendAddition)
 
 
     class AppendSubtraction
       invoke: (expression)->
-        _FinalOpenSubExpressionApplcation.build(
-          (expression)->
-            _OverrideIfOperatorOrAppend.build(expression).with comps.subtraction.build()
-          ).invokeOrDefault(expression)
+        _FinalOpenSubExpressionApplication.build(expression).
+          invokeOrDefault((expression)->
+            _OverrideIfOperatorOrAppend.build(expression).with comps.subtraction.build())
 
     class_mixer(AppendSubtraction)
 
@@ -149,21 +169,27 @@ ttm.define "lib/math/expression_manipulation",
 
     class_mixer(Negation)
 
-    class OpenSub
-      invoke: (expression)->
+    class OpenSubExpression
+      action: (expression)->
         _ImplicitMultiplication.build().
           onNumeric(expression).
           append(comps.expression.build().open())
-    class_mixer(OpenSub)
 
-    class _FinalOpenSubExpressionApplcation
-      initialize: (@action)->
+      invoke: (expression)->
+        _FinalOpenSubExpressionApplication.build(expression).
+          invokeOrDefault((expression)=> @action(expression))
+
+
+    class_mixer(OpenSubExpression)
+
+    class _FinalOpenSubExpressionApplication
+      initialize: (@expr)->
         @found = false
 
-      invoke: (expr)->
+      findAndPerformAction: (expr)->
         subexp = @nextSubExpression(expr)
         if subexp
-          subexp = @invoke(subexp)
+          subexp = @findAndPerformAction(subexp)
         if @found # the child element below me was updated
           @updateWithNewSubexp(expr, subexp)
         else if expr instanceof comps.expression and expr.isOpen()
@@ -171,6 +197,9 @@ ttm.define "lib/math/expression_manipulation",
           @action expr
         else # not closable, not handled, return
           expr
+
+      invoke: (@action)->
+        @findAndPerformAction(@expr)
 
       wasFound: -> @found
 
@@ -187,33 +216,35 @@ ttm.define "lib/math/expression_manipulation",
           expr.power()
         else false
 
-      invokeOrDefault: (expr)->
-        result = @invoke(expr)
+      invokeOrDefault: (@action)->
+        result = @findAndPerformAction(@expr)
         if @wasFound()
           result
         else
-          @action(expr)
+          @action(@expr)
 
-    class_mixer(_FinalOpenSubExpressionApplcation)
+    class_mixer(_FinalOpenSubExpressionApplication)
 
 
-    class CloseSub
+    class CloseSubExpression
       initialize: ->
         @handled = false
       invoke: (expression)->
-        logger.info("CloseSub#invoke")
-        _FinalOpenSubExpressionApplcation.build(
-          (expression)-> expression.close()).invoke(expression)
+        logger.info("CloseSubExpression#invoke")
+        _FinalOpenSubExpressionApplication.build(expression).
+          invoke((expression)-> expression.close())
+    class_mixer(CloseSubExpression)
 
-    class_mixer(CloseSub)
 
-    class Pi
+
+    # TODO this needs to ahve final open sub expression application
+    class AppendPi
       invoke: (expression)->
         _ImplicitMultiplication.build().
           onNumeric(expression).
           append(comps.pi.build())
 
-    class_mixer(Pi)
+    class_mixer(AppendPi)
 
     class SquareRoot extends ExpressionManipulation
       invoke: (expression)->
@@ -274,10 +305,10 @@ ttm.define "lib/math/expression_manipulation",
       append_addition: AppendAddition
       append_subtraction: AppendSubtraction
       negate_last: Negation
-      open_sub_expression: OpenSub
-      close_sub_expression: CloseSub
+      open_sub_expression: OpenSubExpression
+      close_sub_expression: CloseSubExpression
       append_division: AppendDivision
-      pi: Pi
+      pi: AppendPi
       square_root: SquareRoot
 
     return exports
