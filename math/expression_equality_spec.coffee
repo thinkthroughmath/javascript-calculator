@@ -23,6 +23,7 @@ describe "expression equality", ->
           @comps.number.build(value: 10)
           )).toEqual true
 
+
   describe "expression comparison", ->
     it "accepts for empty expressions", ->
       expect(
@@ -105,6 +106,35 @@ describe "expression equality", ->
       expected = @exp_builder('^': [10, 22])
       expect(new_exp).not.toBeAnEqualExpressionTo(expected)
 
+  describe "multiplication", ->
+    it "accepts two multiplication symbols", ->
+      expect(
+        @isEqual(
+          @comps.multiplication.build(),
+          @comps.multiplication.build()
+        )).toEqual true
 
+  describe "division", ->
+    it "accepts two division symbols", ->
+      expect(
+        @isEqual(
+          @comps.division.build(),
+          @comps.division.build()
+        )).toEqual true
 
+  describe "pi", ->
+    it "accepts two pi symbols", ->
+      expect(
+        @isEqual(
+          @comps.pi.build(),
+          @comps.pi.build()
+        )).toEqual true
+
+  describe "subtraction", ->
+    it "accepts two subtraction symbols", ->
+      expect(
+        @isEqual(
+          @comps.subtraction.build(),
+          @comps.subtraction.build()
+        )).toEqual true
 
