@@ -162,17 +162,15 @@ ttm.define "lib/math/expression_components",
     class_mixer(Exponentiation)
 
     class Pi extends ExpressionComponent
-      toDisplay: -> "&pi;"
       toString: -> "PI()"
     class_mixer(Pi)
 
     class Addition extends ExpressionComponent
-      toDisplay: -> "Add()"
+      toString: -> "Add()"
       isOperator: -> true
     class_mixer(Addition)
 
     class Subtraction extends ExpressionComponent
-      toDisplay: -> "-"
       isOperator: -> true
       toString: -> "Sub()"
     class_mixer(Subtraction)
