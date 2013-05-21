@@ -1,8 +1,9 @@
 #= require almond_wrapper
 #= require lib
 #= require jquery
+#= require widgets/mathml
 
-ttm.define 'widgets/ui_elements', ['lib/class_mixer'], (class_mixer)->
+ttm.define 'widgets/ui_elements', ['lib/class_mixer', 'widgets/mathml'], (class_mixer, mathml_renderer)->
   class Button
     initialize: (@opts={})->
     render: (opts={})->
@@ -38,9 +39,6 @@ ttm.define 'widgets/ui_elements', ['lib/class_mixer'], (class_mixer)->
       opts.element.append @figure
       @figure
 
-    default: ->
-      @wrappedMathTag("")
-
     wrappedMathTag: (content)->
       """
       <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
@@ -49,10 +47,7 @@ ttm.define 'widgets/ui_elements', ['lib/class_mixer'], (class_mixer)->
       """
 
     update: (mathml)->
-      mathml_in_tag = @wrappedMathTag(mathml)
-      elem = MathJax.Hub.getAllJax(@figure[0])[0]
-      if elem
-        MathJax.Hub.Queue(["Text", elem, mathml_in_tag])
+      @mathml_renderer.render(@figure, @wrappedMathTag(mathml))
 
   class_mixer(MathMLDisplay)
 
