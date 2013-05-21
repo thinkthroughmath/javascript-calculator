@@ -13,6 +13,13 @@ describe "BuildExpressionFromJavascriptObject", ->
     expression = @builder(10)
     expect(expression.first().value()).toEqual 10
 
+  it "handles numbers that have trailing decimals", ->
+    expression = @builder("0.")
+    x = expression.first()
+    expect(x.value()).toEqual "0"
+
+    expect(x.future_as_decimal).toEqual true
+
   it "handles addition", ->
     expression = @builder(10, '+', 11)
     expect(expression.nth(0)).toBeInstanceOf @components.number
