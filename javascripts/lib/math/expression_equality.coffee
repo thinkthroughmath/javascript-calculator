@@ -25,6 +25,35 @@ ttm.define 'lib/math/expression_equality',
       logger.instrument(name: "buildIsEqual function", fn: isEqualFunction)
 
 
+    # Addition
+    ref.forType(comps.addition, {
+      isEqual: (buildIsEqual(comps.addition))
+      })
+
+
+    # Blank
+    ref.forType(comps.blank, {
+      isEqual: (buildIsEqual(comps.blank))
+      })
+
+
+    # Division
+    ref.forType(comps.division, {
+      isEqual: (buildIsEqual(comps.division))
+      })
+
+
+
+    # Exponentiation
+    ref.forType(comps.exponentiation, {
+      isEqual: (buildIsEqual(comps.exponentiation)),
+      _simpleIsEqual: (other)->
+        ref.refine(@base()).isEqual(other.base()) and
+          ref.refine(@power()).isEqual(other.power())
+      })
+
+
+    # Expression
     ref.forType(comps.expression, {
       isExpressionEqual: (other)->
         logger.info("isExpressionEqual", @unrefined(), other)
@@ -45,6 +74,15 @@ ttm.define 'lib/math/expression_equality',
           @isExpressionEqual(other)
     })
 
+
+
+    # Multiplication
+    ref.forType(comps.multiplication, {
+      isEqual: (buildIsEqual(comps.multiplication))
+      })
+
+
+    # Number
     ref.forType(comps.number, {
       isEqual: (buildIsEqual(comps.number)),
       _simpleIsEqual: (other)->
@@ -79,7 +117,15 @@ ttm.define 'lib/math/expression_equality',
     ref.forDefault({
       isEqual: -> console.log(@); throw "NOT IMPLEMENTED"
     })
+    # Number
+    ref.forType(comps.pi, {
+      isEqual: (buildIsEqual(comps.pi))
+    })
 
+    # Subtraction
+    ref.forType(comps.subtraction, {
+      isEqual: (buildIsEqual(comps.subtraction))
+    })
 
     class ExpressionEquality
       initialize: (@first)->
