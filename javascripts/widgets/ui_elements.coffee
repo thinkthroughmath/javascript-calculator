@@ -42,10 +42,8 @@ ttm.define 'widgets/ui_elements', ['lib/class_mixer', 'widgets/mathml'], (class_
       @figure
 
     update: (mathml)->
-      #@math_element.html(mathml)
-
+      @math_element.html(mathml)
       @mathml_renderer.render(@math_element[0])
-
 
   class_mixer(MathMLDisplay)
 
