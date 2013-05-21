@@ -12,6 +12,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         @expression_builder = @opts.expression_builder || components.expression
         @number_builder = @opts.number_builder || components.number
         @addition_builder = @opts.addition_builder || components.addition
+        @subtraction_builder = @opts.subtraction_builder || components.subtraction
         @division_builder = @opts.division_builder || components.division
         @exponentiation_builder = @opts.exponentiation_builder || components.exponentiation
         @blank_builder = @opts.blank_builder || components.blank
@@ -26,11 +27,27 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           switch typeof(object_to_convert)
             when "number" then @number_builder.build(value: object_to_convert)
             when "string"
-              switch object_to_convert
-                when "+" then @addition_builder.build()
-                when "/" then @division_builder.build()
-                when "*" then @multiplication_builder.build()
+              obj = object_to_convert
+              switch
+                when obj == "+" then @addition_builder.build()
+                when obj == "-" then @subtraction_builder.build()
+                when obj == "/" then @division_builder.build()
+                when obj == "*" then @multiplication_builder.build()
+                when @matchesNumberRegexp(obj)
+                  @numberFromString(obj)
+                else throw "STRING NOT IMPLEMENTED"
             when "object" then @convertObject(object_to_convert)
+
+      matchesNumberRegexp: (str)->
+        str.search(/\d+/) != -1
+
+      numberFromString: (str)->
+        if parsed = str.match /(\d+)(\.)(\d+)/
+          @number_builder.build(value: str)
+        else if parsed = str.match /(\d+)(\.)/
+          @number_builder.build(value: parsed[1], future_as_decimal: true)
+        else if parsed = str.match /(\d+)/
+          @number_builder.build(value: parsed[1])
 
       # privates
       processExpressionParts: (exp, parts)->
