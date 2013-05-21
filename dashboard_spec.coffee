@@ -10,7 +10,7 @@ describe "Dashboard - getData()", ->
     it "should return the dashboard data", ->
       that = this
 
-      @dashboard.getData 'lesson_leaders', {}, (data) ->
+      @dashboard.getData { type: 'lesson_leaders' }, (data) ->
         that.data = data
 
       request = mostRecentAjaxRequest()
