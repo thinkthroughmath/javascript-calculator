@@ -115,6 +115,23 @@ describe "expression manipulations", ->
       expect(exp).toBeInstanceOf @math.components.expression
       expect(exp.isOpen()).toEqual true
 
+    describe "when adding to a sub-expression", ->
+      it "should add everything correctly", ->
+        exp = @exp_builder()
+        exp = @manip.append_number.build(value: 6).invoke(exp)
+        exp = @manip.append_addition.build().invoke(exp)
+
+        exp = @manip.open_sub_expression.build().invoke(exp)
+        exp = @manip.append_number.build(value: 6).invoke(exp)
+        exp = @manip.append_addition.build().invoke(exp)
+
+        exp = @manip.open_sub_expression.build().invoke(exp)
+        exp = @manip.close_sub_expression.build().invoke(exp)
+        exp = @manip.close_sub_expression.build().invoke(exp)
+        expected = @exp_builder(6, '+', [6, '+', []])
+
+        expect(exp).toBeAnEqualExpressionTo expected
+
   describe "closing a sub expression ", ->
     it "takes an open subexpression and closes it", ->
       exp = @exp_builder({open_expression: []})
