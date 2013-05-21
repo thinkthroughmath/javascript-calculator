@@ -79,13 +79,13 @@ ttm.define "calculator",
         @updateCurrentExpressionWithCommand @math.commands.append_multiplication.build()
 
       divisionClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.division.build()
+        @updateCurrentExpressionWithCommand @math.commands.append_division.build()
 
       subtractionClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.subtraction.build()
+        @updateCurrentExpressionWithCommand @math.commands.append_subtraction.build()
 
       decimalClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.decimal.build()
+        @updateCurrentExpressionWithCommand @math.commands.append_decimal.build()
 
       # command actions
       clearClick: ->
