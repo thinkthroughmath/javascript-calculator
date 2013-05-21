@@ -1,9 +1,8 @@
 #= require almond_wrapper
 #= require lib
 #= require jquery
-#= require widgets/mathml
 
-ttm.define 'widgets/ui_elements', ['lib/class_mixer', 'widgets/mathml'], (class_mixer, mathml_renderer)->
+ttm.define 'widgets/ui_elements', ['lib/class_mixer'], (class_mixer)->
   class Button
     initialize: (@opts={})->
     render: (opts={})->
@@ -33,17 +32,27 @@ ttm.define 'widgets/ui_elements', ['lib/class_mixer', 'widgets/mathml'], (class_
       opts = _.extend({}, @opts, opts)
       @figure = $("""
         <figure class='mathml-display #{opts.class}'>
-          <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
-                  <mrow><mn>0</mn></mrow>
-          </math>
-        </figure>""")
-      @math_element = @figure.find('math')
+          #{@wrappedMathTag("<mrow><mn>0</mn></mrow>")}
+        </figure>
+      """)
       opts.element.append @figure
       @figure
 
+    default: ->
+      @wrappedMathTag("")
+
+    wrappedMathTag: (content)->
+      """
+      <math xmlns=\"http://www.w3.org/1998/Math/MathML\">
+        #{content}
+      </math>
+      """
+
     update: (mathml)->
-      @math_element.html(mathml)
-      @mathml_renderer.render(@math_element[0])
+      mathml_in_tag = @wrappedMathTag(mathml)
+      elem = MathJax.Hub.getAllJax(@figure[0])[0]
+      if elem
+        MathJax.Hub.Queue(["Text", elem, mathml_in_tag])
 
   class_mixer(MathMLDisplay)
 
