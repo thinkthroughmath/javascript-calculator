@@ -21,8 +21,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
       process: (object_to_convert)->
         return @blank_builder.build() unless object_to_convert
         if object_to_convert instanceof Array
-          exp = @expression_builder.build()
-          @processExpressionParts(exp, object_to_convert)
+          @convertSubExpression(object_to_convert)
         else
           switch typeof(object_to_convert)
             when "number" then @number_builder.build(value: object_to_convert)
@@ -50,27 +49,41 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           @number_builder.build(value: parsed[1])
 
       # privates
-      processExpressionParts: (exp, parts)->
-        throw "Expression parts must be an instance of array" unless parts instanceof Array
+      convertSubExpression: (parts) ->
+        exp = @expression_builder.build()
         for x in parts
           exp = exp.append(@process(x))
         exp
 
       convertObject: (object)->
         if (it = object['^'])
-          @exponentiation_builder.build(base: @process(it[0]), power: @process(it[1]))
-        else if (it = object['open_expression'])
-          processed_exp = @process(it)
-          if it instanceof Array
-            val = processed_exp.open()
-          else
-            val = @expression_builder.build(expression: [processed_exp], is_open: true)
-          val
+          @convertExponentiation(it)
+        else if ((it = object['open_expression']) != undefined)
+          subexp = @convertImplicitSubexp(it)
+          subexp.open()
         else
           throw "Build Exp not recognized"
 
-    class_mixer BuildExpressionFromJavascriptObject
+      convertExponentiation: (data)->
+        base = @convertImplicitSubexp(data[0])
+        power = @convertImplicitSubexp(data[1])
 
+        @exponentiation_builder.build(
+          base: base
+          power: power
+        )
+
+      convertImplicitSubexp: (subexp_raw)->
+        if typeof subexp_raw == "number"
+          @expression_builder.build(expression: [@process(subexp_raw)])
+        else if subexp_raw == null
+          @expression_builder.build(expression: [])
+        else
+          @process(subexp_raw)
+
+
+
+    class_mixer BuildExpressionFromJavascriptObject
 
     BuildExpressionFromJavascriptObject.buildExpression = ->
       builder = BuildExpressionFromJavascriptObject.build()
