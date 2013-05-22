@@ -25,11 +25,13 @@ ttm.define "lib/math/expression_evaluation",
         eval: (evaluation, pass)->
           return if pass != "exponentiation"
           if @base() && @power()
-            comps.number.build(value: Math.pow(@base().toCalculable(), @power().toCalculable()))
+            base = refinement.refine(@base()).eval().toCalculable()
+            power = refinement.refine(@power()).eval().toCalculable()
+            logger.info("exponentiation", base, power)
+            comps.number.build(value: Math.pow(base, power))
           else
             throw new MalformedExpressionError("Invalid Expression")
       });
-
 
     refinement.forType(comps.pi,
       {
