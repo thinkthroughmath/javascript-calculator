@@ -50,26 +50,24 @@ ttm.define "lib/math/expression_manipulation",
       initialize: (@opts)->
         @val = @opts.value
 
-      onFinalExpression: (expression)->
-        expression = _ImplicitMultiplication.build().onNeitherOperatorNorNumber(expression)
+      appendImplicitMultiplication: (expression)->
+        expression.append(comps.multiplication.build())
+
+      doAppend: (expression)->
         last = expression.last()
         number_with_this_val = comps.number.build(value: @val)
+
         if last && last instanceof comps.number
           new_last = last.concatenate(@val)
           expression.replaceLast(new_last)
-        else if last && last instanceof comps.exponentiation
-          power = last.power()
-          if power instanceof comps.blank
-            new_last = last.updatePower(number_with_this_val)
-          else
-            new_last = last.updatePower(power.concatenate(@val))
-          expression.replaceLast(new_last)
+        else if (last && last instanceof comps.exponentiation) or (last && !last.isOperator())
+          @appendImplicitMultiplication(expression).append(number_with_this_val)
         else
           expression.append(number_with_this_val)
 
       invoke: (expression)->
         _FinalOpenSubExpressionApplication.build(expression).
-          invokeOrDefault((expr)=> @onFinalExpression(expr))
+          invokeOrDefault((expr)=> @doAppend(expr))
 
     class_mixer(AppendNumber)
 
@@ -262,13 +260,6 @@ ttm.define "lib/math/expression_manipulation",
       onNumeric: (expression)->
         last = expression.last()
         if last && (last.isNumber() || last instanceof comps.expression || last instanceof comps.pi)
-          expression.append(comps.multiplication.build())
-        else
-          expression
-
-      onNeitherOperatorNorNumber: (expression)->
-        last = expression.last()
-        if last and !last.isNumber()  and !last.isOperator()
           expression.append(comps.multiplication.build())
         else
           expression
