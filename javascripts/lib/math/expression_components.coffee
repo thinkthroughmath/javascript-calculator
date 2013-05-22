@@ -16,6 +16,7 @@ ttm.define "lib/math/expression_components",
 
       display: ->
         @expression.display()
+
     class_mixer(Equation)
 
     class ExpressionComponent
@@ -30,6 +31,12 @@ ttm.define "lib/math/expression_components",
 
       @buildError: (content)->
         @build(is_error: true)
+
+      @buildUnlessExpression: (content)->
+        if content instanceof @
+          content
+        else
+          @buildWithContent([content])
 
       initialize: (opts={})->
         defaults =
@@ -158,6 +165,7 @@ ttm.define "lib/math/expression_components",
       toString: ->
         "Exp(b: #{@base().toString()}, p: #{@power().toString()})"
 
+      isPowerOpen: -> @power().isOpen()
 
     class_mixer(Exponentiation)
 
