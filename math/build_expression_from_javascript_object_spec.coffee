@@ -46,18 +46,19 @@ describe "BuildExpressionFromJavascriptObject", ->
       expect(exponentiation).toBeInstanceOf @components.exponentiation
 
       base = exponentiation.base()
-      expect(base).toBeInstanceOf @components.number
-      expect(base.value()).toEqual 10
+      expect(base).toBeInstanceOf @components.expression
+      expect(base.first().value()).toEqual 10
 
       power = exponentiation.power()
-      expect(power).toBeInstanceOf @components.number
-      expect(power.value()).toEqual 11
+      expect(power).toBeInstanceOf @components.expression
+      expect(power.first().value()).toEqual 11
 
-    it 'supports incomplete exponentiations (as blank member)', ->
+    it 'supports incomplete exponentiations (as an empty expression)', ->
       expression = @builder '^': [10, null]
       exponentiation = expression.nth(0)
       expect(exponentiation).toBeInstanceOf @components.exponentiation
-      expect(exponentiation.power()).toBeInstanceOf @components.blank
+      expect(exponentiation.power()).toBeInstanceOf @components.expression
+
 
   it "handles parenthetical sub-expressions via arrays", ->
     expression = @builder []
