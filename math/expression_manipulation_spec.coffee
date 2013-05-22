@@ -56,13 +56,14 @@ describe "expression manipulations", ->
         expect(@new_exp.first()).toBeInstanceOf @components.exponentiation
 
       it "provides the exponentiation its base", ->
-        expect(@new_exp.first().base()).toBeAnEqualExpressionTo @exp_builder(10).first()
+        expect(@new_exp.first().base()).toBeAnEqualExpressionTo @exp_builder([10]).first()
 
     describe "on an expression that currently ends with an operator ", ->
       it "replaces the trailing operator", ->
         exp = @exp_builder(10, '+')
         new_exp = @manip.exponentiate_last.build().invoke(exp)
-        expect(new_exp).toBeAnEqualExpressionTo @exp_builder('^': [10, null])
+        expected = @exp_builder('^': [10, {open_expression: null}])
+        expect(new_exp).toBeAnEqualExpressionTo expected
 
     describe "on an expression that has a trailing exponent", ->
       it "manipulates expression correctly", ->
@@ -90,15 +91,26 @@ describe "expression manipulations", ->
         expected = @exp_builder(open_expression: {open_expression: [8]})
         expect(exp).toBeAnEqualExpressionTo expected
 
-    describe "when the manipulation to be manipulated has an exponentiation ", ->
+    describe "when the manipulation to be manipulated has an exponentiation as its last element", ->
       describe "with no power", ->
         beforeEach ->
           @exp = @exp_builder('^': [10, null])
 
         it "inserts the number into the exponentiation", ->
           new_exp = @manip.append_number.build(value: 11).invoke(@exp)
-          expected = @exp_builder({'^': [10,11]})
+
+          expected = @exp_builder('^': [10, {open_expression: 11}])
           expect(new_exp).toBeAnEqualExpressionTo expected
+
+      describe "with a power", ->
+        beforeEach ->
+          @exp = @exp_builder('^': [10, 11])
+
+        it "inserts a multiplication and then the number", ->
+          new_exp = @manip.append_number.build(value: 12).invoke(@exp)
+          expected = @exp_builder({'^': [10,11]}, '*', 12)
+          expect(new_exp).toBeAnEqualExpressionTo expected
+
 
   describe "opening a new sub expression", ->
     it "adds a sub-expression to the expression", ->
