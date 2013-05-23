@@ -73,8 +73,7 @@ describe "BuildExpressionFromJavascriptObject", ->
       expect(sub_exp.isOpen()).toEqual(true)
 
     it "correctly constructs nested open expressions", ->
-      expression = @builder open_expression: open_expression: [10]
-
+      expression = @builder {open_expression: {open_expression: 10}}
       first_open = expression.first()
       expect(first_open.isOpen()).toEqual(true)
 
@@ -84,4 +83,18 @@ describe "BuildExpressionFromJavascriptObject", ->
       ten = second_open.first()
       expect(ten.value()).toEqual 10
 
+  describe "bug checks", ->
+    it "builds this example in the way we expect", ->
+      exp = @builder open_expression: [10, '*',  10]
 
+      expect(exp).toBeInstanceOf @components.expression
+      expect(exp.isOpen()).toEqual false
+
+      open = exp.first()
+
+      expect(open).toBeInstanceOf @components.expression
+      expect(open.isOpen()).toEqual true
+
+      ten = open.first()
+      expect(ten).toBeInstanceOf @components.number
+      expect(ten.value()).toEqual 10
