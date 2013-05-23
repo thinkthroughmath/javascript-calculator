@@ -1,16 +1,17 @@
 ttm.define "logger", ['lib/class_mixer'], (class_mixer)->
   class LogEntry
     initialize: ((@level, @args)->)
-    createStrMsg: ->
+    createStrMsg: (index)->
       message = ''
       for arg in @args
         arg = JSON.stringify(arg) unless typeof arg is 'string'
         message += "#{arg} "
-      "#{@level}: #{message}"
+      "#{@levelAndEntryIndexString()} #{message}"
 
-    createArrMsg: ->
+    createArrMsg: (index)->
       ret = []
-      current_str = "#{@level}: "
+      current_str = @levelAndEntryIndexString()
+
       for arg in @args
         if typeof arg is 'string'
           current_str += " #{arg}"
@@ -20,7 +21,11 @@ ttm.define "logger", ['lib/class_mixer'], (class_mixer)->
           ret.push arg
       ret.push current_str unless current_str.length == 0
       ret
-    display: (force_string)->
+
+    levelAndEntryIndexString: ()->
+      "#{@level} (##{@index}):"
+
+    display: (force_string, @index)->
       if force_string
         [@createStrMsg()]
       else
@@ -38,7 +43,6 @@ ttm.define "logger", ['lib/class_mixer'], (class_mixer)->
       @log_entry_types = ['error','warn','info','debug', 'log', 'instrumented']
 
       @log_entry_display_types = @typesForLevel(opts.log_level || 'production')
-
       @console_log = opts.console_log
       @stringify_objects = opts.stringify_objects
       @entries = []
@@ -50,9 +54,10 @@ ttm.define "logger", ['lib/class_mixer'], (class_mixer)->
     add: (type, args = []) ->
       entry = LogEntry.build(type, args)
       @entries.push entry
+      entry_index = @entries.length - 1
 
       if @log_entry_display_types.indexOf(type) != -1
-        @console_log.apply(null, entry.display(@stringify_objects))
+        @console_log.apply(null, entry.display(@stringify_objects, entry_index))
 
     typesForLevel: (level)->
       switch level
@@ -70,13 +75,21 @@ ttm.define "logger", ['lib/class_mixer'], (class_mixer)->
     instrument: (opts)->
       __logger = @
       ->
+        id = __logger.getUniqueId()
         arr = Array.prototype.slice.call(arguments)
         arr.unshift(@)
-        arr.unshift "#{opts.name} call: "
+        arr.unshift "#{opts.name} call (id #{id}): "
         __logger.add('instrumented', arr)
         retval = opts.fn.apply(@, arguments)
-        __logger.add('instrumented', ["#{opts.name} return: ", retval])
+        __logger.add('instrumented', ["#{opts.name} return (id #{id}): ", retval])
         retval
+
+    logMethodCall: (name, object, method, args)->
+      id = @getUniqueId()
+      @info("method call (id #{id}): ", name, object, method, args)
+      ret = object[method].apply(object, args)
+      @info("method call return (id #{id}): ", name, object, method, args, ret)
+      ret
 
   class_mixer Logger
 
