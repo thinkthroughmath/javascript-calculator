@@ -18,7 +18,8 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         @blank_builder = @opts.blank_builder || components.blank
         @multiplication_builder = @opts.multiplication_builder || components.multiplication
 
-      process: (object_to_convert)->
+
+      proc_method = (object_to_convert)->
         return @blank_builder.build() unless object_to_convert
         if object_to_convert instanceof Array
           @convertSubExpression(object_to_convert)
@@ -36,6 +37,8 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
                   @numberFromString(obj)
                 else throw "STRING NOT IMPLEMENTED"
             when "object" then @convertObject(object_to_convert)
+      process: logger().instrument(name: "Process", fn: proc_method)
+
 
       matchesNumberRegexp: (str)->
         str.search(/\d+/) != -1
@@ -52,7 +55,8 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
       convertSubExpression: (parts) ->
         exp = @expression_builder.build()
         for x in parts
-          exp = exp.append(@process(x))
+          converted_part = @process(x)
+          exp = exp.append(converted_part)
         exp
 
       convertObject: (object)->
@@ -73,21 +77,27 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           power: power
         )
 
-      convertImplicitSubexp: (subexp_raw)->
-        if typeof subexp_raw == "number"
-          @expression_builder.build(expression: [@process(subexp_raw)])
-        else if subexp_raw == null
+      convertImplicitSubexp = (subexp)->
+        processed = @process(subexp)
+        if typeof subexp == "number"
+          @expression_builder.build(expression: [processed])
+        else if subexp == null || subexp == false
           @expression_builder.build(expression: [])
+        else if subexp instanceof Array
+          processed
         else
-          @process(subexp_raw)
+          @expression_builder.build(expression: [processed])
 
-
+      convertImplicitSubexp: logger().instrument(name: "convertImplicitSubexp", fn: convertImplicitSubexp)
 
     class_mixer BuildExpressionFromJavascriptObject
 
     BuildExpressionFromJavascriptObject.buildExpression = ->
       builder = BuildExpressionFromJavascriptObject.build()
       arguments_as_array = Array.prototype.slice.call(arguments, 0)
-      builder.process(arguments_as_array)
+      converted_part = builder.process(arguments_as_array)
+      logger().info("returned converted from process in buildExpression", converted_part.toString(), arguments_as_array)
+      converted_part
 
     return BuildExpressionFromJavascriptObject
+
