@@ -25,6 +25,13 @@ ttm.define "lib/math/expression_components",
       preceedingSubexpression: -> false
       clone: -> @ # by default, cloning does nothing
 
+
+    class Equals extends ExpressionComponent
+      toString: -> "="
+      isOperator: -> true
+    class_mixer(Equals)
+
+
     class Expression extends ExpressionComponent
       @buildWithContent: (content)->
         @build(expression: content)
@@ -71,6 +78,9 @@ ttm.define "lib/math/expression_components",
       size: ->
         _(@expression).size();
 
+      isBlank: ->
+        @size() == 0
+
       set: (expression)->
         @expression = expression
 
@@ -97,8 +107,7 @@ ttm.define "lib/math/expression_components",
         tf = (it)-> it ? "t" : "f"
         subexpressions = _(@expression).chain().map((it)->
           it.toString()).join(", ").value()
-        "Expr(o: #{tf @is_open}, e: #{tf @is_error}, exp: [#{subexpressions}])"
-
+        "Expression(o: #{tf @is_open}, e: #{tf @is_error}, exp: [#{subexpressions}])"
 
     class_mixer(Expression)
 
@@ -109,7 +118,7 @@ ttm.define "lib/math/expression_components",
         @future_as_decimal = opts.future_as_decimal
 
       toString: ->
-        "N(#{@val})"
+        "##{@val}"
 
       isNumber: -> true
 
@@ -153,7 +162,6 @@ ttm.define "lib/math/expression_components",
         @baseval = opts.base
         @powerval = opts.power
       isOperator: -> true
-
       base: -> @baseval
       power: -> @powerval
 
@@ -163,38 +171,38 @@ ttm.define "lib/math/expression_components",
         @klass.build base: @base(), power: power
 
       toString: ->
-        "Exp(b: #{@base().toString()}, p: #{@power().toString()})"
+        "^(b: #{@base().toString()}, p: #{@power().toString()})"
 
       isPowerOpen: -> @power().isOpen()
 
     class_mixer(Exponentiation)
 
     class Pi extends ExpressionComponent
-      toString: -> "PI()"
+      toString: -> "PI"
     class_mixer(Pi)
 
     class Addition extends ExpressionComponent
-      toString: -> "Add()"
+      toString: -> "Add"
       isOperator: -> true
     class_mixer(Addition)
 
     class Subtraction extends ExpressionComponent
       isOperator: -> true
-      toString: -> "Sub()"
+      toString: -> "Sub"
     class_mixer(Subtraction)
 
     class Multiplication extends ExpressionComponent
       isOperator: -> true
-      toString: -> "Mult()"
+      toString: -> "Mult"
     class_mixer(Multiplication)
 
     class Division extends ExpressionComponent
       isOperator: -> true
-      toString: -> "Div()"
+      toString: -> "Div"
     class_mixer(Division)
 
     class Blank extends ExpressionComponent
-      toString: -> "Blnk()"
+      toString: -> "Blnk"
     class_mixer(Blank)
 
     components =
@@ -207,6 +215,7 @@ ttm.define "lib/math/expression_components",
       subtraction: Subtraction
       exponentiation: Exponentiation
       pi: Pi
+      equals: Equals
       blank: Blank
 
     return components
