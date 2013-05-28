@@ -64,6 +64,9 @@ ttm.define "logger", ['lib/class_mixer'], (class_mixer)->
         when 'production' then ['error', 'warn']
         when 'firehose' then @log_entry_types # all
 
+    lookup: (num)->
+      @entries[num]
+
     error: -> @add('error', arguments)
     warn:  -> @add('warn', arguments)
     info:  -> @add('info', arguments)
@@ -88,7 +91,7 @@ ttm.define "logger", ['lib/class_mixer'], (class_mixer)->
       id = @getUniqueId()
       @info("method call (id #{id}): ", name, object, method, args)
       ret = object[method].apply(object, args)
-      @info("method call return (id #{id}): ", name, object, method, args, ret)
+      @info("method call return (id #{id}): ", name, method, args, ret)
       ret
 
   class_mixer Logger
