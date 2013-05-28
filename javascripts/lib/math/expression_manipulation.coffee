@@ -50,9 +50,6 @@ ttm.define "lib/math/expression_manipulation",
       initialize: (@opts)->
         @val = @opts.value
 
-      appendImplicitMultiplication: (expression)->
-        expression.append(comps.multiplication.build())
-
       doAppend: (expression)->
         last = expression.last()
         number_with_this_val = comps.number.build(value: @val)
@@ -61,7 +58,8 @@ ttm.define "lib/math/expression_manipulation",
           new_last = last.concatenate(@val)
           expression.replaceLast(new_last)
         else if (last && last instanceof comps.exponentiation) or (last && !last.isOperator())
-          @appendImplicitMultiplication(expression).append(number_with_this_val)
+          expression.append(comps.multiplication.build()).
+            append(number_with_this_val)
         else
           expression.append(number_with_this_val)
 
@@ -75,7 +73,7 @@ ttm.define "lib/math/expression_manipulation",
       initialize: (@opts={})->
 
       baseExpression: (base)->
-        comps.expression.build(expression: [base])
+        comps.expression.buildUnlessExpression base
 
       powerExpression: ()->
         power = if @opts.power
@@ -108,21 +106,16 @@ ttm.define "lib/math/expression_manipulation",
         else
           base = @baseExpression(expression.last())
 
-
         power = @powerExpression()
-
-
 
         expression.replaceLast(
           comps.exponentiation.build(base: base, power: power))
 
     class_mixer(ExponentiateLast)
 
-    class SquareLast
-
-
     class AppendMultiplication
       appendAction: (expression)->
+
         _OverrideIfOperatorOrAppend.build(expression).with comps.multiplication.build()
 
       invoke: (expression)->
@@ -131,6 +124,10 @@ ttm.define "lib/math/expression_manipulation",
 
     class_mixer(AppendMultiplication)
 
+    class AppendEquals
+      invoke: (expression)->
+        expression.append comps.equals.build()
+    class_mixer(AppendEquals)
 
     class AppendDivision
       invoke: (expression)->
@@ -225,12 +222,11 @@ ttm.define "lib/math/expression_manipulation",
 
 
     class CloseSubExpression
-      initialize: ->
-        @handled = false
       invoke: (expression)->
         logger.info("CloseSubExpression#invoke")
-        _FinalOpenSubExpressionApplication.build(expression).
+        ret = _FinalOpenSubExpressionApplication.build(expression).
           invoke((expression)-> expression.close())
+        ret
     class_mixer(CloseSubExpression)
 
 
@@ -271,7 +267,13 @@ ttm.define "lib/math/expression_manipulation",
       with: (operator)->
         last = @expression.last()
         if last && last.isOperator()
-          @expression.replaceLast(operator)
+          if last instanceof comps.exponentiation
+            if last.power().isBlank()
+              @expression.replaceLast(operator)
+            else
+              @expression.append(operator)
+          else
+            @expression.replaceLast(operator)
         else
           @expression.append(operator)
     class_mixer(_OverrideIfOperatorOrAppend)
@@ -294,6 +296,7 @@ ttm.define "lib/math/expression_manipulation",
       exponentiate_last: ExponentiateLast
       append_multiplication: AppendMultiplication
       append_addition: AppendAddition
+      append_equals: AppendEquals
       append_subtraction: AppendSubtraction
       negate_last: Negation
       open_sub_expression: OpenSubExpression
