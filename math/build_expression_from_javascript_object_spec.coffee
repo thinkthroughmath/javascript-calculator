@@ -67,13 +67,44 @@ describe "BuildExpressionFromJavascriptObject", ->
     expect(sub_exp).toBeInstanceOf @components.expression
 
   describe "open expressions", ->
+
     it "uses object syntax with label 'open_expression' to signify an open expression", ->
       expression = @builder open_expression: [10]
       sub_exp = expression.first()
       expect(sub_exp.isOpen()).toEqual(true)
 
-    it "correctly constructs nested open expressions", ->
+
+    it "building an open expression with some elements in it", ->
+      exp = @builder open_expression: [10, '*',  10]
+
+      expect(exp).toBeInstanceOf @components.expression
+      expect(exp.isOpen()).toEqual false # it is wrapped with a closed expression
+
+      open = exp.first()
+
+      expect(open).toBeInstanceOf @components.expression
+      expect(open.isOpen()).toEqual true
+
+
+      ten = open.first()
+      expect(ten).toBeInstanceOf @components.number
+      expect(ten.value()).toEqual 10
+
+    it "building a closed expression inside an open expression", ->
+      exp = @builder(open_expression: [[]])
+
+      open = exp.first()
+      expect(open).toBeInstanceOf @components.expression
+      expect(open.isOpen()).toEqual true
+
+      closed = open.first()
+      expect(closed).toBeInstanceOf @components.expression
+      expect(closed.isOpen()).toEqual false
+      expect(closed.size()).toEqual 0
+
+    it "building nested open expressions", ->
       expression = @builder {open_expression: {open_expression: 10}}
+
       first_open = expression.first()
       expect(first_open.isOpen()).toEqual(true)
 
@@ -83,18 +114,4 @@ describe "BuildExpressionFromJavascriptObject", ->
       ten = second_open.first()
       expect(ten.value()).toEqual 10
 
-  describe "bug checks", ->
-    it "builds this example in the way we expect", ->
-      exp = @builder open_expression: [10, '*',  10]
 
-      expect(exp).toBeInstanceOf @components.expression
-      expect(exp.isOpen()).toEqual false
-
-      open = exp.first()
-
-      expect(open).toBeInstanceOf @components.expression
-      expect(open.isOpen()).toEqual true
-
-      ten = open.first()
-      expect(ten).toBeInstanceOf @components.number
-      expect(ten.value()).toEqual 10
