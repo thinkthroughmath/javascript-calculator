@@ -17,31 +17,107 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         @exponentiation_builder = @opts.exponentiation_builder || components.exponentiation
         @blank_builder = @opts.blank_builder || components.blank
         @multiplication_builder = @opts.multiplication_builder || components.multiplication
+        @equals_builder = @opts.equals_builder || components.equals
 
 
-      proc_method = (object_to_convert)->
-        return @blank_builder.build() unless object_to_convert
-        if object_to_convert instanceof Array
-          @convertSubExpression(object_to_convert)
-        else
-          switch typeof(object_to_convert)
-            when "number" then @number_builder.build(value: object_to_convert)
-            when "string"
-              obj = object_to_convert
-              switch
-                when obj == "+" then @addition_builder.build()
-                when obj == "-" then @subtraction_builder.build()
-                when obj == "/" then @division_builder.build()
-                when obj == "*" then @multiplication_builder.build()
-                when @matchesNumberRegexp(obj)
-                  @numberFromString(obj)
-                else throw "STRING NOT IMPLEMENTED"
-            when "object" then @convertObject(object_to_convert)
-      process: logger().instrument(name: "Process", fn: proc_method)
+        @processor = _JSObjectExpressionProcessor.build()
 
+        @exponentiation_converter = _FromExponentiationObject.build(
+          @processor,
+          @exponentiation_builder)
 
-      matchesNumberRegexp: (str)->
-        str.search(/\d+/) != -1
+        @string_literal_converter = _FromStringLiteralObject.build(
+          "+": @addition_builder
+          "-": @subtraction_builder
+          "/": @division_builder
+          "*": @multiplication_builder
+          "=": @equals_builder
+        )
+
+        @closed_expression_converter = _FromClosedExpressionObject.build(
+          @expression_builder,
+          @processor)
+
+        @number_converter = _FromNumberObject.build(@number_builder)
+        @open_expression_converter = _FromOpenExpressionObject.build(@closed_expression_converter)
+
+        @processor.converters [
+          @closed_expression_converter
+          @open_expression_converter
+          @number_converter
+          @exponentiation_converter
+          @string_literal_converter
+          ]
+
+      process: (js_object)->
+        @processor.process(js_object)
+
+      processBuildExpression: (data)->
+        @process(data)
+
+    class_mixer BuildExpressionFromJavascriptObject
+
+    class _JSObjectExpressionProcessor
+      converters: (@js_object_converters)->
+
+      process: (js_object)->
+        for converter in @js_object_converters
+          if converter.isType(js_object)
+            return converter.convert(js_object)
+        throw "Unhandled js object: #{JSON.stringify js_object}"
+    class_mixer _JSObjectExpressionProcessor
+
+    class _FromOpenExpressionObject
+      initialize: (@expression_converter)->
+      isType: (js_object)->
+        js_object['open_expression'] != undefined
+
+      convert = (js_object)->
+        subexp = js_object['open_expression']
+        maybe_wrapped =
+          if typeof subexp == "number"
+            [subexp]
+          else if subexp == null || subexp == false
+            []
+          else if @isType(subexp) # this open expression contains another open expression
+            [subexp]
+          else subexp
+        @expression_converter.convert(maybe_wrapped).open()
+
+      convert: logger().instrument(name: "_FromOpenExpressionObject#convert", fn: convert)
+
+    class_mixer _FromOpenExpressionObject
+
+    class _FromClosedExpressionObject
+      initialize: (@expression_builder, @processor)->
+      isType: (js_object)->
+        typeof js_object == "object" && js_object instanceof Array
+
+      convert: (js_object)->
+        exp = @expression_builder.build()
+        for part in js_object
+          converted_part = @processor.process(part)
+          exp = exp.append(converted_part)
+        exp
+    class_mixer _FromClosedExpressionObject
+
+    class _FromNumberObject
+      initialize: (@number_builder)->
+
+      isType: (js_object)->
+        @isJSNumber(js_object) or @isStringNumber(js_object)
+
+      isJSNumber: (js_object)->
+        typeof js_object == "number"
+
+      isStringNumber: (js_object)->
+        typeof js_object == "string" and js_object.search(/\d+/) != -1
+
+      convert: (js_object)->
+        if @isJSNumber(js_object)
+          @number_builder.build(value: js_object)
+        else if @isStringNumber(js_object)
+          @numberFromString(js_object)
 
       numberFromString: (str)->
         if parsed = str.match /(\d+)(\.)(\d+)/
@@ -51,51 +127,47 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         else if parsed = str.match /(\d+)/
           @number_builder.build(value: parsed[1])
 
-      # privates
-      convertSubExpression: (parts) ->
-        exp = @expression_builder.build()
-        for x in parts
-          converted_part = @process(x)
-          exp = exp.append(converted_part)
-        exp
+    class_mixer _FromNumberObject
 
-      convertObject: (object)->
-        if (it = object['^'])
-          @convertExponentiation(it)
-        else if ((it = object['open_expression']) != undefined)
-          subexp = @convertImplicitSubexp(it)
-          subexp.open()
-        else
-          throw "Build Exp not recognized"
-
-      convertExponentiation: (data)->
-        base = @convertImplicitSubexp(data[0])
-        power = @convertImplicitSubexp(data[1])
+    class _FromExponentiationObject
+      initialize: (@processor, @exponentiation_builder)->
+      isType: (js_object)-> js_object['^'] instanceof Array
+      convert: (js_object)->
+        base = @convertImplicitSubexp(js_object['^'][0])
+        power = @convertImplicitSubexp(js_object['^'][1])
 
         @exponentiation_builder.build(
           base: base
           power: power
         )
 
-      convertImplicitSubexp = (subexp)->
-        processed = @process(subexp)
-        if typeof subexp == "number"
-          @expression_builder.build(expression: [processed])
-        else if subexp == null || subexp == false
-          @expression_builder.build(expression: [])
-        else if subexp instanceof Array
-          processed
-        else
-          @expression_builder.build(expression: [processed])
+      convertImplicitSubexp: (subexp)->
+        maybe_wrapped =
+          if typeof subexp == "number"
+            [subexp]
+          else if subexp == null || subexp == false
+            []
+          else
+            subexp
+        processed = @processor.process(maybe_wrapped)
+    class_mixer _FromExponentiationObject
 
-      convertImplicitSubexp: logger().instrument(name: "convertImplicitSubexp", fn: convertImplicitSubexp)
+    class _FromStringLiteralObject
+      initialize: (@literal_mappings)->
+        @keys = _.keys(@literal_mappings)
 
-    class_mixer BuildExpressionFromJavascriptObject
+      isType: (js_object)->
+        @keys.indexOf(js_object) != -1
+
+      convert: (js_object)->
+        @literal_mappings[js_object].build()
+
+    class_mixer _FromStringLiteralObject
 
     BuildExpressionFromJavascriptObject.buildExpression = ->
       builder = BuildExpressionFromJavascriptObject.build()
       arguments_as_array = Array.prototype.slice.call(arguments, 0)
-      converted_part = builder.process(arguments_as_array)
+      converted_part = builder.processBuildExpression(arguments_as_array)
       logger().info("returned converted from process in buildExpression", converted_part.toString(), arguments_as_array)
       converted_part
 
