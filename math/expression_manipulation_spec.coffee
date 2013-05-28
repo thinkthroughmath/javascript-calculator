@@ -67,9 +67,9 @@ describe "expression manipulations", ->
 
     describe "on an expression that has a trailing exponent", ->
       it "manipulates expression correctly", ->
-        exp = @exp_builder('^': [10, null])
+        exp = @exp_builder('^': [10, {open_expression: null}])
         new_exp = @manip.exponentiate_last.build().invoke(exp)
-        expected = @exp_builder('^': [10, null])
+        expected = @exp_builder('^': [10, {open_expression: null}])
         expect(new_exp).toBeAnEqualExpressionTo expected
 
   describe "append number", ->
@@ -91,14 +91,13 @@ describe "expression manipulations", ->
         expected = @exp_builder(open_expression: {open_expression: [8]})
         expect(exp).toBeAnEqualExpressionTo expected
 
-    describe "when the manipulation to be manipulated has an exponentiation as its last element", ->
+    describe "when the equation has as its last element an exponentiation ", ->
       describe "with no power", ->
         beforeEach ->
-          @exp = @exp_builder('^': [10, null])
+          @exp = @exp_builder('^': [10, {open_expression:  null}])
 
         it "inserts the number into the exponentiation", ->
           new_exp = @manip.append_number.build(value: 11).invoke(@exp)
-
           expected = @exp_builder('^': [10, {open_expression: 11}])
           expect(new_exp).toBeAnEqualExpressionTo expected
 
@@ -111,6 +110,19 @@ describe "expression manipulations", ->
           expected = @exp_builder({'^': [10,11]}, '*', 12)
           expect(new_exp).toBeAnEqualExpressionTo expected
 
+    describe "when the equations last element is an equals", ->
+      it "adds the number as a new number", ->
+        exp = @exp_builder(1, '+', 3, '=')
+        manipulated_exp = @manip.append_number.build(value: 8).invoke(exp)
+        expected = @exp_builder(1, '+', 3, '=', 8)
+        expect(manipulated_exp).toBeAnEqualExpressionTo expected
+
+  describe "appending an equals", ->
+    it "inserts an equals sign into the equation", ->
+      @exp = @exp_builder(1, '+', 3)
+      new_exp = @manip.append_equals.build().invoke(@exp)
+      expected = @exp_builder(1, '+', 3, '=')
+      expect(new_exp).toBeAnEqualExpressionTo expected
 
   describe "opening a new sub expression", ->
     it "adds a sub-expression to the expression", ->
@@ -151,13 +163,10 @@ describe "expression manipulations", ->
       expect(new_exp).toBeAnEqualExpressionTo @exp_builder([])
 
     it "correctly handles nested open subexpressions", ->
-      exp = @exp_builder(open_expression: {open_expression: []})
+      exp = @exp_builder(open_expression: {open_expression: null})
       new_exp = @manip.close_sub_expression.build().invoke(exp)
-
       expected = @exp_builder(open_expression: [[]])
-
       expect(new_exp).toBeAnEqualExpressionTo expected
-
 
   describe "appending multiplication", ->
     it_plays_manipulation_role (test)->
@@ -167,6 +176,12 @@ describe "expression manipulations", ->
       exp = @exp_builder(1)
       new_exp = @manip.append_multiplication.build().invoke(exp)
       expect(new_exp.last() instanceof @math.components.multiplication).toEqual true
+
+    it "correctly adds multiplication to an exponentiation", ->
+      exp = @exp_builder('^': [1, 2])
+      new_exp = @manip.append_multiplication.build().invoke(exp)
+      expected = @exp_builder({'^': [1, 2]}, '*')
+      expect(new_exp).toBeAnEqualExpressionTo expected
 
     it_inserts_component_into_the_last_nested_open_expression(
       name: 'multiplication'
