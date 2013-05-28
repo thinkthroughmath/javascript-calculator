@@ -130,11 +130,19 @@ describe "expression equality", ->
           @comps.pi.build()
         )).toEqual true
 
-  describe "subtraction", ->
-    it "accepts two subtraction symbols", ->
+  describe "equals", ->
+    it "accepts two equals symbols", ->
       expect(
         @isEqual(
           @comps.subtraction.build(),
           @comps.subtraction.build()
+        )).toEqual true
+
+  describe "subtraction", ->
+    it "accepts two subtraction symbols", ->
+      expect(
+        @isEqual(
+          @comps.equals.build(),
+          @comps.equals.build()
         )).toEqual true
 

@@ -53,9 +53,18 @@ beforeEach ->
       @actual && @actual instanceof type
 
     toBeAnEqualExpressionTo: (other)->
+
       @message = ->
-        "Expected #{@actual.toString()} to be equal to #{other.toString()}"
-      @actual && other && ttm.require('lib/math/expression_equality').isEqual(@actual, other)
+        msg = "Expected #{@actual.toString()} to be equal to #{other.toString()}"
+        if @check.report_saved
+          msg += ", but failed on #{@check.a.toString()}, #{@check.b.toString()}, #{@check.not_eql_msg}"
+        msg
+
+      if @actual and other
+        @check = ttm.require('lib/math/expression_equality').equalityCalculation(@actual, other)
+        @check.isEqual()
+      else
+        false
   )
 
 
