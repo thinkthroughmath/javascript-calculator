@@ -302,7 +302,7 @@ ttm.define "lib/math/expression_manipulation",
       open_sub_expression: OpenSubExpression
       close_sub_expression: CloseSubExpression
       append_division: AppendDivision
-      pi: AppendPi
+      append_pi: AppendPi
       square_root: SquareRoot
 
     return exports

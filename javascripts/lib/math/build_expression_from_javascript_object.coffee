@@ -18,7 +18,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         @blank_builder = @opts.blank_builder || components.blank
         @multiplication_builder = @opts.multiplication_builder || components.multiplication
         @equals_builder = @opts.equals_builder || components.equals
-
+        @pi_builder = @opts.pi_builder || components.pi
 
         @processor = _JSObjectExpressionProcessor.build()
 
@@ -32,6 +32,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           "/": @division_builder
           "*": @multiplication_builder
           "=": @equals_builder
+          "pi": @pi_builder
         )
 
         @closed_expression_converter = _FromClosedExpressionObject.build(

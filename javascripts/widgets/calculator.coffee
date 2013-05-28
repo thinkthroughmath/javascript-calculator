@@ -110,7 +110,7 @@ ttm.define "calculator",
         @updateCurrentExpressionWithCommand @math.commands.close_sub_expression.build()
 
       piClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.pi.build()
+        @updateCurrentExpressionWithCommand @math.commands.append_pi.build()
 
       buttonFor: (opts)->
         opts = _.extend({
