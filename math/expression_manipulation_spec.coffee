@@ -280,15 +280,15 @@ describe "expression manipulations", ->
         expect(new_exp.last().value()).toEqual -1
 
 
-    describe "PiManipulation", ->
+    describe "AppendPi", ->
       it_plays_manipulation_role (test)->
-        @manip.pi.build()
+        @manip.append_pi.build()
 
       it "adds a mulitplication and pi to the expression", ->
         exp = @math.expression.buildWithContent([
           @math.components.number.build(value: '1')
         ])
-        new_exp = @manip.pi.build().invoke(exp)
+        new_exp = @manip.append_pi.build().invoke(exp)
         expect(new_exp.last() instanceof @math.components.pi).toBeTruthy()
         expect(new_exp.last(1) instanceof @math.components.multiplication).toBeTruthy()
 

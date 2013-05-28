@@ -38,6 +38,11 @@ describe "BuildExpressionFromJavascriptObject", ->
     expect(expression.nth(1)).toBeInstanceOf @components.multiplication
     expect(expression.last().value()).toEqual 11
 
+  it "handles pi", ->
+    expression = @builder(10, 'pi', 11)
+    expect(expression.nth(0)).toBeInstanceOf @components.number
+    expect(expression.nth(1)).toBeInstanceOf @components.pi
+    expect(expression.last().value()).toEqual 11
 
   describe 'exponentiation', ->
     it 'handles a standard case', ->
