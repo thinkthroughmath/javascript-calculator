@@ -203,12 +203,16 @@ ttm.define "lib/math/expression_manipulation",
           expr.replaceLast(subexp)
         else if expr instanceof comps.exponentiation
           expr.updatePower(subexp)
+        else if expr instanceof comps.root
+          expr.updateRadicand(subexp)
 
       nextSubExpression: (expr)->
         if expr instanceof comps.expression
           expr.last()
         else if expr instanceof comps.exponentiation
           expr.power()
+        else if expr instanceof comps.root
+          expr.radicand()
         else false
 
       invokeOrDefault: (@action)->
@@ -239,6 +243,20 @@ ttm.define "lib/math/expression_manipulation",
           append(comps.pi.build())
 
     class_mixer(AppendPi)
+
+    class AppendRoot
+      initialize: (@opts={})->
+      invoke: (expression)->
+        degree = comps.expression.build expression: [
+            comps.number.build(value: @opts.degree)
+          ]
+        radicand = comps.expression.build(expression: []).open()
+        root = comps.root.build(degree: degree, radicand: radicand)
+
+        _ImplicitMultiplication.build().
+          onNumeric(expression).
+          append(root)
+    class_mixer(AppendRoot)
 
     class SquareRoot extends ExpressionManipulation
       invoke: (expression)->
@@ -304,5 +322,6 @@ ttm.define "lib/math/expression_manipulation",
       append_division: AppendDivision
       append_pi: AppendPi
       square_root: SquareRoot
+      append_root: AppendRoot
 
     return exports

@@ -25,7 +25,6 @@ ttm.define "lib/math/expression_components",
       preceedingSubexpression: -> false
       clone: -> @ # by default, cloning does nothing
 
-
     class Equals extends ExpressionComponent
       toString: -> "="
       isOperator: -> true
@@ -205,6 +204,29 @@ ttm.define "lib/math/expression_components",
       toString: -> "Blnk"
     class_mixer(Blank)
 
+    class Root extends ExpressionComponent
+      initialize: (opts={})->
+        @degree_value = opts.degree
+        @radicand_value = opts.radicand
+
+      toString: ->
+        "Root(deg: #{@degree().toString()}, rad: #{@radicand().toString()})"
+
+      degree: -> @degree_value
+
+      radicand: -> @radicand_value
+
+      updateRadicand: (new_radic)->
+        @clone(radicand: new_radic)
+
+      clone: (new_vals={})->
+        data =
+          degree: @degree_value
+          radicand: @radicand_value
+        @klass.build(_.extend({}, data, new_vals))
+
+    class_mixer(Root)
+
     components =
       expression: Expression
       equation: Equation
@@ -217,5 +239,6 @@ ttm.define "lib/math/expression_components",
       pi: Pi
       equals: Equals
       blank: Blank
+      root: Root
 
     return components

@@ -13,8 +13,9 @@ ttm.define 'lib/math/expression_equality',
 
     buildIsEqual = (for_type, additional_method=false)->
       isEqualFunction = (other, eq_calc)->
-        same_type = eq_calc.saveFalseForReport((other instanceof for_type), @unrefined(), other,
-          "Wrong types")
+        same_type = (other instanceof for_type)
+        eq_calc.saveFalseForReport(same_type, @unrefined(), other,
+          "different types #{for_type.name}")
         if same_type
           if additional_method
             @[additional_method](other, eq_calc)
@@ -24,25 +25,20 @@ ttm.define 'lib/math/expression_equality',
           false
       logger.instrument(name: "buildIsEqual function", fn: isEqualFunction)
 
-
     # Addition
     ref.forType(comps.addition, {
       isEqual: (buildIsEqual(comps.addition))
       })
-
 
     # Blank
     ref.forType(comps.blank, {
       isEqual: (buildIsEqual(comps.blank))
       })
 
-
     # Division
     ref.forType(comps.division, {
       isEqual: (buildIsEqual(comps.division))
       })
-
-
 
     # Exponentiation
     ref.forType(comps.exponentiation, {
@@ -52,7 +48,6 @@ ttm.define 'lib/math/expression_equality',
         power_equal = ref.refine(@power()).isEqual(other.power(), eq_comp)
         base_equal && power_equal # no need to save, report comes from below
       })
-
 
     # Expression
     ref.forType(comps.expression, {
@@ -64,17 +59,18 @@ ttm.define 'lib/math/expression_equality',
         match_open = @is_open == other.is_open
         eq_calc.saveFalseForReport(match_open, @unrefined(), other, "open values not equal")
 
-        match_size = _(@expression).size() == _(other.expression).size()
-        eq_calc.saveFalseForReport(match_size, @unrefined(), other, "size values not equal")
 
-        if match_error && match_open && match_size
+        if match_error && match_open
           contains_unequal =
             _.chain(@expression).map((element, i)->
               ret = ref.refine(element).isEqual(other.nth(i), eq_calc)
-              debugger unless ret
               ret
             ).contains(false).value()
-          !contains_unequal
+          if contains_unequal
+            false
+          else
+            match_size = _(@expression).size() == _(other.expression).size()
+            eq_calc.saveFalseForReport(match_size, @unrefined(), other, "size values not equal")
         else
           false
 
@@ -134,6 +130,20 @@ ttm.define 'lib/math/expression_equality',
     # Subtraction
     ref.forType(comps.subtraction, {
       isEqual: (buildIsEqual(comps.subtraction))
+    })
+
+    # Root
+    ref.forType(comps.root, {
+      isEqual: (buildIsEqual(comps.root, "checkDegreeAndRadicand")),
+      checkDegreeAndRadicand: (other, eq_comp)->
+        degree_equal = ref.refine(@degree()).isEqual(other.degree(), eq_comp)
+        radicand_equal = ref.refine(@radicand()).isEqual(other.radicand(), eq_comp)
+        degree_equal and radicand_equal # no need to save, report comes from below
+    })
+
+    ref.forDefault({
+      isEqual: ->
+        throw ["Unimplemented equality refinement for ", @unrefined()]
     })
 
     class ExpressionEquality

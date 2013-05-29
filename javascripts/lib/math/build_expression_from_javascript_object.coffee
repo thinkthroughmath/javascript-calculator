@@ -19,8 +19,13 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         @multiplication_builder = @opts.multiplication_builder || components.multiplication
         @equals_builder = @opts.equals_builder || components.equals
         @pi_builder = @opts.pi_builder || components.pi
+        @root_builder = @opts.root_builder || components.root
 
         @processor = _JSObjectExpressionProcessor.build()
+
+        @root_converter = _FromRootObject.build(
+          @processor,
+          @root_builder)
 
         @exponentiation_converter = _FromExponentiationObject.build(
           @processor,
@@ -48,6 +53,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           @number_converter
           @exponentiation_converter
           @string_literal_converter
+          @root_converter
           ]
 
       process: (js_object)->
@@ -152,6 +158,30 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
             subexp
         processed = @processor.process(maybe_wrapped)
     class_mixer _FromExponentiationObject
+
+
+    class _FromRootObject
+      initialize: (@processor, @root_builder)->
+      isType: (js_object)-> js_object['root'] instanceof Array
+      convert: (js_object)->
+        degree = @convertImplicitSubexp(js_object['root'][0])
+        radicand = @convertImplicitSubexp(js_object['root'][1])
+
+        @root_builder.build(
+          degree: degree
+          radicand: radicand
+        )
+
+      convertImplicitSubexp: (subexp)->
+        maybe_wrapped =
+          if typeof subexp == "number"
+            [subexp]
+          else if subexp == null || subexp == false
+            []
+          else
+            subexp
+        processed = @processor.process(maybe_wrapped)
+    class_mixer _FromRootObject
 
     class _FromStringLiteralObject
       initialize: (@literal_mappings)->
