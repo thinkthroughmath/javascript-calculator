@@ -1,7 +1,7 @@
 #= require lib/dashboard_poller
 #= require mock-ajax
 
-describe "Dashboard - getData()", ->
+describe "Dashboard Poller", ->
   beforeEach ->
     jasmine.Ajax.useMock()
     @dashboard = ttm.lib.DashboardPoller.build()
@@ -24,6 +24,6 @@ describe "Dashboard - getData()", ->
         request = mostRecentAjaxRequest()
         expect(request.url).toBe('/dashboard/queries/REPORT_ID/ready')
         expect(request.method).toBe('GET')
-        request.response { status: 200, responseText: '{"is_ready": true, "data":"DATA" }' }
+        request.response { status: 200, responseText: '{"is_ready": true, "data":"{ \\"key\\": \\"DATA\\" }" }' }
 
-        expect(that.data).toEqual 'DATA'
+        expect(that.data.key).toEqual 'DATA'
