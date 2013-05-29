@@ -38,6 +38,10 @@ describe "BuildExpressionFromJavascriptObject", ->
     expect(expression.nth(1)).toBeInstanceOf @components.multiplication
     expect(expression.last().value()).toEqual 11
 
+  it "handles roots", ->
+    expression = @builder(root: [2, 4])
+    expect(expression.first()).toBeInstanceOf @components.root
+
   it "handles pi", ->
     expression = @builder(10, 'pi', 11)
     expect(expression.nth(0)).toBeInstanceOf @components.number
@@ -72,7 +76,6 @@ describe "BuildExpressionFromJavascriptObject", ->
     expect(sub_exp).toBeInstanceOf @components.expression
 
   describe "open expressions", ->
-
     it "uses object syntax with label 'open_expression' to signify an open expression", ->
       expression = @builder open_expression: [10]
       sub_exp = expression.first()

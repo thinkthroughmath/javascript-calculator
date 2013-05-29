@@ -13,7 +13,7 @@ it_plays_manipulation_role = (subject, math)->
     it "returns an expression", ->
       ret = @subject.invoke(@math.expression.build())
       unless ret instanceof @math.expression
-        throw "The return value was not an instance of the expression builder"
+        throw "The return value was not an instance of expression"
 
 it_inserts_component_into_the_last_nested_open_expression = (specifics)->
   it "adds #{specifics.name} to the deepest final open expression", ->
@@ -73,7 +73,7 @@ describe "expression manipulations", ->
         expect(new_exp).toBeAnEqualExpressionTo expected
 
   describe "append number", ->
-    describe "when the last element in the expression is a closed expression", ->
+    describe "when the previous element is a closed expression", ->
       beforeEach ->
         @exp = @exp_builder([1])
 
@@ -82,7 +82,7 @@ describe "expression manipulations", ->
         expected = @exp_builder([1], '*', 11)
         expect(exp).toBeAnEqualExpressionTo expected
 
-    describe "when the last element in the expression is a nested open expression", ->
+    describe "when the previous element is a nested open expression", ->
       beforeEach ->
         @exp = @exp_builder(open_expression: {open_expression: []})
 
@@ -91,7 +91,7 @@ describe "expression manipulations", ->
         expected = @exp_builder(open_expression: {open_expression: [8]})
         expect(exp).toBeAnEqualExpressionTo expected
 
-    describe "when the equation has as its last element an exponentiation ", ->
+    describe "when the previous element is an exponentiation ", ->
       describe "with no power", ->
         beforeEach ->
           @exp = @exp_builder('^': [10, {open_expression:  null}])
@@ -106,16 +106,24 @@ describe "expression manipulations", ->
           @exp = @exp_builder('^': [10, 11])
 
         it "inserts a multiplication and then the number", ->
-          new_exp = @manip.append_number.build(value: 12).invoke(@exp)
-          expected = @exp_builder({'^': [10,11]}, '*', 12)
+          new_exp = @manip.append_number.build(value: 7).invoke(@exp)
+          expected = @exp_builder({'^': [10,11]}, '*', 7)
           expect(new_exp).toBeAnEqualExpressionTo expected
 
-    describe "when the equations last element is an equals", ->
+    describe "when the previous element is a root", ->
+      it "inserts as root's radicand when radicand expression is open", ->
+        @exp = @exp_builder('root': [10, {open_expression: null}])
+        new_exp = @manip.append_number.build(value: 6).invoke(@exp)
+        expected = @exp_builder('root': [10, {open_expression: 6}])
+        expect(new_exp).toBeAnEqualExpressionTo expected
+
+    describe "when the prevous element is none of the other special cases", ->
       it "adds the number as a new number", ->
         exp = @exp_builder(1, '+', 3, '=')
         manipulated_exp = @manip.append_number.build(value: 8).invoke(exp)
         expected = @exp_builder(1, '+', 3, '=', 8)
         expect(manipulated_exp).toBeAnEqualExpressionTo expected
+
 
   describe "appending an equals", ->
     it "inserts an equals sign into the equation", ->
@@ -263,6 +271,27 @@ describe "expression manipulations", ->
       squared = @square.invoke(exp)
       @expect_value(squared, '100')
 
+  describe "AppendRoot", ->
+    it_plays_manipulation_role (test)->
+      @manip.append_root.build()
+
+    it "adds a mulitplication and root to the expression", ->
+      exp = @exp_builder([1])
+
+      new_exp = @manip.append_root.build(degree: 2).invoke(exp)
+
+      expect(new_exp.last() instanceof @math.components.root).toBeTruthy()
+      expect(new_exp.last(1) instanceof @math.components.multiplication).toBeTruthy()
+
+
+    it "adds a root with a radicand that is an open expression", ->
+      exp = @exp_builder([1])
+
+      new_exp = @manip.append_root.build(degree: 2).invoke(exp)
+
+      expect(new_exp.last() instanceof @math.components.root).toBeTruthy()
+      expect(new_exp.last().radicand().isOpen()).toBeTruthy()
+
   describe "(moved over from other test file)", ->
     describe "NumberManipulation", ->
       it_plays_manipulation_role (test)->
@@ -273,9 +302,7 @@ describe "expression manipulations", ->
         @manip.negate_last.build()
 
       it "will negate the last element", ->
-        exp = @math.expression.buildWithContent([
-          @math.components.number.build(value: '1')
-        ])
+        exp = @exp_builder(1)
         new_exp = @manip.negate_last.build().invoke(exp)
         expect(new_exp.last().value()).toEqual -1
 
@@ -285,21 +312,18 @@ describe "expression manipulations", ->
         @manip.append_pi.build()
 
       it "adds a mulitplication and pi to the expression", ->
-        exp = @math.expression.buildWithContent([
-          @math.components.number.build(value: '1')
-        ])
+        exp = @exp_builder(1)
         new_exp = @manip.append_pi.build().invoke(exp)
         expect(new_exp.last() instanceof @math.components.pi).toBeTruthy()
         expect(new_exp.last(1) instanceof @math.components.multiplication).toBeTruthy()
+
 
     describe "SquareRootManipulation", ->
       it_plays_manipulation_role (test)->
         @manip.square_root.build()
 
       it "finds the square root of an expression", ->
-        exp = @math.expression.buildWithContent([
-          @math.components.number.build(value: '4')
-        ])
+        exp = @exp_builder([4])
         new_exp = @manip.square_root.build().invoke(exp)
         expect(new_exp.last().value()).toEqual '2'
 

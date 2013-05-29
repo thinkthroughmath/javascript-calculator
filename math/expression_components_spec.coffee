@@ -59,3 +59,20 @@ describe "Expression Components", ->
 
     it "supports concatenation with a decimal", ->
       expect(@n(value: 1).futureAsDecimal().concatenate(0).concatenate(1).value()).toEqual '1.01'
+
+  describe "roots", ->
+    beforeEach ->
+      @root = @comps.root.build(degree: 2, radicand: 100)
+
+    it "has a reference to the degree", ->
+      expect(@root.degree()).toEqual 2
+
+    it "has a reference to the radicand", ->
+      expect(@root.radicand()).toEqual 100
+
+    it "can update its radicand", ->
+      updated = @root.updateRadicand(5)
+      expect(updated.degree()).toEqual 2
+      expect(updated.radicand()).toEqual 5
+
+

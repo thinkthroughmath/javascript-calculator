@@ -64,7 +64,6 @@ describe "expression equality", ->
             ])
           )).toEqual false
 
-
   describe "addition", ->
     it "accepts two addition symbols", ->
       expect(
@@ -146,3 +145,18 @@ describe "expression equality", ->
           @comps.equals.build()
         )).toEqual true
 
+  describe "root", ->
+    it "accepts roots with equal degrees and radicands", ->
+      a  = @exp_builder(root: [10, 20])
+      b = @exp_builder(root: [10, 20])
+      expect(a).toBeAnEqualExpressionTo b
+
+    it "rejects roots with different degrees", ->
+      a  = @exp_builder(root: [10, 20])
+      b = @exp_builder(root: [1, 20])
+      expect(a).not.toBeAnEqualExpressionTo b
+
+    it "rejects roots with different radicands", ->
+      a  = @exp_builder(root: [10, 20])
+      b = @exp_builder(root: [10, 4])
+      expect(a).not.toBeAnEqualExpressionTo b
