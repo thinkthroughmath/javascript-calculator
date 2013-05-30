@@ -258,6 +258,18 @@ ttm.define "lib/math/expression_manipulation",
           append(root)
     class_mixer(AppendRoot)
 
+    class AppendVariable
+      initialize: (opts={})->
+        @variable_name = opts.variable
+      invoke: (expression)->
+        variable = comps.variable.build(name: @variable_name)
+        _ImplicitMultiplication.build().
+          onNumeric(expression).
+          append(variable)
+
+
+    class_mixer(AppendVariable)
+
     class SquareRoot extends ExpressionManipulation
       invoke: (expression)->
         value = @value(expression)
@@ -323,5 +335,6 @@ ttm.define "lib/math/expression_manipulation",
       append_pi: AppendPi
       square_root: SquareRoot
       append_root: AppendRoot
+      append_variable: AppendVariable
 
     return exports

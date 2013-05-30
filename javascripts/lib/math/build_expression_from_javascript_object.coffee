@@ -20,6 +20,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         @equals_builder = @opts.equals_builder || components.equals
         @pi_builder = @opts.pi_builder || components.pi
         @root_builder = @opts.root_builder || components.root
+        @variable_builder = @opts.variable_builder || components.variable
 
         @processor = _JSObjectExpressionProcessor.build()
 
@@ -44,6 +45,11 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           @expression_builder,
           @processor)
 
+        @variable_converter = _FromVariableObject.build(
+          @processor,
+          @variable_builder)
+
+
         @number_converter = _FromNumberObject.build(@number_builder)
         @open_expression_converter = _FromOpenExpressionObject.build(@closed_expression_converter)
 
@@ -54,6 +60,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           @exponentiation_converter
           @string_literal_converter
           @root_converter
+          @variable_converter
           ]
 
       process: (js_object)->
@@ -182,6 +189,13 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
             subexp
         processed = @processor.process(maybe_wrapped)
     class_mixer _FromRootObject
+
+    class _FromVariableObject
+      initialize: (@processor, @variable_builder)->
+      isType: (js_object)-> typeof js_object['variable'] == "string"
+      convert: (js_object)->
+        @variable_builder.build(name: js_object['variable'])
+    class_mixer _FromVariableObject
 
     class _FromStringLiteralObject
       initialize: (@literal_mappings)->

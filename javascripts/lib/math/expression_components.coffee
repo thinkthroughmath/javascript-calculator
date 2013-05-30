@@ -227,6 +227,14 @@ ttm.define "lib/math/expression_components",
 
     class_mixer(Root)
 
+    class Variable
+      initialize: (opts={})->
+        @name_value = opts.name
+      name: -> @name_value
+      toString: ->
+        "Var(#{@name()})"
+    class_mixer(Variable)
+
     components =
       expression: Expression
       equation: Equation
@@ -240,5 +248,5 @@ ttm.define "lib/math/expression_components",
       equals: Equals
       blank: Blank
       root: Root
-
+      variable: Variable
     return components

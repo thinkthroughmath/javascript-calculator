@@ -135,11 +135,22 @@ ttm.define 'lib/math/expression_equality',
     # Root
     ref.forType(comps.root, {
       isEqual: (buildIsEqual(comps.root, "checkDegreeAndRadicand")),
-      checkDegreeAndRadicand: (other, eq_comp)->
-        degree_equal = ref.refine(@degree()).isEqual(other.degree(), eq_comp)
-        radicand_equal = ref.refine(@radicand()).isEqual(other.radicand(), eq_comp)
+      checkDegreeAndRadicand: (other, eq_calc)->
+        degree_equal = ref.refine(@degree()).isEqual(other.degree(), eq_calc)
+        radicand_equal = ref.refine(@radicand()).isEqual(other.radicand(), eq_calc)
         degree_equal and radicand_equal # no need to save, report comes from below
     })
+
+
+    # Variable
+    ref.forType(comps.variable, {
+      isEqual: (buildIsEqual(comps.variable, "checkNames")),
+      checkNames: (other, eq_calc)->
+        check = "#{@name()}" == "#{other.name()}"
+        eq_calc.saveFalseForReport(check, @unrefined(), other, "Variable names not equal")
+    })
+
+
 
     ref.forDefault({
       isEqual: ->
