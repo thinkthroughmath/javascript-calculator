@@ -272,7 +272,7 @@ describe "expression manipulations", ->
       @expect_value(squared, '100')
 
   describe "AppendRoot", ->
-    it_plays_manipulation_role (test)->
+    it_plays_manipulation_role ->
       @manip.append_root.build()
 
     it "adds a mulitplication and root to the expression", ->
@@ -283,7 +283,6 @@ describe "expression manipulations", ->
       expect(new_exp.last() instanceof @math.components.root).toBeTruthy()
       expect(new_exp.last(1) instanceof @math.components.multiplication).toBeTruthy()
 
-
     it "adds a root with a radicand that is an open expression", ->
       exp = @exp_builder([1])
 
@@ -291,6 +290,18 @@ describe "expression manipulations", ->
 
       expect(new_exp.last() instanceof @math.components.root).toBeTruthy()
       expect(new_exp.last().radicand().isOpen()).toBeTruthy()
+
+  describe "AppendVariable", ->
+    it_plays_manipulation_role ->
+      @manip.append_variable.build()
+
+    it "adds itself to an empty expression", ->
+      exp = @exp_builder()
+        append_var = @manip.append_variable.build(variable: "doot")
+      new_exp = append_var.invoke(exp)
+      expected = @exp_builder(variable: "doot")
+      expect(new_exp).toBeAnEqualExpressionTo expected
+
 
   describe "(moved over from other test file)", ->
     describe "NumberManipulation", ->

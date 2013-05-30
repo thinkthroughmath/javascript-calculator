@@ -76,3 +76,7 @@ describe "Expression Components", ->
       expect(updated.radicand()).toEqual 5
 
 
+  describe "variables", ->
+    it "is a variable", ->
+      @variable = @comps.variable.build(name: "doot")
+      expect(@variable.name()).toEqual("doot")

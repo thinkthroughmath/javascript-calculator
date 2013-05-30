@@ -48,6 +48,11 @@ describe "BuildExpressionFromJavascriptObject", ->
     expect(expression.nth(1)).toBeInstanceOf @components.pi
     expect(expression.last().value()).toEqual 11
 
+  it "handles variables", ->
+    expression = @builder({variable: "doot"})
+    expect(expression.nth(0)).toBeInstanceOf @components.variable
+    expect(expression.nth(0).name()).toEqual "doot"
+
   describe 'exponentiation', ->
     it 'handles a standard case', ->
       expression = @builder '^': [10, 11]

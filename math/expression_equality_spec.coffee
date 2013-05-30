@@ -147,16 +147,27 @@ describe "expression equality", ->
 
   describe "root", ->
     it "accepts roots with equal degrees and radicands", ->
-      a  = @exp_builder(root: [10, 20])
+      a = @exp_builder(root: [10, 20])
       b = @exp_builder(root: [10, 20])
       expect(a).toBeAnEqualExpressionTo b
 
     it "rejects roots with different degrees", ->
-      a  = @exp_builder(root: [10, 20])
+      a = @exp_builder(root: [10, 20])
       b = @exp_builder(root: [1, 20])
       expect(a).not.toBeAnEqualExpressionTo b
 
     it "rejects roots with different radicands", ->
-      a  = @exp_builder(root: [10, 20])
+      a = @exp_builder(root: [10, 20])
       b = @exp_builder(root: [10, 4])
+      expect(a).not.toBeAnEqualExpressionTo b
+
+  describe "variable", ->
+    it "accepts with equal variable names", ->
+      a = @exp_builder(variable: "doot")
+      b = @exp_builder(variable: "doot")
+      expect(a).toBeAnEqualExpressionTo b
+
+    it "rejects with different variable names", ->
+      a = @exp_builder(variable: "doot")
+      b = @exp_builder(variable: "scoot")
       expect(a).not.toBeAnEqualExpressionTo b
