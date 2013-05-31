@@ -1,3 +1,13 @@
+
+it_adheres_to_the_expression_component_interface = (opts)->
+  describe "expression component interface", ->
+    beforeEach ->
+      @comp = opts.instance_fn.call(@)
+
+    it "returns the correct repsonse for isOperator", ->
+      expect(@comp.isOperator()).toEqual opts.is_operator
+
+
 describe "Expression Components", ->
   beforeEach ->
     @comps = ttm.require('lib/math/expression_components')
@@ -5,23 +15,13 @@ describe "Expression Components", ->
     @expect_value = (expression, value)->
       expect(@expression_to_string(expression)).toEqual value
 
-  describe "Equation", ->
-    it "responds to last", ->
-      eq = @comps.equation.build()
-      expect(eq.last()).toEqual null
-
-    it "responds to append", ->
-      eq = @comps.equation.build()
-      x = eq.append(@comps.number.build(value: 10))
-      expect(x.last().value()).toEqual 10
-
-    it "responds to replaceLast", ->
-      tt = @comps.number.build(value: '22')
-      eq = @comps.equation.build(@comps.expression.buildWithContent [tt])
-      x = eq.replaceLast(@comps.number.build(value: '10'))
-      expect(x.last().value()).toEqual '10'
-
   describe "Expression", ->
+    it_adheres_to_the_expression_component_interface {
+      instance_fn: ->
+        @comps.expression.build()
+      is_operator: false
+    }
+
     it "assigns components from its construtor", ->
       exp = @comps.expression.build(
         expression: [
@@ -76,7 +76,20 @@ describe "Expression Components", ->
       expect(updated.radicand()).toEqual 5
 
 
+  describe "division", ->
+    it_adheres_to_the_expression_component_interface {
+      instance_fn: ->
+        @comps.division.build()
+      is_operator: true
+      }
+
   describe "variables", ->
-    it "is a variable", ->
+    it_adheres_to_the_expression_component_interface {
+      instance_fn: ->
+        @comps.variable.build(name: "example")
+      is_operator: false
+      }
+
+    it "will tell you its name", ->
       @variable = @comps.variable.build(name: "doot")
       expect(@variable.name()).toEqual("doot")

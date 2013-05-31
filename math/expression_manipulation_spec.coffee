@@ -297,7 +297,7 @@ describe "expression manipulations", ->
 
     it "adds itself to an empty expression", ->
       exp = @exp_builder()
-        append_var = @manip.append_variable.build(variable: "doot")
+      append_var = @manip.append_variable.build(variable: "doot")
       new_exp = append_var.invoke(exp)
       expected = @exp_builder(variable: "doot")
       expect(new_exp).toBeAnEqualExpressionTo expected
