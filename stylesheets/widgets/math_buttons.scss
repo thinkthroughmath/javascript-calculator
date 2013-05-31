@@ -1,0 +1,163 @@
+
+$calculator_border_radius: 2px;
+$box_shadow_color: #000;
+
+
+// these are all variations on a blueish-teal
+$number_specifier_lighter: #3e6372;
+$number_specifier_darker:  #1e2f36;
+$number_specifier_border:  #869da7;
+
+// orange!
+$operation_lighter: #cb8164;
+$operation_darker:  #ae5430;
+$operation_border:  #deb09e;
+
+// gray
+$other_lighter: #7c7c7c;
+$other_darker: #454545;
+$other_border: #adadad;
+
+
+@mixin simple-gradient($start, $end)
+{
+    background: $start; /* Old browsers */
+    background: -moz-linear-gradient(top,  $start 0%, $end 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$start), color-stop(100%,$end)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  $start 0%,$end 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  $start 0%,$end 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  $start 0%,$end 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  $start 0%,$end 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start', endColorstr='$end',GradientType=0 ); /* IE6-9 */
+
+}
+
+@mixin math-button-sizing($scalar)
+{
+    button.math-button {
+        font-size: 1.5em * $scalar;
+        width: 50px * $scalar;
+        height: 40px * $scalar;
+        margin: 3px * $scalar;
+    }
+
+    button.math-button.other.exponent {
+        font-size: 2.5em  * $scalar;
+    }
+
+    button.math-button.clear {
+        font-size: .75em * $scalar;
+    }
+    button.math-button.square sup {
+        font-size: 0.6em  * $scalar;
+        margin-left: .15em  * $scalar;
+    }
+
+    button.math-button.pi {
+        font-size: 1.85em  * $scalar;
+    }
+    button.math-button.square-root span
+    {
+        left: -2px  * $scalar;
+        top: -14px  * $scalar;
+    }
+}
+
+.ie {
+    button.math-button.number-specifier {
+        color: white;
+        border: 1px solid $number_specifier_border;
+        background: $number_specifier_lighter !important;
+        filter: none !important;
+    }
+
+    button.math-button.operation {
+        color: white;
+        border: 1px solid $operation_border;
+        background: $operation_lighter;
+        filter: none !important;
+    }
+
+    button.math-button.other {
+        border: 1px solid $other_border;
+        background: $other_lighter;
+        filter: none !important;
+    }
+}
+
+
+button.math-button.number-specifier {
+    color: white;
+    border: 1px solid $number_specifier_border;
+    @include simple-gradient($number_specifier_lighter, $number_specifier_darker);
+}
+button.math-button.number-specifier:hover {
+    box-shadow:inset 0 0 10px $number_specifier_border;
+}
+button.math-button.number-specifier:active {
+    @include simple-gradient($number_specifier_darker, $number_specifier_lighter);
+}
+
+button.math-button.operation {
+    color: white;
+    border: 1px solid $operation_border;
+    @include simple-gradient($operation_lighter, $operation_darker);
+}
+button.math-button.operation:hover {
+    box-shadow:inset 0 0 10px $operation_border;
+}
+button.math-button.operation:active {
+    @include simple-gradient($operation_darker, $operation_lighter);
+}
+
+
+button.math-button.other {
+    border: 1px solid $other_border;
+    @include simple-gradient($other_lighter, $other_darker);
+}
+button.math-button.other:hover {
+    box-shadow:inset 0 0 10px $other_border;
+}
+button.math-button.other:active {
+    @include simple-gradient($other_darker, $other_lighter);
+}
+
+
+button.math-button {
+    color: white;
+    text-shadow: 0.05em 0.05em 0.05em #222;
+    text-align: middle;
+    border-radius: $calculator_border_radius;
+    -webkit-box-shadow: 0 0 5px $box_shadow_color;
+    -moz-box-shadow: 0 0 5px $box_shadow_color;
+    box-shadow: 0 0 5px $box_shadow_color;
+    vertical-align: top;
+}
+
+button.math-button.clear {
+    text-transform: uppercase;
+}
+
+button.math-button:focus{
+    outline: none;
+}
+
+button.math-button.square {
+    font-family: "Times New Roman", serif;
+    font-style: italic;
+    sup {
+        font-family: arial;
+        font-style: normal;
+    }
+}
+
+button.math-button.pi {
+    font-style: italic;
+    font-family: "Times New Roman", serif;
+}
+
+button.math-button.square-root span
+{
+    position: relative;
+}
+

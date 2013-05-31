@@ -281,7 +281,6 @@ ttm.define "lib/math/expression_manipulation",
           comps.expression.buildError()
     class_mixer(SquareRoot)
 
-
     class _ImplicitMultiplication
       onNumeric: (expression)->
         last = expression.last()

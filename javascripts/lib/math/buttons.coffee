@@ -11,54 +11,54 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer', 'lib/m
         do (num)=>
           @button({
             value: "#{num}"
-            class: 'number-specifier'
+            class: 'math-button number-specifier'
           }, opts)
 
     exponent: (opts)->
       @button({
         value: '^'
         label: '&circ;'
-        class: 'other exponent'
+        class: 'math-button other exponent'
       }, opts)
 
     negative: (opts)->
       @button({
         value: 'negative'
         label: '(&ndash;)'
-        class: 'number-specifier'
+        class: 'math-button number-specifier'
       }, opts)
 
     decimal: (opts)->
       @button({
         value: '.'
-        class: 'number-specifier'
+        class: 'math-button number-specifier'
       }, opts)
 
     addition: (opts)->
       @button({
         value: '+'
-        class: 'operation'
+        class: 'math-button operation'
       }, opts)
 
     multiplication: (opts)->
       @button({
         value: '*'
         label: '&times;'
-        class: 'operation'
+        class: 'math-button operation'
       }, opts)
 
     division: (opts)->
       @button({
         value: '/'
         label: '&divide;'
-        class: 'operation'
+        class: 'math-button operation'
       }, opts)
 
     subtraction: (opts)->
       @button({
         value: '-'
         label: '&ndash;'
-        class: 'operation'
+        class: 'math-button operation'
       }, opts)
 
 
@@ -66,52 +66,52 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer', 'lib/m
       @button({
         value: '-'
         label: '&ndash;'
-        class: 'operation'
+        class: 'math-button operation'
       }, opts)
 
     equals: (opts)->
       @button({
         value: '='
-        class: 'operation'
+        class: 'math-button operation'
       }, opts)
 
     clear: (opts)->
       @button({
         value: 'clear'
-        class: 'other clear'
+        class: 'math-button other clear'
       }, opts)
 
     square: (opts)->
       @button({
         value: 'square'
         label: 'x<sup>2</sup>'
-        class: 'other square'
+        class: 'math-button other square'
       }, opts)
 
     square_root: (opts)->
       @button({
         value: 'squareroot'
         label: '&radic;<span>&#8212;</span>'
-        class: 'other square-root'
+        class: 'math-button other square-root'
       }, opts)
 
     lparen: (opts)->
       @button({
         value: '('
-        class: 'parentheses other'
+        class: 'math-button parentheses other'
       }, opts)
 
     rparen: (opts)->
       @button({
         value: ')'
-        class: 'parentheses other'
+        class: 'math-button parentheses other'
       }, opts)
 
     pi: (opts)->
       @button({
         value: 'pi'
         label: '&pi;'
-        class: 'pi other'
+        class: 'math-button pi other'
       }, opts)
 
     variables: (opts)->
@@ -120,7 +120,7 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer', 'lib/m
           do (v)=>
             @button({
               value: "#{v.name}"
-              class: 'variable other'
+              class: 'math-button variable other'
               variable: v
             }, opts)
       variables

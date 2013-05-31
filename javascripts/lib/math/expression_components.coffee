@@ -2,23 +2,6 @@ ttm.define "lib/math/expression_components",
   ["lib/class_mixer", 'lib/object_refinement'],
   (class_mixer, object_refinement)->
 
-    class Equation
-      initialize: (@expression)->
-        @expression ||= Expression.build()
-      last: ->
-        @expression.last()
-
-      append: (val)->
-        Equation.build(@expression.append(val))
-
-      replaceLast: (val)->
-        Equation.build(@expression.replaceLast(val))
-
-      display: ->
-        @expression.display()
-
-    class_mixer(Equation)
-
     class ExpressionComponent
       isOperator: -> false
       isNumber: -> false
@@ -227,7 +210,7 @@ ttm.define "lib/math/expression_components",
 
     class_mixer(Root)
 
-    class Variable
+    class Variable extends ExpressionComponent
       initialize: (opts={})->
         @name_value = opts.name
       name: -> @name_value
@@ -237,7 +220,6 @@ ttm.define "lib/math/expression_components",
 
     components =
       expression: Expression
-      equation: Equation
       number: Number
       addition: Addition
       multiplication: Multiplication

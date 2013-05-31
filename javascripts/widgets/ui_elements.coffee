@@ -19,7 +19,7 @@ ttm.define 'widgets/ui_elements', ['lib/class_mixer', 'widgets/mathml'], (class_
     render: (opts={})->
       opts = _.extend({},@opts, opts)
       @figure = $("<figure class='math-display #{opts.class}'>#{opts.default || '0'}</figure>")
-      opts.element.append @figure
+      opts.element.append(@figure)
       @figure
 
     update: (value)->
