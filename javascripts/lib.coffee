@@ -10,6 +10,7 @@ window.AP = (object)->
   str += " }"
   str
 window.ttm ||= {}
+window.ttm.dashboard ||= {}
 window.ttm.decorators ||= {}
 window.ttm.lib ||= {}
 
