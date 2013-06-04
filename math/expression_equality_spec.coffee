@@ -4,7 +4,7 @@
 
 describe "expression equality", ->
   beforeEach ->
-    @comps = ttm.require('lib/math/expression_components')
+    @comps = ttm.lib.math.ExpressionComponentSource.build()
     @isEqual = ttm.require('lib/math/expression_equality').isEqual
     @exp_builder = ttm.require('lib/math/build_expression_from_javascript_object').buildExpression
 
@@ -12,55 +12,53 @@ describe "expression equality", ->
     it "with different values are different", ->
       expect(
         @isEqual(
-          @comps.number.build(value: 10),
-          @comps.number.build(value: 11)
+          @comps.build_number(value: 10),
+          @comps.build_number(value: 11)
           )).toEqual false
 
     it "is equal with two of the same value", ->
       expect(
         @isEqual(
-          @comps.number.build(value: 10),
-          @comps.number.build(value: 10)
+          @comps.build_number(value: 10),
+          @comps.build_number(value: 10)
           )).toEqual true
-
 
   describe "expression comparison", ->
     it "accepts for empty expressions", ->
       expect(
         @isEqual(
-          @comps.expression.build(),
-          @comps.expression.build()
+          @comps.build_expression(),
+          @comps.build_expression()
           )).toEqual true
-
 
     it "accepts expressions that have equal number internals", ->
       expect(
         @isEqual(
-          @comps.expression.build(expression: [
-              @comps.number.build(value: 10)
+          @comps.build_expression(expression: [
+              @comps.build_number(value: 10)
             ]),
-          @comps.expression.build(expression: [
-              @comps.number.build(value: 10)
+          @comps.build_expression(expression: [
+              @comps.build_number(value: 10)
             ])
           )).toEqual true
 
     it "rejects expressions with different numeric internals", ->
       expect(
         @isEqual(
-          @comps.expression.build(expression: [
-              @comps.number.build(value: 11)
+          @comps.build_expression(expression: [
+              @comps.build_number(value: 11)
             ]),
-          @comps.expression.build(expression: [
-              @comps.number.build(value: 10)
+          @comps.build_expression(expression: [
+              @comps.build_number(value: 10)
             ])
           )).toEqual false
 
     it "rejects expressions that are of different lengths", ->
       expect(
         @isEqual(
-          @comps.expression.build(expression: []),
-          @comps.expression.build(expression: [
-              @comps.number.build(value: 10)
+          @comps.build_expression(expression: []),
+          @comps.build_expression(expression: [
+              @comps.build_number(value: 10)
             ])
           )).toEqual false
 
@@ -68,8 +66,8 @@ describe "expression equality", ->
     it "accepts two addition symbols", ->
       expect(
         @isEqual(
-          @comps.addition.build(),
-          @comps.addition.build()
+          @comps.build_addition(),
+          @comps.build_addition()
         )).toEqual true
 
 
@@ -77,15 +75,15 @@ describe "expression equality", ->
     it "accepts vs a blank element", ->
       expect(
         @isEqual(
-          @comps.blank.build(),
-          @comps.blank.build(),
+          @comps.build_blank(),
+          @comps.build_blank(),
         )).toEqual true
 
     it "rejects against numbers", ->
       expect(
         @isEqual(
-          @comps.blank.build(),
-          @comps.number.build(value: 1)
+          @comps.build_blank(),
+          @comps.build_number(value: 1)
         )).toEqual false
 
 
@@ -109,40 +107,40 @@ describe "expression equality", ->
     it "accepts two multiplication symbols", ->
       expect(
         @isEqual(
-          @comps.multiplication.build(),
-          @comps.multiplication.build()
+          @comps.build_multiplication(),
+          @comps.build_multiplication()
         )).toEqual true
 
   describe "division", ->
     it "accepts two division symbols", ->
       expect(
         @isEqual(
-          @comps.division.build(),
-          @comps.division.build()
+          @comps.build_division(),
+          @comps.build_division()
         )).toEqual true
 
   describe "pi", ->
     it "accepts two pi symbols", ->
       expect(
         @isEqual(
-          @comps.pi.build(),
-          @comps.pi.build()
+          @comps.build_pi(),
+          @comps.build_pi()
         )).toEqual true
 
   describe "equals", ->
     it "accepts two equals symbols", ->
       expect(
         @isEqual(
-          @comps.subtraction.build(),
-          @comps.subtraction.build()
+          @comps.build_subtraction(),
+          @comps.build_subtraction()
         )).toEqual true
 
   describe "subtraction", ->
     it "accepts two subtraction symbols", ->
       expect(
         @isEqual(
-          @comps.equals.build(),
-          @comps.equals.build()
+          @comps.build_equals(),
+          @comps.build_equals()
         )).toEqual true
 
   describe "root", ->
