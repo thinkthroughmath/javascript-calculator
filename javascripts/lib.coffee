@@ -14,7 +14,7 @@ window.ttm.dashboard ||= {}
 window.ttm.decorators ||= {}
 window.ttm.lib ||= {}
 
-ttm.ClassMixer = (klass)->
+ttm.ClassMixer = ttm.class_mixer = (klass)->
   klass.build = ->
     it = new klass
     it.initialize && it.initialize.apply(it, arguments)

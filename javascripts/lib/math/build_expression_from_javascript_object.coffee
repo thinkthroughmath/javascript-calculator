@@ -5,52 +5,40 @@
 
 # usage examples found in tests
 ttm.define 'lib/math/build_expression_from_javascript_object',
-  ['lib/class_mixer', 'lib/math/expression_components'],
-  (class_mixer, components)->
+  ['lib/class_mixer'],
+  (class_mixer)->
     class BuildExpressionFromJavascriptObject
       initialize: (@opts={})->
-        @expression_builder = @opts.expression_builder || components.expression
-        @number_builder = @opts.number_builder || components.number
-        @addition_builder = @opts.addition_builder || components.addition
-        @subtraction_builder = @opts.subtraction_builder || components.subtraction
-        @division_builder = @opts.division_builder || components.division
-        @exponentiation_builder = @opts.exponentiation_builder || components.exponentiation
-        @blank_builder = @opts.blank_builder || components.blank
-        @multiplication_builder = @opts.multiplication_builder || components.multiplication
-        @equals_builder = @opts.equals_builder || components.equals
-        @pi_builder = @opts.pi_builder || components.pi
-        @root_builder = @opts.root_builder || components.root
-        @variable_builder = @opts.variable_builder || components.variable
-
+        @component_builder = @opts.component_builder || ttm.lib.math.ExpressionComponentSource.build()
         @processor = _JSObjectExpressionProcessor.build()
 
         @root_converter = _FromRootObject.build(
           @processor,
-          @root_builder)
+          @component_builder)
+
+        @number_converter = _FromNumberObject.build(@component_builder)
 
         @exponentiation_converter = _FromExponentiationObject.build(
           @processor,
-          @exponentiation_builder)
+          @component_builder)
 
-        @string_literal_converter = _FromStringLiteralObject.build(
-          "+": @addition_builder
-          "-": @subtraction_builder
-          "/": @division_builder
-          "*": @multiplication_builder
-          "=": @equals_builder
-          "pi": @pi_builder
-        )
+        @string_literal_converter = _FromStringLiteralObject.build(@component_builder,{
+          "+": "build_addition"
+          "-": "build_subtraction"
+          "/": "build_division"
+          "*": "build_multiplication"
+          "=": "build_equals"
+          "pi": "build_pi"
+        })
 
         @closed_expression_converter = _FromClosedExpressionObject.build(
-          @expression_builder,
+          @component_builder,
           @processor)
 
         @variable_converter = _FromVariableObject.build(
           @processor,
-          @variable_builder)
+          @component_builder)
 
-
-        @number_converter = _FromNumberObject.build(@number_builder)
         @open_expression_converter = _FromOpenExpressionObject.build(@closed_expression_converter)
 
         @processor.converters [
@@ -108,7 +96,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         typeof js_object == "object" && js_object instanceof Array
 
       convert: (js_object)->
-        exp = @expression_builder.build()
+        exp = @expression_builder.build_expression()
         for part in js_object
           converted_part = @processor.process(part)
           exp = exp.append(converted_part)
@@ -129,17 +117,17 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
 
       convert: (js_object)->
         if @isJSNumber(js_object)
-          @number_builder.build(value: js_object)
+          @number_builder.build_number(value: js_object)
         else if @isStringNumber(js_object)
           @numberFromString(js_object)
 
       numberFromString: (str)->
         if parsed = str.match /(\d+)(\.)(\d+)/
-          @number_builder.build(value: str)
+          @number_builder.build_number(value: str)
         else if parsed = str.match /(\d+)(\.)/
-          @number_builder.build(value: parsed[1], future_as_decimal: true)
+          @number_builder.build_number(value: parsed[1], future_as_decimal: true)
         else if parsed = str.match /(\d+)/
-          @number_builder.build(value: parsed[1])
+          @number_builder.build_number(value: parsed[1])
 
     class_mixer _FromNumberObject
 
@@ -150,7 +138,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         base = @convertImplicitSubexp(js_object['^'][0])
         power = @convertImplicitSubexp(js_object['^'][1])
 
-        @exponentiation_builder.build(
+        @exponentiation_builder.build_exponentiation(
           base: base
           power: power
         )
@@ -174,7 +162,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         degree = @convertImplicitSubexp(js_object['root'][0])
         radicand = @convertImplicitSubexp(js_object['root'][1])
 
-        @root_builder.build(
+        @root_builder.build_root(
           degree: degree
           radicand: radicand
         )
@@ -194,18 +182,18 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
       initialize: (@processor, @variable_builder)->
       isType: (js_object)-> typeof js_object['variable'] == "string"
       convert: (js_object)->
-        @variable_builder.build(name: js_object['variable'])
+        @variable_builder.build_variable(name: js_object['variable'])
     class_mixer _FromVariableObject
 
     class _FromStringLiteralObject
-      initialize: (@literal_mappings)->
+      initialize: (@converter, @literal_mappings)->
         @keys = _.keys(@literal_mappings)
 
       isType: (js_object)->
         @keys.indexOf(js_object) != -1
 
       convert: (js_object)->
-        @literal_mappings[js_object].build()
+        @converter[@literal_mappings[js_object]]()
 
     class_mixer _FromStringLiteralObject
 

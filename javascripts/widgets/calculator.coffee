@@ -4,14 +4,14 @@
 #= require lib/math/buttons
 #= require widgets/ui_elements
 #= require lib/math/expression_to_string
+#= require lib/math/expression_components
 #= require lib/logger
-
 
 ttm.define "calculator",
   ["lib/class_mixer", "lib/math", "widgets/ui_elements", "lib/math/buttons", 'lib/math/expression_to_string', 'logger'],
   (class_mixer, math, ui_elements, math_buttons,
     expression_to_string, logger_builder)->
-
+    components = ttm.lib.math.ExpressionComponentSource.build()
     logger = logger_builder.build()
 
     open_widget_dialog = (element)->
@@ -27,7 +27,7 @@ ttm.define "calculator",
 
       initialize: (@element, @math, @logger)->
         @view = CalculatorView.build(@, @element, @math)
-        @current_expression = @math.expression.build()
+        @current_expression = components.build_expression()
         @expression_history = []
 
       displayValue: ->
@@ -61,56 +61,56 @@ ttm.define "calculator",
       numberClick: (button_options)->
         if @reset_on_next_number
           @reset_on_next_number = false
-          @updateCurrentExpression @math.expression.build()
+          @updateCurrentExpression components.build_expression()
 
-        cmd = @math.commands.append_number.build(value: button_options.value)
+        cmd = @math.commands.build_append_number(value: button_options.value)
         @updateCurrentExpressionWithCommand cmd
 
       exponentClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.exponentiate_last.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_exponentiate_last()
 
       negativeClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.negate_last.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_negate_last()
 
       additionClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.append_addition.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_append_addition()
 
       multiplicationClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.append_multiplication.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_append_multiplication()
 
       divisionClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.append_division.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_append_division()
 
       subtractionClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.append_subtraction.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_append_subtraction()
 
       decimalClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.append_decimal.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_append_decimal()
 
       # command actions
       clearClick: ->
-        @updateCurrentExpression @math.expression.build()
+        @updateCurrentExpression components.build_expression()
 
       equalsClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.calculate.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_calculate()
         @reset_on_next_number = true
 
       squareClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.square.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_square()
         @reset_on_next_number = true
 
       squareRootClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.square_root.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_square_root()
         @reset_on_next_number = true
 
       lparenClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.open_sub_expression.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_open_sub_expression()
 
       rparenClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.close_sub_expression.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_close_sub_expression()
 
       piClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.append_pi.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_append_pi()
 
       buttonFor: (opts)->
         opts = _.extend({
@@ -122,42 +122,6 @@ ttm.define "calculator",
         @button_builder.build opts
 
     class_mixer(Calculator)
-
-    # class LogicController
-    #   initialize: (@expression)->
-    #     @current_expression = @expression.build()
-
-    #   onResultChange: ((@handler)->)
-
-    #   calculate: ->
-    #     @resetIfError()
-    #     @current_expression.calculate()
-    #     @display()
-
-    #   resetIfError: ->
-    #     @current_expression.isError() && @current_expression.reset()
-
-    #   numberClick: ->
-    #   msg: (part)->
-    #     @resetIfError()
-    #     if part.invoke
-    #       part.invoke(@current_expression)
-    #     else
-    #       @current_expression.msg(part)
-    #     @display()
-
-
-    #   reset: ->
-    #     @current_expression.reset()
-    #     @display()
-
-    #   buttonPressed: (component)->
-    #     component.action(@current_expression)
-    #     @display()
-
-    # class_mixer(LogicController)
-
-
 
     class ButtonLayout
       initialize: ((@components)->)

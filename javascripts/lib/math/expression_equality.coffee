@@ -5,10 +5,10 @@
 #= require almond_wrapper
 
 ttm.define 'lib/math/expression_equality',
-  ['lib/class_mixer', 'lib/object_refinement', 'lib/math/expression_components', 'logger'],
-  (class_mixer, object_refinement, comps, logger_builder)->
+  ['lib/class_mixer', 'lib/object_refinement','logger'],
+  (class_mixer, object_refinement, logger_builder)->
     ref = object_refinement.build()
-
+    comps = ttm.lib.math.ExpressionComponentSource.build()
     logger = logger_builder.build(stringify_objects: false)
 
     buildIsEqual = (for_type, additional_method=false)->
@@ -26,23 +26,23 @@ ttm.define 'lib/math/expression_equality',
       logger.instrument(name: "buildIsEqual function", fn: isEqualFunction)
 
     # Addition
-    ref.forType(comps.addition, {
-      isEqual: (buildIsEqual(comps.addition))
+    ref.forType(comps.classes.addition, {
+      isEqual: (buildIsEqual(comps.classes.addition))
       })
 
     # Blank
-    ref.forType(comps.blank, {
-      isEqual: (buildIsEqual(comps.blank))
+    ref.forType(comps.classes.blank, {
+      isEqual: (buildIsEqual(comps.classes.blank))
       })
 
     # Division
-    ref.forType(comps.division, {
-      isEqual: (buildIsEqual(comps.division))
+    ref.forType(comps.classes.division, {
+      isEqual: (buildIsEqual(comps.classes.division))
       })
 
     # Exponentiation
-    ref.forType(comps.exponentiation, {
-      isEqual: (buildIsEqual(comps.exponentiation, "checkBaseAndPowerEquality")),
+    ref.forType(comps.classes.exponentiation, {
+      isEqual: (buildIsEqual(comps.classes.exponentiation, "checkBaseAndPowerEquality")),
       checkBaseAndPowerEquality: (other, eq_comp)->
         base_equal = ref.refine(@base()).isEqual(other.base(), eq_comp)
         power_equal = ref.refine(@power()).isEqual(other.power(), eq_comp)
@@ -50,7 +50,7 @@ ttm.define 'lib/math/expression_equality',
       })
 
     # Expression
-    ref.forType(comps.expression, {
+    ref.forType(comps.classes.expression, {
       isExpressionEqual: (other, eq_calc)->
         logger.info("isExpressionEqual", @unrefined(), other)
         match_error = @is_error == other.is_error
@@ -76,7 +76,7 @@ ttm.define 'lib/math/expression_equality',
 
       isEqual: (other, eq_calc)->
 
-        same_type = eq_calc.saveFalseForReport((other instanceof comps.expression), @unrefined(), other,
+        same_type = eq_calc.saveFalseForReport((other instanceof comps.classes.expression), @unrefined(), other,
           "Wrong types")
         if same_type
           @isExpressionEqual(other, eq_calc)
@@ -85,19 +85,19 @@ ttm.define 'lib/math/expression_equality',
     })
 
     # Equals
-    ref.forType(comps.equals, {
-      isEqual: (buildIsEqual(comps.equals))
+    ref.forType(comps.classes.equals, {
+      isEqual: (buildIsEqual(comps.classes.equals))
     })
 
 
     # Multiplication
-    ref.forType(comps.multiplication, {
-      isEqual: (buildIsEqual(comps.multiplication))
+    ref.forType(comps.classes.multiplication, {
+      isEqual: (buildIsEqual(comps.classes.multiplication))
       })
 
     # Number
-    ref.forType(comps.number, {
-      isEqual: (buildIsEqual(comps.number, "checkNumberValues")),
+    ref.forType(comps.classes.number, {
+      isEqual: (buildIsEqual(comps.classes.number, "checkNumberValues")),
       checkNumberValues: (other, eq_calc)->
 
         # this is bad; TODO fix
@@ -123,18 +123,18 @@ ttm.define 'lib/math/expression_equality',
     })
 
     # Pi
-    ref.forType(comps.pi, {
-      isEqual: (buildIsEqual(comps.pi))
+    ref.forType(comps.classes.pi, {
+      isEqual: (buildIsEqual(comps.classes.pi))
     })
 
     # Subtraction
-    ref.forType(comps.subtraction, {
-      isEqual: (buildIsEqual(comps.subtraction))
+    ref.forType(comps.classes.subtraction, {
+      isEqual: (buildIsEqual(comps.classes.subtraction))
     })
 
     # Root
-    ref.forType(comps.root, {
-      isEqual: (buildIsEqual(comps.root, "checkDegreeAndRadicand")),
+    ref.forType(comps.classes.root, {
+      isEqual: (buildIsEqual(comps.classes.root, "checkDegreeAndRadicand")),
       checkDegreeAndRadicand: (other, eq_calc)->
         degree_equal = ref.refine(@degree()).isEqual(other.degree(), eq_calc)
         radicand_equal = ref.refine(@radicand()).isEqual(other.radicand(), eq_calc)
@@ -143,8 +143,8 @@ ttm.define 'lib/math/expression_equality',
 
 
     # Variable
-    ref.forType(comps.variable, {
-      isEqual: (buildIsEqual(comps.variable, "checkNames")),
+    ref.forType(comps.classes.variable, {
+      isEqual: (buildIsEqual(comps.classes.variable, "checkNames")),
       checkNames: (other, eq_calc)->
         check = "#{@name()}" == "#{other.name()}"
         eq_calc.saveFalseForReport(check, @unrefined(), other, "Variable names not equal")

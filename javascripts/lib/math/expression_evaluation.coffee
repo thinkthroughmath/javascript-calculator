@@ -12,15 +12,15 @@ ttm.define "lib/math/expression_evaluation",
       @stack = (new Error()).stack
     MalformedExpressionError.prototype = new Error;
 
-    comps = ttm.require("lib/math/expression_components")
+    comps = ttm.lib.math.ExpressionComponentSource.build()
     refinement = object_refinement.build()
-    refinement.forType(comps.number,
+    refinement.forType(comps.classes.number,
       {
         eval: ->
           @  # a number returns itself when it evaluates
       });
 
-    refinement.forType(comps.exponentiation,
+    refinement.forType(comps.classes.exponentiation,
       {
         eval: (evaluation, pass)->
           return if pass != "exponentiation"
@@ -28,18 +28,18 @@ ttm.define "lib/math/expression_evaluation",
             base = refinement.refine(@base()).eval().toCalculable()
             power = refinement.refine(@power()).eval().toCalculable()
             logger.info("exponentiation", base, power)
-            comps.number.build(value: Math.pow(base, power))
+            comps.classes.number.build(value: Math.pow(base, power))
           else
             throw new MalformedExpressionError("Invalid Expression")
       });
 
-    refinement.forType(comps.pi,
+    refinement.forType(comps.classes.pi,
       {
         eval: ()->
-          comps.number.build(value: Math.PI)
+          comps.classes.number.build(value: Math.PI)
       });
 
-    refinement.forType(comps.addition,
+    refinement.forType(comps.classes.addition,
       {
         eval: (evaluation, pass)->
           return if pass != "addition"
@@ -48,12 +48,12 @@ ttm.define "lib/math/expression_evaluation",
           next = evaluation.nextValue()
           if prev && next
             evaluation.handledSurrounding()
-            comps.number.build(value: (parseFloat(prev) + parseFloat(next)))
+            comps.classes.number.build(value: (parseFloat(prev) + parseFloat(next)))
           else
             throw new MalformedExpressionError("Invalid Expression")
       });
 
-    refinement.forType(comps.subtraction,
+    refinement.forType(comps.classes.subtraction,
       {
         eval: (evaluation, pass)->
           return if pass != "addition"
@@ -62,13 +62,13 @@ ttm.define "lib/math/expression_evaluation",
           next = evaluation.nextValue()
           if prev && next
             evaluation.handledSurrounding()
-            comps.number.build(value: (parseFloat(prev) - parseFloat(next)))
+            comps.classes.number.build(value: (parseFloat(prev) - parseFloat(next)))
           else
             throw new MalformedExpressionError("Invalid Expression")
       });
 
 
-    refinement.forType(comps.multiplication,
+    refinement.forType(comps.classes.multiplication,
       {
         eval: (evaluation, pass)->
           return if pass != "multiplication"
@@ -76,14 +76,14 @@ ttm.define "lib/math/expression_evaluation",
           next = evaluation.nextValue()
           if prev && next
             evaluation.handledSurrounding()
-            comps.number.build(value: (parseFloat(prev) * parseFloat(next)))
+            comps.classes.number.build(value: (parseFloat(prev) * parseFloat(next)))
           else
             throw new MalformedExpressionError("Invalid Expression")
       });
 
 
 
-    refinement.forType(comps.division,
+    refinement.forType(comps.classes.division,
       {
         eval: (evaluation, pass)->
           return if pass != "multiplication"
@@ -91,13 +91,13 @@ ttm.define "lib/math/expression_evaluation",
           next = evaluation.nextValue()
           if prev && next
             evaluation.handledSurrounding()
-            comps.number.build(value: (parseFloat(prev) / parseFloat(next)))
+            comps.classes.number.build(value: (parseFloat(prev) / parseFloat(next)))
           else
             throw new MalformedExpressionError("Invalid Expression")
 
       });
 
-    refinement.forType(comps.expression,
+    refinement.forType(comps.classes.expression,
       {
         eval: ->
           expr = @expression
@@ -125,9 +125,9 @@ ttm.define "lib/math/expression_evaluation",
           throw e unless e instanceof MalformedExpressionError
 
         if results
-          @comps.expression.build(expression: [results])
+          @comps.classes.expression.build(expression: [results])
         else
-          @comps.expression.buildError()
+          @comps.classes.expression.buildError()
 
       evaluate: ()->
         refined = refinement.refine(@expression)
