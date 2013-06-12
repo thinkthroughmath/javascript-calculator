@@ -1,6 +1,6 @@
 #= require lib
 #= require lib/ranks
-#= require handlebars
+#= require handlebars.runtime
 #= require handlebars.helpers
 #= require templates/student_dashboard/leaderboard
 #= require templates/shared/_leaderboard_entry
