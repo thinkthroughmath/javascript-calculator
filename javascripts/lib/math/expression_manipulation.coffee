@@ -1,5 +1,6 @@
 #= require almond_wrapper
 #= require lib/math/expression_evaluation
+#= require lib/math/expression_traversal
 
 ttm.define "lib/math/expression_manipulation",
   ["lib/class_mixer",
