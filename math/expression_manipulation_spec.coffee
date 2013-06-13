@@ -37,20 +37,19 @@ describe "expression manipulations", ->
   describe "a proof-of-concept example", ->
     it "produces the correct result TODO make this larger", ->
       exp = @exp_builder()
-      position = ttm.lib.math.ExpressionPosition.build(position: exp.id(), expression: exp)
+      exp_pos = ttm.lib.math.ExpressionPosition.build(position: exp.id(), expression: exp)
+      exp_pos = @manip.build_append_number(value: 1).perform(exp_pos)
+      exp_pos = @manip.build_append_number(value: 0).perform(exp_pos)
+      exp_pos = @manip.build_append_multiplication().perform(exp_pos)
 
-      exp = @manip.build_append_number(value: 1).perform(exp, position).expression
-      exp = @manip.build_append_number(value: 0).perform(exp, position).expression
-      exp = @manip.build_append_multiplication().perform(exp, position).expression
-
-      exp = @manip.build_append_open_sub_expression().perform(exp, position).expression
-      exp = @manip.build_append_number(value: 2).perform(exp, position).expression
-      exp = @manip.build_append_addition().perform(exp, position).expression
-      exp = @manip.build_append_number(value: 4).perform(exp, position).expression
-      exp = @manip.build_close_sub_expression().perform(exp, position).expression
+      exp_pos = @manip.build_append_open_sub_expression().perform(exp_pos)
+      exp_pos = @manip.build_append_number(value: 2).perform(exp_pos)
+      exp_pos = @manip.build_append_addition().perform(exp_pos)
+      exp_pos = @manip.build_append_number(value: 4).perform(exp_pos)
+      exp_pos = @manip.build_close_sub_expression().perform(exp_pos)
 
       expected = @exp_builder(10, '*', [2, '+', 4])
-      expect(exp).toBeAnEqualExpressionTo expected
+      expect(exp_pos.expression()).toBeAnEqualExpressionTo expected
 
 
   describe "appending multiplication", ->
@@ -61,25 +60,21 @@ describe "expression manipulations", ->
         @exp_pos_builder(10)
 
     it "does nothing if the expression is empty", ->
-      exp = @exp_builder()
-      position = ttm.lib.math.ExpressionPosition.build(position: exp.id(), expression: exp)
-      exp = @manip.build_append_multiplication().perform(exp, position).expression
+      exp_pos = @exp_pos_builder()
+      exp_pos = @manip.build_append_multiplication().perform(exp_pos)
       expected = @exp_builder()
-      expect(exp).toBeAnEqualExpressionTo expected
-
-    it "appends a multiplication", ->
-      @exp = @exp_builder(10)
+      expect(exp_pos.expression()).toBeAnEqualExpressionTo expected
 
     it "adds multiplication to the end of the expression", ->
-      exp = @exp_builder(1)
-      results = @manip.build_append_multiplication().perform(exp)
-      expect(results.expression.last() instanceof @components.classes.multiplication).toEqual true
+      exp_pos = @exp_pos_builder(1)
+      results = @manip.build_append_multiplication().perform(exp_pos)
+      expect(results.expression().last() instanceof @components.classes.multiplication).toEqual true
 
     it "correctly adds multiplication to an exponentiation", ->
-      exp = @exp_builder('^': [1, 2])
-      new_exp = @manip.build_append_multiplication().perform(exp)
+      exp_pos = @exp_pos_builder('^': [1, 2])
+      new_exp = @manip.build_append_multiplication().perform(exp_pos)
       expected = @exp_builder({'^': [1, 2]}, '*')
-      expect(new_exp.expression).toBeAnEqualExpressionTo expected
+      expect(new_exp.expression()).toBeAnEqualExpressionTo expected
 
     it_inserts_component_into_the_last_nested_open_expression(
       name: 'multiplication'
