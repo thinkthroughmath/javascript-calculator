@@ -7,6 +7,8 @@ it_adheres_to_the_expression_component_interface = (opts)->
     it "returns the correct repsonse for isOperator", ->
       expect(@comp.isOperator()).toEqual opts.is_operator
 
+    it "responds to ID", ->
+      expect(@comp.id()).toEqual opts.id
 
 describe "Expression Components", ->
   beforeEach ->
@@ -18,8 +20,9 @@ describe "Expression Components", ->
   describe "Expression", ->
     it_adheres_to_the_expression_component_interface {
       instance_fn: ->
-        @comps.build_expression()
+        @comps.build_expression(id: 9876)
       is_operator: false
+      id: 9876
     }
 
     it "assigns components from its construtor", ->
@@ -79,16 +82,18 @@ describe "Expression Components", ->
   describe "division", ->
     it_adheres_to_the_expression_component_interface {
       instance_fn: ->
-        @comps.classes.division.build()
+        @comps.classes.division.build(id: 12345)
       is_operator: true
-      }
+      id: 12345
+    }
 
   describe "variables", ->
     it_adheres_to_the_expression_component_interface {
       instance_fn: ->
-        @comps.classes.variable.build(name: "example")
+        @comps.classes.variable.build(name: "example", id: 678)
       is_operator: false
-      }
+      id: 678
+    }
 
     it "will tell you its name", ->
       @variable = @comps.classes.variable.build(name: "doot")
