@@ -4,10 +4,12 @@ describe "expression to string conversion", ->
   beforeEach ->
     @to_string = ttm.require("lib/math/expression_to_string").toString
     @to_html_string = ttm.require("lib/math/expression_to_string").toHTMLString
-    @builder = ttm.require("lib/math/build_expression_from_javascript_object").buildExpression
+
+    builder_lib = ttm.require('lib/math/build_expression_from_javascript_object')
+    @builder = builder_lib.build(@comps).builderFunction()
+
   it "converts a simple addition expression", ->
     expect(@to_string(@builder(1, '+', 2))).toEqual "1 + 2"
-
 
   it "correctly displays a complicated decimal number", ->
     expect(@to_string(@builder(Math.PI))).toEqual "3.1416"
