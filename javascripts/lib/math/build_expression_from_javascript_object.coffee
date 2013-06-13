@@ -57,6 +57,18 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
       processBuildExpression: (data)->
         @process(data)
 
+      builderFunction: ->
+        =>
+          arguments_as_array = Array.prototype.slice.call(arguments, 0)
+          converted_part = @processBuildExpression(arguments_as_array)
+          converted_part
+
+      builderFunctionExpressionWithPositionAsLast: ->
+        =>
+          arguments_as_array = Array.prototype.slice.call(arguments, 0)
+          expression = @processBuildExpression(arguments_as_array)
+          ttm.lib.math.ExpressionPosition.buildExpressionPositionAsLast(expression)
+
     class_mixer BuildExpressionFromJavascriptObject
 
     class _JSObjectExpressionProcessor
@@ -197,12 +209,6 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
 
     class_mixer _FromStringLiteralObject
 
-    BuildExpressionFromJavascriptObject.buildExpression = ->
-      builder = BuildExpressionFromJavascriptObject.build()
-      arguments_as_array = Array.prototype.slice.call(arguments, 0)
-      converted_part = builder.processBuildExpression(arguments_as_array)
-      logger().info("returned converted from process in buildExpression", converted_part.toString(), arguments_as_array)
-      converted_part
 
     return BuildExpressionFromJavascriptObject
 
