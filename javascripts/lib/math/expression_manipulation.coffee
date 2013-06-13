@@ -158,7 +158,6 @@ ttm.define "lib/math/expression_manipulation",
 
         result_exp = _ExpressionManipulator.build(expression_position.expression()).clone().
           withComponent(expression_position, (component)=>
-
             _ImplicitMultiplication.build(@comps).invokeD(component)
             component.appendD(@comps.build_exponentiation(base: base, power: power))
           ).value()
@@ -174,15 +173,18 @@ ttm.define "lib/math/expression_manipulation",
         @position = @pos.build(new_exp.last().id())
         new_exp
 
-      perform: (expression, position)->
-        if expression.isEmpty()
-          expression: expression
-          position: position
-        else
-          expr = _FinalOpenSubExpressionApplication.build(expr: expression, comps: @comps).
-            performOrDefault((expr)=> @appendAction(expr))
-          expression: expr
-          position: @position
+      perform: (expression_position)->
+        expr = expression_position.expression()
+        return expression_position if expr.isEmpty()
+
+        result_exp = _ExpressionManipulator.build(expr).clone().
+          withComponent(expression_position, (component)=>
+            _OverrideIfOperatorOrAppend.build(@comps, component).withD(
+              @comps.build_multiplication()
+            )
+          ).value()
+
+        expression_position.clone(expression: result_exp)
 
     class_mixer(AppendMultiplication)
 
@@ -398,18 +400,30 @@ ttm.define "lib/math/expression_manipulation",
 
     class _OverrideIfOperatorOrAppend
       initialize: (@comps, @expression)->
-      with: (operator)->
+      with: (operator, append_method="append", replace_method="replaceLast")->
         last = @expression.last()
-        if last && last.isOperator()
-          if last instanceof @comps.classes.exponentiation
-            if last.power().isBlank()
-              @expression.replaceLast(operator)
+
+        action =
+          if last
+            if last.isOperator()
+              if last instanceof @comps.classes.exponentiation
+                "append"
+              else
+                "replace"
             else
-              @expression.append(operator)
+              "append"
           else
-            @expression.replaceLast(operator)
-        else
-          @expression.append(operator)
+            "append"
+
+        if action == "append"
+          @expression[append_method](operator)
+        else if action == "replace"
+          @expression[replace_method](operator)
+
+      # @destructive
+      withD: (operator)->
+        @with(operator, "appendD", "replaceLastD")
+
     class_mixer(_OverrideIfOperatorOrAppend)
 
 
