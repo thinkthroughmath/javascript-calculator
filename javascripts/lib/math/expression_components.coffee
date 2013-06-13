@@ -1,10 +1,14 @@
 #= require lib/math/base
 
 class ExpressionComponent
+  initialize: (opts={})->
+    @id_value = opts.id
   isOperator: -> false
   isNumber: -> false
   preceedingSubexpression: -> false
-  clone: -> @ # by default, cloning does nothing
+  clone: -> @klass.build()
+  id: -> @id_value
+  subExpressions: -> []
 
 class Equals extends ExpressionComponent
   toString: -> "="
@@ -26,6 +30,7 @@ class Expression extends ExpressionComponent
       @buildWithContent([content])
 
   initialize: (opts={})->
+    super
     defaults =
       is_open: false
       expression: []
@@ -40,7 +45,9 @@ class Expression extends ExpressionComponent
       expression: _.map(@expression, (it)-> it.clone())
       is_error: @is_error
       is_open: @is_open
-    @klass.build(_.extend({}, data, new_vals))
+      id: @id_value
+    other = @klass.build(_.extend({}, data, new_vals))
+    other
 
   # returns part of an expression
   last: (from_end=0)->
@@ -60,6 +67,8 @@ class Expression extends ExpressionComponent
 
   isBlank: ->
     @size() == 0
+
+  isEmpty: -> @isBlank()
 
   set: (expression)->
     @expression = expression
@@ -89,11 +98,14 @@ class Expression extends ExpressionComponent
       it.toString()).join(", ").value()
     "Expression(o: #{tf @is_open}, e: #{tf @is_error}, exp: [#{subexpressions}])"
 
+  subExpressions: -> @expression
+
 ttm.class_mixer(Expression)
 
 
 class Number extends ExpressionComponent
   initialize: (opts)->
+    super
     @val = opts.value
     @future_as_decimal = opts.future_as_decimal
 
@@ -155,6 +167,16 @@ class Exponentiation extends ExpressionComponent
 
   isPowerOpen: -> @power().isOpen()
 
+  subExpressions: ->
+    [@base(), @power()]
+
+  clone: (new_vals={})->
+    data =
+      base: @base().clone()
+      power: @power().clone()
+      id: @id_value
+    other = @klass.build(_.extend({}, data, new_vals))
+    other
 ttm.class_mixer(Exponentiation)
 
 class Pi extends ExpressionComponent
@@ -187,6 +209,7 @@ ttm.class_mixer(Blank)
 
 class Root extends ExpressionComponent
   initialize: (opts={})->
+    super
     @degree_value = opts.degree
     @radicand_value = opts.radicand
 
@@ -206,10 +229,14 @@ class Root extends ExpressionComponent
       radicand: @radicand_value
     @klass.build(_.extend({}, data, new_vals))
 
+  subExpressions: ->
+    [@degree(), @radicand()]
+
 ttm.class_mixer(Root)
 
 class Variable extends ExpressionComponent
   initialize: (opts={})->
+    super
     @name_value = opts.name
   name: -> @name_value
   toString: ->
@@ -220,9 +247,10 @@ class ExpressionIDSource
   initialize: ->
     @id = 0
   next: ->
-    ++@id;
+    next = ++@id
+    next
   current: ->
-    @id;
+    @id
 
 ttm.class_mixer(ExpressionIDSource)
 
@@ -239,7 +267,6 @@ components =
   blank: Blank
   root: Root
   variable: Variable
-
 
 class ExpressionComponentSource
   initialize: ->
