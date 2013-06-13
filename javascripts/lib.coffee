@@ -86,5 +86,9 @@ ttm.define "lib/object_refinement", ['lib/class_mixer'], (class_mixer)->
       subject instanceof @type
   class_mixer RefinementByType
 
+  ttm.defaults = (provided, defaults)->
+    _.extend({}, defaults, provided)
+
+
 
   return Refinement
