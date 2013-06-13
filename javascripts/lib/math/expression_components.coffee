@@ -78,6 +78,10 @@ class Expression extends ExpressionComponent
     expr.push new_last
     @clone(expression: expr)
 
+  # @destructive
+  appendD: (new_last)->
+    @expression.push new_last
+
   replaceLast: (new_last)->
     @withoutLast().append(new_last)
 
@@ -140,6 +144,13 @@ class Number extends ExpressionComponent
         "#{@val}#{number}"
     Number.build(value: new_val)
 
+  # @destructive
+  concatenateD: (number)->
+    if @future_as_decimal
+      @val = "#{@val}.#{number}"
+    else
+      @val = "#{@val}#{number}"
+
   futureAsDecimal: ->
     future_as_decimal = !@hasDecimal()
     @clone(future_as_decimal: future_as_decimal)
@@ -151,6 +162,7 @@ ttm.class_mixer(Number)
 
 class Exponentiation extends ExpressionComponent
   initialize: (opts={})->
+    super
     @baseval = opts.base
     @powerval = opts.power
   isOperator: -> true
