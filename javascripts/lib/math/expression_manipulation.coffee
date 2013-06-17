@@ -168,11 +168,6 @@ ttm.define "lib/math/expression_manipulation",
     class_mixer(AppendExponentiation)
 
     class AppendMultiplication extends ExpressionManipulation
-      appendAction: (expression)->
-        new_exp = _OverrideIfOperatorOrAppend.build(@comps, expression).with @comps.build_multiplication()
-        @position = @pos.build(new_exp.last().id())
-        new_exp
-
       perform: (expression_position)->
         expr = expression_position.expression()
         return expression_position if expr.isEmpty()
@@ -202,10 +197,16 @@ ttm.define "lib/math/expression_manipulation",
 
 
     class AppendAddition extends ExpressionManipulation
-      perform: (expression)->
-        _FinalOpenSubExpressionApplication.build(expr: expression, comps: @comps).
-          performOrDefault((expression)->
-            _OverrideIfOperatorOrAppend.build(@comps, expression).with @comps.build_addition())
+      perform: (expression_position)->
+        expr = expression_position.expression()
+        return expression_position if expr.isEmpty()
+
+        result_exp = _ExpressionManipulator.build(expr).clone().
+          withComponent(expression_position, (component)=>
+            _OverrideIfOperatorOrAppend.build(@comps, component).withD(@comps.build_addition())
+          ).value()
+
+        expression_position.clone(expression: result_exp)
 
     class_mixer(AppendAddition)
 
@@ -227,27 +228,31 @@ ttm.define "lib/math/expression_manipulation",
     class_mixer(Negation)
 
     class AppendOpenSubExpression extends ExpressionManipulation
-      action: (expression)->
+      perform: (expression_position)->
+        expr = expression_position.expression()
         new_exp = @comps.build_expression().open()
-        @pointer = @pos.build(position: new_exp.id())
-        _ImplicitMultiplication.build(@comps).
-          invoke(expression).
-          append(new_exp)
 
-      perform: (expression)->
-        exp = _FinalOpenSubExpressionApplication.build(expr: expression, comps: @comps).
-          performOrDefault((expression)=> @action(expression))
-        expression: exp
-        position: @pointer
+        result_exp = _ExpressionManipulator.build(expr).clone().
+          withComponent(expression_position, (component)=>
+            _ImplicitMultiplication.build(@comps).
+              invoke(component).
+              appendD(new_exp)
+          ).value()
 
+        expression_position.clone(expression: result_exp, position: new_exp.id())
 
     class_mixer(AppendOpenSubExpression)
 
     class CloseSubExpression extends ExpressionManipulation
-      perform: (expression)->
-        ret = _FinalOpenSubExpressionApplication.build(expr: expression, comps: @comps).
-          perform((expression)-> expression.close())
-        ret
+      perform: (expression_position)->
+        expr = expression_position.expression()
+        result_exp = _ExpressionManipulator.build(expr).clone().
+          withComponent(expression_position, (component)=>
+            component.closeD()
+            parent = component.parent()
+            @position_id = if parent then parent.id() else component.id()
+          ).value()
+        expression_position.clone(expression: result_exp, position: @position_id)
     class_mixer(CloseSubExpression)
 
     # TODO this needs to ahve final open sub expression application

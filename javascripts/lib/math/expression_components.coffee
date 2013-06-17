@@ -3,12 +3,15 @@
 class ExpressionComponent
   initialize: (opts={})->
     @id_value = opts.id
+    @parent_value = opts.parent
   isOperator: -> false
   isNumber: -> false
   preceedingSubexpression: -> false
-  clone: -> @klass.build()
+  clone: (opts={})-> @klass.build(opts)
   id: -> @id_value
   subExpressions: -> []
+  parent: -> @parent_value
+  withParent: (parent)-> @clone(parent: parent)
 
 class Equals extends ExpressionComponent
   toString: -> "="
@@ -31,12 +34,17 @@ class Expression extends ExpressionComponent
 
   initialize: (opts={})->
     super
+
     defaults =
       is_open: false
       expression: []
       is_error: false
     opts = _.extend({}, defaults, opts)
-    @expression = opts.expression
+
+    @expression = []
+    for part in opts.expression
+      @expression.push(part.withParent(@))
+
     @is_error = opts.is_error
     @is_open = opts.is_open
 
@@ -82,6 +90,8 @@ class Expression extends ExpressionComponent
   appendD: (new_last)->
     @expression.push new_last
 
+
+
   replaceLast: (new_last)->
     @withoutLast().append(new_last)
 
@@ -95,6 +105,8 @@ class Expression extends ExpressionComponent
   isOpen: -> @is_open
   open: -> @clone(is_open: true)
   close: -> @clone(is_open: false)
+
+  closeD: -> @is_open = false;
 
   toString: ->
     tf = (it)-> it ? "t" : "f"
