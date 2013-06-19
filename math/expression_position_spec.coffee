@@ -13,11 +13,3 @@ describe "expression position library", ->
   it "holds the id of the node that is currently being pointed to", ->
     ep = @ep_builder.build(position: 10)
     expect(ep.position()).toEqual 10
-
-
-  describe "building with pointer at end of expression", ->
-    it "sets the pointer", ->
-      basic = @builder()
-      output = @ep_builder.builderFunctionForExpressionPositionAsLast(basic)
-      expect(output.expression()).toBeAnEqualExpressionTo(basic)
-      expect(output.position()).toEqual(basic.id())

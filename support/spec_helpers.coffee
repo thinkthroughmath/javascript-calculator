@@ -41,6 +41,11 @@ window.f = (html="")->
 window.logger = -> window._logger ||= ttm.require('logger').build(stringify_objects: false)
 logger().setLogLevel('firehose')
 
+
+window.parsedDomText = (txt)->
+  $("<p>#{txt}</p>").text()
+
+
 beforeEach ->
   @addMatchers(
     toBeInstanceOf: (type)->

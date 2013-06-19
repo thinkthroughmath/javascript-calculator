@@ -95,9 +95,24 @@ describe "expression manipulations", ->
 
 
   describe "exponentiate last element", ->
+    it_plays_manipulation_role
+      subject: ->
+        @manip.build_exponentiate_last()
+      expression_for_performance: ->
+        @exp_pos_builder()
+
+    it_inserts_components_where_pointed_to(
+      name: 'exponentiation'
+      subject: -> @manip.build_exponentiate_last()
+      basic_start_expression: -> @exp_pos_builder 1
+      basic_should_equal_after: -> @exp_builder '^': [1,{open_expression: null}]
+    )
+
+
     describe "on a single number-only expression", ->
       beforeEach ->
-        @new_exp = @manip.build_exponentiate_last().perform(@exp)
+        exp = @exp_pos_builder(10)
+        @new_exp = @manip.build_exponentiate_last().perform(exp).expression()
 
       it "replaces the content of the expression with an exponentiation", ->
         expect(@new_exp.first()).toBeInstanceOf @components.classes.exponentiation
@@ -107,15 +122,15 @@ describe "expression manipulations", ->
 
     describe "on an expression that currently ends with an operator ", ->
       it "replaces the trailing operator", ->
-        exp = @exp_builder(10, '+')
-        new_exp = @manip.build_exponentiate_last().perform(exp)
+        exp = @exp_pos_builder(10, '+')
+        new_exp = @manip.build_exponentiate_last().perform(exp).expression()
         expected = @exp_builder('^': [10, {open_expression: null}])
         expect(new_exp).toBeAnEqualExpressionTo expected
 
     describe "on an expression that has a trailing exponent", ->
       it "manipulates expression correctly", ->
-        exp = @exp_builder('^': [10, {open_expression: null}])
-        new_exp = @manip.build_exponentiate_last().perform(exp)
+        exp = @exp_pos_builder('^': [10, {open_expression: null}])
+        new_exp = @manip.build_exponentiate_last().perform(exp).expression()
         expected = @exp_builder('^': [10, {open_expression: null}])
         expect(new_exp).toBeAnEqualExpressionTo expected
 
@@ -205,8 +220,8 @@ describe "expression manipulations", ->
 
   describe "appending an equals", ->
     it "inserts an equals sign into the equation", ->
-      @exp = @exp_builder(1, '+', 3)
-      new_exp = @manip.build_append_equals().perform(@exp)
+      @exp = @exp_pos_builder(1, '+', 3)
+      new_exp = @manip.build_append_equals().perform(@exp).expression()
       expected = @exp_builder(1, '+', 3, '=')
       expect(new_exp).toBeAnEqualExpressionTo expected
 
@@ -240,7 +255,7 @@ describe "expression manipulations", ->
 
     describe "when adding to a sub-expression", ->
       it "should add everything correctly", ->
-        exp = @exp_builder()
+        exp = @exp_pos_builder()
         exp = @manip.build_append_number(value: 6).perform(exp)
         exp = @manip.build_append_addition().perform(exp)
 
@@ -253,7 +268,7 @@ describe "expression manipulations", ->
         exp = @manip.build_close_sub_expression().perform(exp)
         expected = @exp_builder(6, '+', [6, '+', []])
 
-        expect(exp).toBeAnEqualExpressionTo expected
+        expect(exp.expression()).toBeAnEqualExpressionTo expected
 
   describe "closing a sub expression", ->
     it_plays_manipulation_role
@@ -295,15 +310,23 @@ describe "expression manipulations", ->
         @exp_pos_builder(10)
 
     it "adds a division to the expression", ->
-      exp = @exp_builder(1)
+      exp = @exp_pos_builder(1)
 
       new_exp = @manip.build_append_division().perform(exp)
-      expect(new_exp.last() instanceof @components.classes.division).toBeTruthy()
+      expect(new_exp.expression().last() instanceof @components.classes.division).toBeTruthy()
 
-    it_inserts_component_into_the_last_nested_open_expression(
+
+    it_inserts_components_where_pointed_to(
       name: 'division'
-      manipulator: -> @manip.build_append_division()
-      should_equal_after: (builder)-> builder(open_expression: {open_expression: ['/']}))
+      subject: -> @manip.build_append_division()
+      basic_start_expression: -> @exp_pos_builder 1
+      basic_should_equal_after: -> @exp_builder 1, '/'
+    )
+
+    # it_inserts_component_into_the_last_nested_open_expression(
+    #   name: 'division'
+    #   manipulator: -> @manip.build_append_division()
+    #   should_equal_after: (builder)-> builder(open_expression: {open_expression: ['/']}))
 
 
   describe "appending addition", ->
@@ -333,15 +356,18 @@ describe "expression manipulations", ->
       expression_for_performance: ->
         @exp_pos_builder(10)
 
-    it "adds subtraction to the end of the expression", ->
-      exp = @exp_builder(1)
-      new_exp = @manip.build_append_subtraction().perform(exp)
-      expect(new_exp.last() instanceof @components.classes.subtraction).toEqual true
-
-    it_inserts_component_into_the_last_nested_open_expression(
+    it_inserts_components_where_pointed_to(
       name: 'subtraction'
-      manipulator: -> @manip.build_append_subtraction()
-      should_equal_after: (builder)-> builder(open_expression: {open_expression: ['-']}))
+      subject: -> @manip.build_append_subtraction()
+      basic_start_expression: -> @exp_pos_builder 1
+      basic_should_equal_after: -> @exp_builder 1, '-'
+    )
+
+
+    it "adds subtraction to the end of the expression", ->
+      exp = @exp_pos_builder(1)
+      new_exp = @manip.build_append_subtraction().perform(exp)
+      expect(new_exp.expression().last() instanceof @components.classes.subtraction).toEqual true
 
   describe "appending a decimal", ->
     it_plays_manipulation_role
@@ -350,18 +376,21 @@ describe "expression manipulations", ->
       expression_for_performance: ->
         @exp_pos_builder(10)
 
+
+    it_inserts_components_where_pointed_to(
+      name: 'append decimal'
+      subject: -> @manip.build_append_decimal()
+      basic_start_expression: -> @exp_pos_builder '1'
+      basic_should_equal_after: -> @exp_builder '1.'
+    )
+
+
     it "correctly adds a decimal to the value", ->
-      exp = @components.build_expression()
+      exp = @exp_pos_builder()
       exp = @manip.build_append_number(value: 1).perform(exp)
       exp = @manip.build_append_decimal().perform(exp)
       exp = @manip.build_append_number(value: 1).perform(exp)
-      @expect_value(exp, '1.1')
-
-    it_inserts_component_into_the_last_nested_open_expression(
-      name: 'decimal'
-      manipulator: -> @manip.build_append_decimal()
-      should_equal_after: (builder)-> builder(open_expression: {open_expression: ['0.']}))
-
+      @expect_value(exp.expression(), '1.1')
 
   describe "square expression", ->
     it_plays_manipulation_role
@@ -371,9 +400,9 @@ describe "expression manipulations", ->
         @exp_pos_builder(10)
 
     it "returns a squared expression", ->
-      exp = @exp_builder(10)
+      exp = @exp_pos_builder(10)
       squared = @manip.build_square().perform(exp)
-      @expect_value(squared, '100')
+      @expect_value(squared.expression(), '100')
 
   describe "AppendRoot", ->
     it_plays_manipulation_role
@@ -383,20 +412,12 @@ describe "expression manipulations", ->
         @exp_pos_builder(10)
 
     it "adds a mulitplication and root to the expression", ->
-      exp = @exp_builder([1])
+      exp = @exp_pos_builder([1])
 
-      new_exp = @manip.build_append_root(degree: 2).perform(exp)
+      new_exp = @manip.build_append_root(degree: 2).perform(exp).expression()
 
-      expect(new_exp.last() instanceof @components.classes.root).toBeTruthy()
-      expect(new_exp.last(1) instanceof @components.classes.multiplication).toBeTruthy()
-
-    it "adds a root with a radicand that is an open expression", ->
-      exp = @exp_builder([1])
-
-      new_exp = @manip.build_append_root(degree: 2).perform(exp)
-
-      expect(new_exp.last() instanceof @components.classes.root).toBeTruthy()
-      expect(new_exp.last().radicand().isOpen()).toBeTruthy()
+      expect(new_exp.last()).toBeInstanceOf @components.classes.root
+      expect(new_exp.last(1)).toBeInstanceOf @components.classes.multiplication
 
   describe "AppendVariable", ->
     it_plays_manipulation_role
@@ -406,14 +427,13 @@ describe "expression manipulations", ->
         @exp_pos_builder(10)
 
     it "adds itself to an empty expression", ->
-      exp = @exp_builder()
-      append_var = @manip.build_append_variable(variable: "doot")
-      new_exp = append_var.perform(exp)
+      exp = @exp_pos_builder()
+      new_exp = @manip.build_append_variable(variable: "doot").perform(exp)
       expected = @exp_builder(variable: "doot")
-      expect(new_exp).toBeAnEqualExpressionTo expected
+      expect(new_exp.expression()).toBeAnEqualExpressionTo expected
 
 
-  describe "Reset", ->
+  describe "reset expression", ->
     it_plays_manipulation_role
       subject: ->
         @manip.build_reset()
@@ -437,10 +457,10 @@ describe "expression manipulations", ->
         @manip.build_update_position()
 
       expression_for_performance: ->
-        false
+        @exp_pos_builder()
 
 
-  describe "NegationManipulation", ->
+  describe "negate last", ->
     it_plays_manipulation_role
       subject: ->
         @manip.build_negate_last()
@@ -448,26 +468,31 @@ describe "expression manipulations", ->
         @exp_pos_builder(10)
 
     it "will negate the last element", ->
-      exp = @exp_builder(1)
+      exp = @exp_pos_builder(1)
       new_exp = @manip.build_negate_last().perform(exp)
-      expect(new_exp.last().value()).toEqual -1
+      expect(new_exp.expression().last().value()).toEqual -1
 
-  describe "AppendPi", ->
+  describe "append pi", ->
     it_plays_manipulation_role
       subject: ->
         @manip.build_append_pi()
 
+      expression_for_performance: ->
+        @exp_pos_builder(10)
+
     it "adds a mulitplication and pi to the expression", ->
-      exp = @exp_builder(1)
-      new_exp = @manip.build_append_pi().perform(exp)
-      expect(new_exp.last() instanceof @components.classes.pi).toBeTruthy()
-      expect(new_exp.last(1) instanceof @components.classes.multiplication).toBeTruthy()
+      exp = @exp_pos_builder(1)
+      new_exp = @manip.build_append_pi().perform(exp).expression()
+      expect(new_exp.last()).toBeInstanceOf @components.classes.pi
+      expect(new_exp.last(1)).toBeInstanceOf @components.classes.multiplication
 
 
-  describe "SquareRootManipulation", ->
+  describe "take the square root", ->
     it_plays_manipulation_role
       subject: ->
         @manip.build_square_root()
+      expression_for_performance: ->
+        @exp_pos_builder(10)
 
     it "finds the square root of an expression", ->
       exp = @exp_pos_builder([4])

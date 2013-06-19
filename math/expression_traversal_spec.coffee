@@ -18,7 +18,5 @@ describe "expression traversal", ->
     exponentiation = @comps.build_exponentiation(power: power, base: base)
 
     expression = @comps.build_expression().append(exponentiation)
-
     power_node = @expression_traversal.build(expression).findForID(power_id)
-
     expect(power_node.id()).toEqual power_id
