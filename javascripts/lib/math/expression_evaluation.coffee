@@ -24,7 +24,7 @@ ttm.define "lib/math/expression_evaluation",
       {
         eval: (evaluation, pass)->
           return if pass != "exponentiation"
-          if @base() && @power()
+          if !@base().isEmpty() && !@power().isEmpty()
             base = refinement.refine(@base()).eval().toCalculable()
             power = refinement.refine(@power()).eval().toCalculable()
             logger.info("exponentiation", base, power)
@@ -113,6 +113,7 @@ ttm.define "lib/math/expression_evaluation",
           _(expr).first()
       });
 
+
     class ExpressionEvaluation
       initialize: (@expression, @opts={})->
         @comps = @opts.comps || comps
@@ -123,11 +124,10 @@ ttm.define "lib/math/expression_evaluation",
           results = @evaluate()
         catch e
           throw e unless e instanceof MalformedExpressionError
-
         if results
-          @comps.classes.expression.build(expression: [results])
+          @comps.build_expression(expression: [results])
         else
-          @comps.classes.expression.buildError()
+          @expression.clone(is_error: true)
 
       evaluate: ()->
         refined = refinement.refine(@expression)

@@ -7,11 +7,13 @@ class ExpressionComponent
   isOperator: -> false
   isNumber: -> false
   preceedingSubexpression: -> false
-  clone: (opts={})-> @klass.build(opts)
+  cloneData: (opts)=> ttm.defaults(opts, {id: @id_value, parent: @parent_value})
+  clone: (opts={})-> @klass.build(@cloneData(opts))
   id: -> @id_value
   subExpressions: -> []
   parent: -> @parent_value
-  withParent: (parent)-> @clone(parent: parent)
+  withParent: (parent)->
+    ret = @clone(parent: parent)
 
 class Equals extends ExpressionComponent
   toString: -> "="
@@ -34,7 +36,6 @@ class Expression extends ExpressionComponent
 
   initialize: (opts={})->
     super
-
     defaults =
       is_open: false
       expression: []
@@ -90,22 +91,28 @@ class Expression extends ExpressionComponent
   appendD: (new_last)->
     @expression.push new_last
 
-
-
   replaceLast: (new_last)->
     @withoutLast().append(new_last)
+
+  # @destructive
+  replaceLastD: (new_last)->
+    new_last = new_last.withParent(@)
+    @expression[@expression.length-1] = new_last
 
   withoutLast: ->
     expr = _.clone(@expression)
     expr = expr.slice(0, expr.length-1)
     @clone(expression: expr)
 
+  # @destructive
+  withoutLastD: ->
+    @expression.splice(@expression.length-1, 1)
+
   isError: -> @is_error
 
   isOpen: -> @is_open
   open: -> @clone(is_open: true)
   close: -> @clone(is_open: false)
-
   closeD: -> @is_open = false;
 
   toString: ->
@@ -134,17 +141,19 @@ class Number extends ExpressionComponent
     value = @val * -1
     Number.build(value: value)
 
+  # @destructive
+  negatedD: ->
+    @val *= -1
+
   toCalculable: ->
     parseFloat(@val)
 
-  clone: (opts={})->
-    opts = _.extend({},
+  cloneData: (opts={})->
+    ttm.defaults(super,
       {
         value: @val
         future_as_decimal: @future_as_decimal
-      },
-      opts)
-    Number.build(opts)
+      })
 
   value: -> @val
 
@@ -162,10 +171,15 @@ class Number extends ExpressionComponent
       @val = "#{@val}.#{number}"
     else
       @val = "#{@val}#{number}"
+    @future_as_decimal = false
 
   futureAsDecimal: ->
     future_as_decimal = !@hasDecimal()
     @clone(future_as_decimal: future_as_decimal)
+
+  # @destructive
+  futureAsDecimalD: (value)->
+    @future_as_decimal = value
 
   hasDecimal: ->
     /\./.test(@val)
@@ -263,6 +277,11 @@ class Variable extends ExpressionComponent
     super
     @name_value = opts.name
   name: -> @name_value
+  clone: (new_vals={})->
+    data =
+      name: @name_value
+    @klass.build(ttm.defaults(new_vals, data))
+
   toString: ->
     "Var(#{@name()})"
 ttm.class_mixer(Variable)

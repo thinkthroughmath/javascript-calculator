@@ -8,9 +8,9 @@
 #= require lib/logger
 
 ttm.define "calculator",
-  ["lib/class_mixer", "lib/math", "widgets/ui_elements", "lib/math/buttons", 'lib/math/expression_to_string', 'logger'],
+  ["lib/class_mixer", "lib/math", "widgets/ui_elements", "lib/math/buttons", 'lib/math/expression_to_string', 'logger', 'lib/historic_value'],
   (class_mixer, math, ui_elements, math_buttons,
-    expression_to_string, logger_builder)->
+    expression_to_string, logger_builder, historic_value)->
     components = ttm.lib.math.ExpressionComponentSource.build()
     logger = logger_builder.build()
 
@@ -27,12 +27,15 @@ ttm.define "calculator",
 
       initialize: (@element, @math, @logger)->
         @view = CalculatorView.build(@, @element, @math)
-        @current_expression = components.build_expression()
-        @expression_history = []
+        @expression_position = historic_value.build()
+        @updateCurrentExpressionWithCommand @math.commands.build_reset()
 
       displayValue: ->
-        if !@current_expression.isError()
-          val = expression_to_string.toHTMLString(@current_expression)
+        console.log @expression_position.current().expression
+        debugger unless typeof @expression_position.current().expression == 'function'
+        exp = @expression_position.current().expression()
+        if !exp.isError()
+          val = expression_to_string.toHTMLString(exp)
           if val.length == 0
             '0'
           else
@@ -47,21 +50,18 @@ ttm.define "calculator",
 
       errorMsg: -> "Error"
 
-      updateCurrentExpression: (new_exp)->
-        @reset_on_next_number = false
-        @expression_history.push @current_expression
-        @current_expression = new_exp
-        @display()
-        @current_expression
-
       updateCurrentExpressionWithCommand: (command)->
-        @updateCurrentExpression(command.invoke(@current_expression))
+        new_exp = command.perform(@expression_position.current())
+        @reset_on_next_number = false
+        @expression_position.update(new_exp)
+        @display()
+        @expression_position.current()
 
       # specification actions
       numberClick: (button_options)->
         if @reset_on_next_number
           @reset_on_next_number = false
-          @updateCurrentExpression components.build_expression()
+          @updateCurrentExpressionWithCommand @math.commands.build_reset()
 
         cmd = @math.commands.build_append_number(value: button_options.value)
         @updateCurrentExpressionWithCommand cmd
@@ -89,7 +89,7 @@ ttm.define "calculator",
 
       # command actions
       clearClick: ->
-        @updateCurrentExpression components.build_expression()
+        @updateCurrentExpressionWithCommand @math.commands.build_reset()
 
       equalsClick: ->
         @updateCurrentExpressionWithCommand @math.commands.build_calculate()
@@ -104,7 +104,7 @@ ttm.define "calculator",
         @reset_on_next_number = true
 
       lparenClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.build_open_sub_expression()
+        @updateCurrentExpressionWithCommand @math.commands.build_append_open_sub_expression()
 
       rparenClick: ->
         @updateCurrentExpressionWithCommand @math.commands.build_close_sub_expression()

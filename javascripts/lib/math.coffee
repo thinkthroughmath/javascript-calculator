@@ -15,6 +15,6 @@ ttm.define "lib/math",
       equation: comps.equation
       expression: comps.expression
       components: comps
-      commands: manipulation.build(comps)
+      commands: manipulation.build(comps, ttm.lib.math.ExpressionPosition)
     return exports
 
