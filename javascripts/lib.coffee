@@ -1,14 +1,24 @@
 #= require almond_wrapper
 #= require underscore-min
 #= require lib/class_mixer
+#= require lib/logger
 
-window.AP = (object)->
+
+window.ttm ||= {}
+
+ttm.defaults = (provided, defaults)->
+  _.extend({}, defaults, provided)
+
+window.logger ||= window.ttm.Logger.buildProduction(stringify_objects: false)
+
+ttm.AP = (object)->
   str = "#{object.constructor.name}"
   str += "{ "
   for key, value of object
     str += "#{key}: #{value}"
   str += " }"
   str
+
 window.ttm ||= {}
 window.ttm.dashboard ||= {}
 window.ttm.decorators ||= {}
@@ -77,7 +87,4 @@ ttm.define "lib/object_refinement", ['lib/class_mixer'], (class_mixer)->
 
   return Refinement
 
-
-ttm.defaults = (provided, defaults)->
-  _.extend({}, defaults, provided)
 
