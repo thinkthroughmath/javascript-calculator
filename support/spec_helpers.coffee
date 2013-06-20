@@ -3,8 +3,6 @@
 # a number of jasmine-jquery helpers / extensions
 # it totally used to do this natively, but now doesn't...
 
-
-
 LOGGING_TYPE="silent"
 window.logger = switch LOGGING_TYPE
   when "silent" then window.ttm.Logger.buildSilent(stringify_objects: false)
@@ -21,6 +19,7 @@ class_mixer RegexpSpecFilter
 
 override_spec_filter_with = RegexpSpecFilter.build(/opening/)
 override_spec_filter_with = RegexpSpecFilter.build(/wip/)
+override_spec_filter_with = RegexpSpecFilter.build(/calc/)
 override_spec_filter_with = false
 
 if override_spec_filter_with
