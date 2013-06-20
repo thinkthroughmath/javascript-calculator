@@ -1,16 +1,13 @@
 #= require lib
-#= require lib/logger
 #= require lib/math/expression_components
 #= require lib/math/expression_equality
 #= require almond_wrapper
 
 ttm.define 'lib/math/expression_equality',
-  ['lib/class_mixer', 'lib/object_refinement','logger'],
-  (class_mixer, object_refinement, logger_builder)->
+  ['lib/class_mixer', 'lib/object_refinement'],
+  (class_mixer, object_refinement)->
     ref = object_refinement.build()
     comps = ttm.lib.math.ExpressionComponentSource.build()
-    logger = logger_builder.build(stringify_objects: false)
-
     buildIsEqual = (for_type, additional_method=false)->
       isEqualFunction = (other, eq_calc)->
         same_type = (other instanceof for_type)

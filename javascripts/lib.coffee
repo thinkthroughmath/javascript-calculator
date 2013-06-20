@@ -1,6 +1,6 @@
 #= require almond_wrapper
 #= require underscore-min
-#= require lib/logger
+#= require lib/class_mixer
 
 window.AP = (object)->
   str = "#{object.constructor.name}"
@@ -13,18 +13,6 @@ window.ttm ||= {}
 window.ttm.dashboard ||= {}
 window.ttm.decorators ||= {}
 window.ttm.lib ||= {}
-
-ttm.ClassMixer = ttm.class_mixer = (klass)->
-  klass.build = ->
-    it = new klass
-    it.initialize && it.initialize.apply(it, arguments)
-    it
-  klass.prototype.klass = klass
-  klass
-
-ttm.define "lib/class_mixer", ->
-  return ttm.ClassMixer
-
 
 ttm.define "lib/historic_value", ->
   build = ->

@@ -5,14 +5,12 @@
 #= require widgets/ui_elements
 #= require lib/math/expression_to_string
 #= require lib/math/expression_components
-#= require lib/logger
 
 ttm.define "calculator",
-  ["lib/class_mixer", "lib/math", "widgets/ui_elements", "lib/math/buttons", 'lib/math/expression_to_string', 'logger', 'lib/historic_value'],
+  ["lib/class_mixer", "lib/math", "widgets/ui_elements", "lib/math/buttons", 'lib/math/expression_to_string', 'lib/historic_value'],
   (class_mixer, math, ui_elements, math_buttons,
-    expression_to_string, logger_builder, historic_value)->
+    expression_to_string, historic_value)->
     components = ttm.lib.math.ExpressionComponentSource.build()
-    logger = logger_builder.build()
 
     open_widget_dialog = (element)->
       if element.empty()
@@ -31,8 +29,6 @@ ttm.define "calculator",
         @updateCurrentExpressionWithCommand @math.commands.build_reset()
 
       displayValue: ->
-        console.log @expression_position.current().expression
-        debugger unless typeof @expression_position.current().expression == 'function'
         exp = @expression_position.current().expression()
         if !exp.isError()
           val = expression_to_string.toHTMLString(exp)
@@ -41,6 +37,7 @@ ttm.define "calculator",
           else
             val
         else
+          logger.warn("display value is error")
           @errorMsg()
 
       display: ->

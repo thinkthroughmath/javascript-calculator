@@ -1,11 +1,6 @@
-#= require lib/logger
-
 ttm.define "lib/math/expression_evaluation",
-  ['lib/class_mixer', 'lib/object_refinement', 'logger'],
-  (class_mixer, object_refinement, logger_builder)->
-
-    logger = logger_builder.build(stringify_objects: false)
-
+  ['lib/class_mixer', 'lib/object_refinement'],
+  (class_mixer, object_refinement)->
     MalformedExpressionError = (message)->
       @name = 'MalformedExpressionError'
       @message = message

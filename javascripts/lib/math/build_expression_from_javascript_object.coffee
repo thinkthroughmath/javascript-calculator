@@ -98,7 +98,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           else subexp
         @expression_converter.convert(maybe_wrapped).open()
 
-      convert: logger().instrument(name: "_FromOpenExpressionObject#convert", fn: convert)
+      convert: logger.instrument(name: "_FromOpenExpressionObject#convert", fn: convert)
 
     class_mixer _FromOpenExpressionObject
 
