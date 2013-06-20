@@ -1,9 +1,16 @@
+#= require lib/logger
+
 # a number of jasmine-jquery helpers / extensions
 # it totally used to do this natively, but now doesn't...
 
 
 
-class_mixer = ttm.require('lib/class_mixer')
+LOGGING_TYPE="silent"
+window.logger = switch LOGGING_TYPE
+  when "silent" then window.ttm.Logger.buildSilent(stringify_objects: false)
+  when "verbose" then window.ttm.Logger.buildVerbose(stringify_objects: false)
+  else window.ttm.Logger.buildProduction(stringify_objects: false)
+class_mixer = ttm.class_mixer
 
 class RegexpSpecFilter
   initialize: (@regexp)->
@@ -38,10 +45,6 @@ window.f = (html="")->
   cont
 
 
-window.logger = -> window._logger ||= ttm.require('logger').build(stringify_objects: false)
-logger().setLogLevel('firehose')
-
-
 window.parsedDomText = (txt)->
   $("<p>#{txt}</p>").text()
 
@@ -58,7 +61,6 @@ beforeEach ->
       @actual && @actual instanceof type
 
     toBeAnEqualExpressionTo: (other)->
-
       @message = ->
         msg = "Expected #{@actual.toString()} to be equal to #{other.toString()}"
         if @check.report_saved
@@ -70,6 +72,7 @@ beforeEach ->
         @check.isEqual()
       else
         false
+
   )
 
 
