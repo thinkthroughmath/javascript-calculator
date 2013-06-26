@@ -2,7 +2,7 @@
 #= require widgets/ui_elements
 #= require lib
 
-ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer', 'lib/math'], (ui_elements, class_mixer, math)->
+ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer'], (ui_elements, class_mixer)->
 
   class ButtonBuilder
     initialize: (@opts={})->

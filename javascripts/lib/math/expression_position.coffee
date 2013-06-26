@@ -1,9 +1,6 @@
 #= require ./base
 
 
-position_at_end = (expression)->
-  expression.id()
-
 class ExpressionPosition
   initialize: (opts={})->
     @expr = opts.expression
@@ -26,9 +23,8 @@ class ExpressionPosition
     other = @klass.build(_.extend({}, data, new_vals))
     other
 
-
   @buildExpressionPositionAsLast: (expression)->
-    @build expression: expression, position: position_at_end(expression)
+    @build expression: expression, position:   expression.id()
 
 ttm.lib.math.ExpressionPosition = ttm.class_mixer(ExpressionPosition)
 

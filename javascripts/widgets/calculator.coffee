@@ -7,8 +7,8 @@
 #= require lib/math/expression_components
 
 ttm.define "calculator",
-  ["lib/class_mixer", "lib/math", "widgets/ui_elements", "lib/math/buttons", 'lib/math/expression_to_string', 'lib/historic_value'],
-  (class_mixer, math, ui_elements, math_buttons,
+  ["lib/class_mixer", "widgets/ui_elements", "lib/math/buttons", 'lib/math/expression_to_string', 'lib/historic_value'],
+  (class_mixer,  ui_elements, math_buttons,
     expression_to_string, historic_value)->
     components = ttm.lib.math.ExpressionComponentSource.build()
 
@@ -21,6 +21,7 @@ ttm.define "calculator",
 
     class Calculator
       @build_widget: (element)->
+        math = ttm.lib.math.math_lib.build()
         Calculator.build(element, math, logger)
 
       initialize: (@element, @math, @logger)->

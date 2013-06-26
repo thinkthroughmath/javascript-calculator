@@ -1,6 +1,7 @@
 #= require almond_wrapper
 #= require lib/math/expression_evaluation
 #= require lib/math/expression_traversal
+#= require ./base
 
 ttm.define "lib/math/expression_manipulation",
   ["lib/class_mixer",
@@ -545,7 +546,10 @@ ttm.define "lib/math/expression_manipulation",
         (opts={})->
           opts.comps = @comps
           opts.pos = @pos
+          opts.traversal = @traversal
           klass.build(opts)
       ExpressionManipulationSource.prototype["build_#{name}"] = build_klass
+
+    window.ttm.lib.math.ExpressionManipulationSource = ExpressionManipulationSource
 
     return ExpressionManipulationSource

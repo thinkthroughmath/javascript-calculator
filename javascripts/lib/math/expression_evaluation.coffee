@@ -1,13 +1,9 @@
-ttm.define "lib/math/expression_evaluation",
-  ['lib/class_mixer', 'lib/object_refinement'],
-  (class_mixer, object_refinement)->
-    MalformedExpressionError = (message)->
-      @name = 'MalformedExpressionError'
-      @message = message
-      @stack = (new Error()).stack
-    MalformedExpressionError.prototype = new Error;
+#= require ./base
 
-    comps = ttm.lib.math.ExpressionComponentSource.build()
+
+class EvaluationRefinementBuilder
+  initialize: (comps, class_mixer, object_refinement, MalformedExpressionError)->
+    comps = comps
     refinement = object_refinement.build()
     refinement.forType(comps.classes.number,
       {
@@ -92,43 +88,8 @@ ttm.define "lib/math/expression_evaluation",
 
       });
 
-    refinement.forType(comps.classes.expression,
-      {
-        eval: ->
-          expr = @expression
-          logger.info("before parenthetical", expr)
-          expr = ExpressionEvaluationPass.build(expr).perform("parenthetical")
-          logger.info("before exponentiation", expr)
-          expr = ExpressionEvaluationPass.build(expr).perform("exponentiation")
-          logger.info("before multiplication", expr)
-          expr = ExpressionEvaluationPass.build(expr).perform("multiplication")
-          logger.info("before addition", expr)
-          expr = ExpressionEvaluationPass.build(expr).perform("addition")
-          logger.info("before returning", expr)
-          _(expr).first()
-      });
 
-
-    class ExpressionEvaluation
-      initialize: (@expression, @opts={})->
-        @comps = @opts.comps || comps
-
-      resultingExpression: ->
-        results = false
-        try
-          results = @evaluate()
-        catch e
-          throw e unless e instanceof MalformedExpressionError
-        if results
-          @comps.build_expression(expression: [results])
-        else
-          @expression.clone(is_error: true)
-
-      evaluate: ()->
-        refined = refinement.refine(@expression)
-        results = refined.eval()
-
-    class_mixer(ExpressionEvaluation)
+    @refinement_val = refinement
 
     class ExpressionEvaluationPass
       initialize: (@expression)->
@@ -166,4 +127,62 @@ ttm.define "lib/math/expression_evaluation",
         @expression.splice(@expression_index + 1, 1)
 
     class_mixer(ExpressionEvaluationPass)
+
+    refinement.forType(comps.classes.expression,
+      {
+        eval: ->
+          expr = @expression
+          logger.info("before parenthetical", expr)
+          expr = ExpressionEvaluationPass.build(expr).perform("parenthetical")
+          logger.info("before exponentiation", expr)
+          expr = ExpressionEvaluationPass.build(expr).perform("exponentiation")
+          logger.info("before multiplication", expr)
+          expr = ExpressionEvaluationPass.build(expr).perform("multiplication")
+          logger.info("before addition", expr)
+          expr = ExpressionEvaluationPass.build(expr).perform("addition")
+          logger.info("before returning", expr)
+          _(expr).first()
+      });
+
+
+  refinement: ->
+    @refinement_val
+
+ttm.class_mixer EvaluationRefinementBuilder
+
+ttm.define "lib/math/expression_evaluation",
+  ['lib/class_mixer', 'lib/object_refinement'],
+  (class_mixer, object_refinement)->
+    MalformedExpressionError = (message)->
+      @name = 'MalformedExpressionError'
+      @message = message
+      @stack = (new Error()).stack
+    MalformedExpressionError.prototype = new Error;
+
+    comps = ttm.lib.math.ExpressionComponentSource.build()
+    class ExpressionEvaluation
+      initialize: (@expression, @opts={})->
+        @comps = @opts.comps || comps
+        @refinement = EvaluationRefinementBuilder.build(@comps, class_mixer, object_refinement, MalformedExpressionError).refinement()
+
+      resultingExpression: ->
+        results = false
+        try
+          results = @evaluate()
+        catch e
+          throw e unless e instanceof MalformedExpressionError
+        if results
+          @comps.build_expression(expression: [results])
+        else
+          @expression.clone(is_error: true)
+
+      evaluate: ()->
+        refined = @refinement.refine(@expression)
+        results = refined.eval()
+
+    class_mixer(ExpressionEvaluation)
+
+
+    ttm.lib.math.ExpressionEvaluation = ExpressionEvaluation
+
     return ExpressionEvaluation

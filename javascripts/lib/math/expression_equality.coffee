@@ -1,3 +1,4 @@
+#= require ./base
 #= require lib
 #= require lib/math/expression_components
 #= require lib/math/expression_equality
@@ -148,7 +149,6 @@ ttm.define 'lib/math/expression_equality',
     })
 
 
-
     ref.forDefault({
       isEqual: ->
         throw ["Unimplemented equality refinement for ", @unrefined()]
@@ -186,4 +186,5 @@ ttm.define 'lib/math/expression_equality',
       ec.calculate(a,b)
       ec
 
+    ttm.lib.math.ExpressionEquality = ExpressionEquality
     return ExpressionEquality

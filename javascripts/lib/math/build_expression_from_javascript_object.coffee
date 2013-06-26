@@ -1,5 +1,4 @@
-#= require lib/math
-#= require lib/math/expression_components
+
 
 
 
@@ -9,7 +8,9 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
   (class_mixer)->
     class BuildExpressionFromJavascriptObject
       initialize: (@opts={})->
-        @component_builder = @opts.component_builder || ttm.lib.math.ExpressionComponentSource.build()
+        @component_builder = @opts.component_builder
+        unless @component_builder
+          throw "BuildExpressionFromJavascriptObject requires component builder option"
         @processor = _JSObjectExpressionProcessor.build()
 
         @root_converter = _FromRootObject.build(
@@ -56,6 +57,11 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
 
       processBuildExpression: (data)->
         @process(data)
+
+      buildExpressionFunction: ->
+        @builderFunction()
+      buildExpressionPositionFunction: ->
+        @builderFunctionExpressionWithPositionAsLast()
 
       builderFunction: ->
         =>
@@ -209,6 +215,8 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
 
     class_mixer _FromStringLiteralObject
 
+    # export for now
+    ttm.lib.math.BuildExpressionFromJavascriptObject = BuildExpressionFromJavascriptObject
 
     return BuildExpressionFromJavascriptObject
 
