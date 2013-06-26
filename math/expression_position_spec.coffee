@@ -2,9 +2,9 @@
 
 describe "expression position library", ->
   beforeEach ->
-    @builder = ttm.require('lib/math/build_expression_from_javascript_object').build().
-      builderFunction()
-    @ep_builder = ttm.lib.math.ExpressionPosition
+    @math = ttm.lib.math.math_lib.build()
+    @builder = @math.object_to_expression.buildExpressionFunction()
+    @ep_builder = @math.expression_position
 
   it "holds a reference to the expression", ->
     ep = @ep_builder.build(expression: 'face')

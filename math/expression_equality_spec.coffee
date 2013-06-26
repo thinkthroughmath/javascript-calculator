@@ -6,9 +6,10 @@ describe "expression equality", ->
   beforeEach ->
     @comps = ttm.lib.math.ExpressionComponentSource.build()
     @isEqual = ttm.require('lib/math/expression_equality').isEqual
-
     builder_lib = ttm.require('lib/math/build_expression_from_javascript_object')
-    @exp_builder = builder_lib.build(@comps).builderFunction()
+
+    @math = ttm.lib.math.math_lib.build()
+    @exp_builder = @math.object_to_expression.builderFunction()
 
   describe "numbers", ->
     it "with different values are different", ->

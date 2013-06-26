@@ -6,7 +6,7 @@
 describe "Calculator Widget features", ->
   beforeEach ->
     calculator = ttm.require("calculator")
-    math = ttm.require("lib/math")
+    math = ttm.lib.math.math_lib.build()
     @calc = calculator.build_widget(f(), math.expression)
     @handle = ttm.require("calc_handle").build(f(), calculator)
 
@@ -153,7 +153,7 @@ describe "Calculator Widget features", ->
 describe "Calculator error handling", ->
   beforeEach ->
     calculator = ttm.require("calculator")
-    math = ttm.require("lib/math")
+    math = ttm.lib.math.math_lib.build()
     @calc = calculator.build_widget(f(), math.expression)
     @handle = ttm.require("calc_handle").build(f(), calculator)
 

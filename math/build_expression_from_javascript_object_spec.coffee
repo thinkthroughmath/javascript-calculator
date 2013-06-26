@@ -1,13 +1,12 @@
 #= require lib/math
-#= require lib/math/build_expression_from_javascript_object
-#= require lib/math/expression_components
-
 describe "BuildExpressionFromJavascriptObject", ->
   beforeEach ->
-    @components = ttm.lib.math.ExpressionComponentSource.build()
+    @math = ttm.lib.math.math_lib.build()
+    @components = @math.components
     builder_lib = ttm.require('lib/math/build_expression_from_javascript_object')
-    @expression_builder_builder = builder_lib.build(@components)
-    @builder = @expression_builder_builder.builderFunction()
+
+    @exp_pos_builder = @math.object_to_expression.buildExpressionPositionFunction()
+    @builder = @math.object_to_expression.buildExpressionFunction()
 
   it "builds an empty expression", ->
     expect(@builder() instanceof @components.classes.expression).toBeTruthy()
@@ -134,7 +133,7 @@ describe "BuildExpressionFromJavascriptObject", ->
   describe "building with position", ->
     describe "position as last", ->
       it "works", ->
-        ebp = @expression_builder_builder.builderFunctionExpressionWithPositionAsLast()
+        ebp = @exp_pos_builder
         results = ebp(10)
         expect(results.expression()).toBeAnEqualExpressionTo @builder(10)
         expect(results.position()).toEqual results.expression().id()

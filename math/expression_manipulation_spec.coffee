@@ -31,17 +31,17 @@ it_inserts_components_where_pointed_to = (specifics)->
 
 describe "expression manipulations", ->
   beforeEach ->
-    @components = ttm.lib.math.ExpressionComponentSource.build()
-    @pos = ttm.lib.math.ExpressionPosition
-    @manip = ttm.require('lib/math/expression_manipulation').build(@components, @pos)
+    @math = ttm.lib.math.math_lib.build()
+    @pos = @math.expression_position
+    @manip = @math.commands
+    @components = @math.components
 
     builder_lib = ttm.require('lib/math/build_expression_from_javascript_object')
-    @exp_builder = builder_lib.build(@comps).builderFunction()
-    @exp_pos_builder = builder_lib.build(@comps).builderFunctionExpressionWithPositionAsLast()
+    @exp_builder = @math.object_to_expression.builderFunction()
+    @exp_pos_builder = @math.object_to_expression.builderFunctionExpressionWithPositionAsLast()
     expression_to_string = ttm.require('lib/math/expression_to_string').toString
     @expect_value = (expression, value)->
       expect(expression_to_string(expression)).toEqual value
-
 
   describe "a proof-of-concept example", ->
     it "produces the correct result TODO make this larger", ->
