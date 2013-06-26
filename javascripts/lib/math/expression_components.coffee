@@ -15,6 +15,14 @@ class ExpressionComponent
   withParent: (parent)->
     ret = @clone(parent: parent)
 
+  # @destructive
+  replaceImmediateSubComponentD: (field, old_comp, new_comp)->
+    for comp, index in @[field]
+      if comp.id() == old_comp.id()
+        new_comp = new_comp.withParent(@)
+        @[field][index] = new_comp
+    null
+
 class Equals extends ExpressionComponent
   toString: -> "="
   isOperator: -> true
@@ -29,7 +37,7 @@ class Expression extends ExpressionComponent
     @build(is_error: true)
 
   @buildUnlessExpression: (content)->
-    if content instanceof @
+    if content instanceof @comps.classes.expression
       content
     else
       @buildWithContent([content])
@@ -84,20 +92,24 @@ class Expression extends ExpressionComponent
 
   append: (new_last)->
     expr = _.clone(@expression)
-    expr.push new_last
+    expr.push new_last.withParent(@)
     @clone(expression: expr)
 
   # @destructive
   appendD: (new_last)->
-    @expression.push new_last
+    @expression.push new_last.withParent(@)
+
+  # replace old comp with new comp if it is contained
+  # immediately within this expression
+  replaceD: (old_comp, new_comp)->
+    @replaceImmediateSubComponentD("expression", old_comp, new_comp)
 
   replaceLast: (new_last)->
-    @withoutLast().append(new_last)
+    @withoutLast().append(new_last.withParent(@))
 
   # @destructive
   replaceLastD: (new_last)->
-    new_last = new_last.withParent(@)
-    @expression[@expression.length-1] = new_last
+    @expression[@expression.length-1] = new_last.withParent(@)
 
   withoutLast: ->
     expr = _.clone(@expression)
@@ -215,6 +227,13 @@ class Exponentiation extends ExpressionComponent
       id: @id_value
     other = @klass.build(_.extend({}, data, new_vals))
     other
+
+  # replace old comp with new comp if it is contained
+  # immediately within this exponentiation
+  replaceD: (old_comp, new_comp)->
+    @baseval.replaceD(old_comp, new_comp)
+    @powerval.replaceD(old_comp, new_comp)
+
 ttm.class_mixer(Exponentiation)
 
 class Pi extends ExpressionComponent
@@ -269,6 +288,14 @@ class Root extends ExpressionComponent
 
   subExpressions: ->
     [@degree(), @radicand()]
+
+
+  # replace old comp with new comp if it is contained
+  # immediately within this root
+  replaceD: (old_comp, new_comp)->
+    @degree_value.replaceD(old_comp, new_comp)
+    @radicand_value.replaceD(old_comp, new_comp)
+
 
 ttm.class_mixer(Root)
 
