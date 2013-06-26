@@ -499,6 +499,48 @@ describe "expression manipulations", ->
       new_exp = @manip.build_square_root().perform(exp)
       expect(new_exp.expression().last().value()).toEqual '2'
 
+
+  describe "substituting variables", ->
+    it_plays_manipulation_role
+      subject: ->
+        @manip.build_substitute_variables(variables: [{name: "funky", value: "10"}])
+      expression_for_performance: ->
+        @exp_pos_builder({variable: "funky"})
+
+    it "substitutes variables", ->
+      exp_pos = @exp_pos_builder({variable: "funky"})
+      manip = @manip.build_substitute_variables(variables: [{name: "funky", value: "10"}])
+      new_exp = manip.perform(exp_pos)
+      expect(new_exp.expression()).toBeAnEqualExpressionTo(@exp_pos_builder(10).expression())
+
+  describe "getting different sides of an equation", ->
+    describe "getting left side", ->
+      it_plays_manipulation_role
+        subject: ->
+          @manip.build_get_left_side()
+        expression_for_performance: ->
+          @exp_pos_builder({variable: "funky"}, '=', {variable: 'chunky'})
+
+      it "returns left sides of equation", ->
+        expr = @exp_pos_builder({variable: "funky"}, '=', {variable: 'chunky'})
+        new_exp = @manip.build_get_left_side().perform(expr)
+        expected = @exp_builder({variable: 'funky'})
+        expect(new_exp.expression()).toBeAnEqualExpressionTo(expected)
+
+    describe "getting right side", ->
+      it_plays_manipulation_role
+        subject: ->
+          @manip.build_get_right_side()
+        expression_for_performance: ->
+          @exp_pos_builder({variable: "funky"}, '=', {variable: 'chunky'})
+
+      it "returns right side of equation", ->
+        expr = @exp_pos_builder({variable: "funky"}, '=', {variable: 'chunky'})
+        new_exp = @manip.build_get_right_side().perform(expr)
+        expected = @exp_builder({variable: 'chunky'})
+        expect(new_exp.expression()).toBeAnEqualExpressionTo(expected)
+
+
   describe "utilities", ->
     describe "implicit multiplication", ->
       it "should have tests that go here", ->
