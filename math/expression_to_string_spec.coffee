@@ -30,7 +30,6 @@ describe "expression to string conversion", ->
       expect(@to_string(exp)).toEqual "10 * 10"
       expect(@to_html_string(exp)).toEqual "10 &times; 10"
 
-
   describe "sub-expressions", ->
     it "displays them as parentheses", ->
       exp = @builder([10, '*',  10])
@@ -40,3 +39,13 @@ describe "expression to string conversion", ->
     it "displays open sub-expressions with a single parenthesis", ->
       exp = @builder({open_expression: [10, '*',  10]})
       expect(@to_string(exp)).toEqual "( 10 * 10"
+
+    it "displays partial parentheses", ->
+      exp = @builder(10, '*', {open_expression: null})
+      actual = @to_html_string(exp)
+      expect(actual).toEqual "10 &times; ( "
+
+    it "displays single sub-expressions with parentheses", ->
+      exp = @builder(10, '*', [5])
+      actual = @to_html_string(exp)
+      expect(actual).toEqual "10 &times; ( 5 )"

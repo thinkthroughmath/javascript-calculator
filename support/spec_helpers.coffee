@@ -8,6 +8,7 @@ window.logger = switch LOGGING_TYPE
   else window.ttm.Logger.buildProduction(stringify_objects: false)
 class_mixer = ttm.class_mixer
 
+window.parseEntities = (str)-> $("<div>#{str}</div>").text()
 
 jasmine.getFixtures().findContainer = ->
   $(document.body).find("##{@containerId}")

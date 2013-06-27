@@ -8,8 +8,7 @@ describe "Calculator Widget features", ->
     calculator = ttm.require("calculator")
     math = ttm.lib.math.math_lib.build()
     @calc = calculator.build_widget(f(), math.expression)
-    @handle = ttm.require("calc_handle").build(f(), calculator)
-
+    @handle = JSCalculatorHandle.build(f(), calculator)
 
   it "displays what is entered", ->
     @handle.press_buttons("8")
@@ -100,6 +99,17 @@ describe "Calculator Widget features", ->
       @handle.press_buttons("8 ( 9 ) ( 8 ) =")
       expect(@handle.output_content()).toEqual("576")
 
+
+    it "correctly handles side by side parentheticals", ->
+      @handle.press_buttons("8 ( ( 9 + 5 ) 2 ) =")
+      expect(@handle.output_content()).toEqual("224")
+
+
+    it "displays partial parentheses", ->
+      @handle.press_buttons("8 (")
+      expect(@handle.output_content()).toEqual(parseEntities "8 &times; ( ")
+
+
   it "divides", ->
     @handle.press_buttons("1 0 / 2 =")
     expect(@handle.output_content()).toEqual("5")
@@ -155,7 +165,7 @@ describe "Calculator error handling", ->
     calculator = ttm.require("calculator")
     math = ttm.lib.math.math_lib.build()
     @calc = calculator.build_widget(f(), math.expression)
-    @handle = ttm.require("calc_handle").build(f(), calculator)
+    @handle = JSCalculatorHandle.build(f(), calculator)
 
   describe "malformed expressions", ->
     it "handles division", ->
@@ -173,39 +183,33 @@ describe "Calculator error handling", ->
     expect(@handle.output_content()).toEqual("0.1")
 
 
+class JSCalculatorHandle
+  initialize: ((@element, @calculator_constructor)->)
+  button: (which)->
+    @element.find("button[value='#{which}']")
 
+  press_button: (which)->
+    btn = @button(which)
+    if btn.length == 0
+      throw "Could not press button '#{which}' as it does not exist"
+    else
+      btn.click()
 
+  press_buttons: (buttons)->
+    for button in buttons.split(" ")
+      do (button)=>
+        @press_button(button)
 
-ttm.define "calc_handle", ['lib/class_mixer'], (class_mixer)->
-  class JSCalculatorHandle
-    initialize: ((@element, @calculator_constructor)->)
-    button: (which)->
-      @element.find("button[value='#{which}']")
+  output: ->
+    @element.find("figure.calculator-display")
 
-    press_button: (which)->
-      btn = @button(which)
-      if btn.length == 0
-        throw "Could not press button '#{which}' as it does not exist"
-      else
-        btn.click()
+  output_content: ->
+    @output().text()
 
-    press_buttons: (buttons)->
-      for button in buttons.split(" ")
-        do (button)=>
-          @press_button(button)
+  assertError: ->
+    expect(@output_content()).toEqual(@calculator_constructor.prototype.errorMsg())
 
-    output: ->
-      @element.find("figure.calculator-display")
-
-    output_content: ->
-      @output().text()
-
-    assertError: ->
-      expect(@output_content()).toEqual(@calculator_constructor.prototype.errorMsg())
-
-  class_mixer(JSCalculatorHandle)
-
-  return JSCalculatorHandle
+ttm.class_mixer(JSCalculatorHandle)
 
 
 num = (it)-> math.build_number(it)
