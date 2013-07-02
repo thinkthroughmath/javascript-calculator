@@ -1,7 +1,7 @@
 #= require almond_wrapper
 #= require lib
 #= require lib/math
-#= require lib/math/buttons
+#= require widgets/math_buttons
 #= require widgets/ui_elements
 #= require lib/math/expression_to_string
 #= require lib/math/expression_components

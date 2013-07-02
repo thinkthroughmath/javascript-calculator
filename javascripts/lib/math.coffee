@@ -1,6 +1,5 @@
 #= require almond_wrapper
 #= require lib
-#= require lib/math/buttons
 #= require lib/math/expression_components
 #= require lib/math/expression_equality
 #= require lib/math/expression_evaluation
