@@ -125,6 +125,13 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer'], (ui_e
             }, opts)
       variables
 
+    fn: (opts)->
+      @button({
+        value: 'fn'
+        label: '&fnof;'
+        class: 'math-button other'
+      }, opts)
+
     button: (type_opts, opts)->
       ui_elements.button_builder.build(
         _.extend({}, type_opts, @opts, opts || {}))

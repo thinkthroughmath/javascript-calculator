@@ -36,7 +36,7 @@ $other_border: #adadad;
 {
     button.math-button {
         font-size: 1.5em * $scalar;
-        width: 50px * $scalar;
+        min-width: 50px * $scalar;
         height: 40px * $scalar;
         margin: 3px * $scalar;
     }
