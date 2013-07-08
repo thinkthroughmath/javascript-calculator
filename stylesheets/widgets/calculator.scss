@@ -74,7 +74,6 @@ div.calculator-dialog {
             background: transparent !important;
         }
     }
-
 }
 
 
@@ -87,4 +86,9 @@ div.calculator {
 
     @include math-button-sizing($scalar);
 
+    .number, .negative, .decimal {
+        @include math-button-blue;
+    }
 }
+
+
