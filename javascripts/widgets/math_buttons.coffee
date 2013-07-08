@@ -11,27 +11,34 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer'], (ui_e
         do (num)=>
           @button({
             value: "#{num}"
-            class: 'math-button number-specifier'
+            class: 'math-button number-specifier number'
           }, opts)
 
-    exponent: (opts)->
+    caret: (opts)->
       @button({
         value: '^'
         label: '&circ;'
-        class: 'math-button other exponent'
+        class: 'math-button other caret'
       }, opts)
 
     negative: (opts)->
       @button({
         value: 'negative'
         label: '(&ndash;)'
+        class: 'math-button number-specifier negative'
+      }, opts)
+
+    negative_slash_positive: (opts)->
+      @button({
+        value: 'negative-slash-positive'
+        label: "&ndash;/+"
         class: 'math-button number-specifier'
       }, opts)
 
     decimal: (opts)->
       @button({
         value: '.'
-        class: 'math-button number-specifier'
+        class: 'math-button number-specifier decimal'
       }, opts)
 
     addition: (opts)->
@@ -72,7 +79,7 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer'], (ui_e
     equals: (opts)->
       @button({
         value: '='
-        class: 'math-button operation'
+        class: 'math-button operation equal'
       }, opts)
 
     clear: (opts)->
@@ -88,12 +95,47 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer'], (ui_e
         class: 'math-button other square'
       }, opts)
 
-    square_root: (opts)->
+    exponent: (opts)->
+      base = opts.base || "x"
+      power = opts.power || "y"
       @button({
-        value: 'squareroot'
-        label: '&radic;<span>&#8212;</span>'
+        value: 'exponent'
+        label: "#{base}<sup>#{power}</sup>"
+        class: 'math-button other exponent'
+      }, opts)
+
+    root: (opts)->
+      degree = if opts.degree
+        "<div class='degree'>#{opts.degree}</div>"
+      else
+        ""
+      radicand = if opts.radicand
+        "<div class='radicand'>#{opts.radicand}</div>"
+      else
+        ""
+
+      @button({
+        value: 'root'
+        label: """
+          #{degree}
+          #{radicand}
+          <div class='radix'>&radic;</div>
+          <div class='vinculum'>&#8212;</div>
+        """
         class: 'math-button other square-root'
       }, opts)
+
+
+    numerator_denominator: (opts)->
+      @button({
+        value: 'numeratordenominator'
+        label: """
+          <div class='numerator'>a</div>
+          <div class='vinculum'>&#8212;</div>
+          <div class='denominator'>b</div>
+          """
+        class: 'math-button other numerator-denominator'
+      })
 
     lparen: (opts)->
       @button({
@@ -129,12 +171,12 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer'], (ui_e
       @button({
         value: 'fn'
         label: '&fnof;'
-        class: 'math-button other'
+        class: 'math-button other function'
       }, opts)
 
-    button: (type_opts, opts)->
+    button: (type_opts, opts={})->
       ui_elements.button_builder.build(
-        _.extend({}, type_opts, @opts, opts || {}))
+        _.extend({}, type_opts, @opts, opts))
 
   class_mixer(ButtonBuilder)
 

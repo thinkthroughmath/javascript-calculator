@@ -38,12 +38,12 @@ ttm.define "calculator",
           else
             val
         else
-          logger.warn("display value is error")
+          # @logger.warn("display value is error")
           @errorMsg()
 
       display: ->
         to_disp = @displayValue()
-        logger.info("calculator display #{to_disp}")
+        # @logger.info("calculator display #{to_disp}")
         @view.display(to_disp)
 
       errorMsg: -> "Error"
@@ -174,8 +174,8 @@ ttm.define "calculator",
 
         buttons.clear = math_button_builder.clear click: => @calc.clearClick()
         buttons.square = math_button_builder.square click: => @calc.squareClick()
-        buttons.square_root = math_button_builder.square_root click: => @calc.squareRootClick()
-        buttons.exponent = math_button_builder.exponent click: => @calc.exponentClick()
+        buttons.square_root = math_button_builder.root click: => @calc.squareRootClick()
+        buttons.exponent = math_button_builder.caret click: => @calc.exponentClick()
 
         buttons.lparen = math_button_builder.lparen click: => @calc.lparenClick()
         buttons.rparen = math_button_builder.rparen click: => @calc.rparenClick()
