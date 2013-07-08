@@ -174,12 +174,12 @@ describe "Calculator error handling", ->
 
   describe "invalid expressions", ->
     it "handles square roots", ->
-      @handle.press_buttons("1 negative squareroot")
+      @handle.press_buttons("1 negative root")
       @handle.assertError()
     it "handles division by zero", ->
 
   it "continues after an error has occurred", ->
-    @handle.press_buttons("1 negative squareroot 1 / 1 0 =")
+    @handle.press_buttons("1 negative root 1 / 1 0 =")
     expect(@handle.output_content()).toEqual("0.1")
 
 
