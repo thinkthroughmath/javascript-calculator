@@ -98,3 +98,11 @@ describe "Expression Components", ->
     it "will tell you its name", ->
       @variable = @comps.classes.variable.build(name: "doot")
       expect(@variable.name()).toEqual("doot")
+
+  describe "a function component", ->
+    it_adheres_to_the_expression_component_interface {
+      instance_fn: ->
+        @comps.classes.fn.build(name: "example", id: 678)
+      is_operator: true
+      id: 678
+    }

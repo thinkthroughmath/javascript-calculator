@@ -75,12 +75,19 @@ describe "BuildExpressionFromJavascriptObject", ->
       expect(exponentiation).toBeInstanceOf @components.classes.exponentiation
       expect(exponentiation.power()).toBeInstanceOf @components.classes.expression
 
-
   it "handles parenthetical sub-expressions via arrays", ->
     expression = @builder []
     sub_exp = expression.first()
     expect(expression).toBeInstanceOf @components.classes.expression
     expect(sub_exp).toBeInstanceOf @components.classes.expression
+
+
+  describe "fraction handling", ->
+    it "handles base case", ->
+      expression = @builder({fraction: [1, 2]})
+      sub_exp = expression.first()
+      expect(expression).toBeInstanceOf @components.classes.expression
+      expect(sub_exp).toBeInstanceOf @components.classes.fraction
 
   describe "open expressions", ->
     it "uses object syntax with label 'open_expression' to signify an open expression", ->

@@ -27,8 +27,6 @@ it_inserts_components_where_pointed_to = (specifics)->
        specifics.basic_should_equal_after.call(@)
       )
 
-
-
 describe "expression manipulations", ->
   beforeEach ->
     @math = ttm.lib.math.math_lib.build()
@@ -59,7 +57,6 @@ describe "expression manipulations", ->
 
       expected = @exp_builder(10, '*', [2, '+', 4])
       expect(exp_pos.expression()).toBeAnEqualExpressionTo expected
-
 
   describe "appending multiplication", ->
     it_plays_manipulation_role
@@ -93,7 +90,6 @@ describe "expression manipulations", ->
       expect(new_exp.expression()).toBeAnEqualExpressionTo expected
 
 
-
   describe "exponentiate last element", ->
     it_plays_manipulation_role
       subject: ->
@@ -107,7 +103,6 @@ describe "expression manipulations", ->
       basic_start_expression: -> @exp_pos_builder 1
       basic_should_equal_after: -> @exp_builder '^': [1,{open_expression: null}]
     )
-
 
     describe "on a single number-only expression", ->
       beforeEach ->
@@ -404,7 +399,7 @@ describe "expression manipulations", ->
       squared = @manip.build_square().perform(exp)
       @expect_value(squared.expression(), '100')
 
-  describe "AppendRoot", ->
+  describe "appending root", ->
     it_plays_manipulation_role
       subject: ->
         @manip.build_append_root()
@@ -419,7 +414,7 @@ describe "expression manipulations", ->
       expect(new_exp.last()).toBeInstanceOf @components.classes.root
       expect(new_exp.last(1)).toBeInstanceOf @components.classes.multiplication
 
-  describe "AppendVariable", ->
+  describe "appending variable", ->
     it_plays_manipulation_role
       subject: ->
         @manip.build_append_variable()
@@ -472,7 +467,7 @@ describe "expression manipulations", ->
       new_exp = @manip.build_negate_last().perform(exp)
       expect(new_exp.expression().last().value()).toEqual -1
 
-  describe "append pi", ->
+  describe "appending pi", ->
     it_plays_manipulation_role
       subject: ->
         @manip.build_append_pi()
@@ -486,6 +481,35 @@ describe "expression manipulations", ->
       expect(new_exp.last()).toBeInstanceOf @components.classes.pi
       expect(new_exp.last(1)).toBeInstanceOf @components.classes.multiplication
 
+
+  describe "appending numerator and denominator fraction", ->
+    it_plays_manipulation_role
+      subject: ->
+        @manip.build_append_numerator_denominator()
+      expression_for_performance: ->
+        @exp_pos_builder()
+
+    it "adds a numerator/denominator where we expect", ->
+      exp = @exp_pos_builder(1)
+      new_exp = @manip.build_append_numerator_denominator().perform(exp).expression()
+
+      expect(new_exp.last()).toBeInstanceOf @components.classes.fraction
+      expect(new_exp.last().numerator()).toBeInstanceOf @components.classes.expression
+      expect(new_exp.last().denominator()).toBeInstanceOf @components.classes.expression
+
+  describe "appending a function", ->
+    it_plays_manipulation_role
+      subject: ->
+        @manip.build_append_fn()
+      expression_for_performance: ->
+        @exp_pos_builder()
+
+    it "adds a function element", ->
+      exp = @exp_pos_builder(1)
+      new_exp = @manip.build_append_fn().perform(exp).expression()
+
+      expect(new_exp.last()).toBeInstanceOf @components.classes.fn
+      expect(new_exp.last().argument()).toBeInstanceOf @components.classes.expression
 
   describe "take the square root", ->
     it_plays_manipulation_role
