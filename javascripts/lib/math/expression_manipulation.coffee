@@ -356,7 +356,7 @@ ttm.define "lib/math/expression_manipulation",
     class_mixer(AppendVariable)
 
 
-    class AppendNumeratorDenominator extends ExpressionManipulation
+    class AppendFraction extends ExpressionManipulation
       perform: (expression_position)->
         exp = expression_position.expression()
 
@@ -371,7 +371,7 @@ ttm.define "lib/math/expression_manipulation",
 
         expression_position.clone(expression: result_exp)
 
-    class_mixer(AppendNumeratorDenominator)
+    class_mixer(AppendFraction)
 
     class AppendFn extends ExpressionManipulation
       initialize: (opts={})->
@@ -631,7 +631,7 @@ ttm.define "lib/math/expression_manipulation",
       substitute_variables: SubstituteVariables
       get_left_side: GetLeftSide
       get_right_side: GetRightSide
-      append_numerator_denominator: AppendNumeratorDenominator
+      append_fraction: AppendFraction
       append_fn: AppendFn
 
     class ExpressionManipulationSource

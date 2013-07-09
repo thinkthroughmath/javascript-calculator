@@ -126,15 +126,15 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer'], (ui_e
       }, opts)
 
 
-    numerator_denominator: (opts)->
+    fraction: (opts)->
       @button({
-        value: 'numerator-slash-denominator'
+        value: 'fraction'
         label: """
           <div class='numerator'>a</div>
           <div class='vinculum'>&#8212;</div>
           <div class='denominator'>b</div>
           """
-        class: 'math-button other numerator-denominator'
+        class: 'math-button other fraction'
       }, opts)
 
     lparen: (opts)->
