@@ -56,7 +56,7 @@ describe "BuildExpressionFromJavascriptObject", ->
     expect(expression.nth(0).name()).toEqual "doot"
 
   describe 'exponentiation', ->
-    it 'handles a standard case', ->
+    it 'creates exponentiation objects from caret object notation', ->
       expression = @builder '^': [10, 11]
       exponentiation = expression.nth(0)
       expect(exponentiation).toBeInstanceOf @components.classes.exponentiation
@@ -82,12 +82,19 @@ describe "BuildExpressionFromJavascriptObject", ->
     expect(sub_exp).toBeInstanceOf @components.classes.expression
 
 
-  describe "fraction handling", ->
+  describe "handles fraction", ->
     it "handles base case", ->
       expression = @builder({fraction: [1, 2]})
       sub_exp = expression.first()
       expect(expression).toBeInstanceOf @components.classes.expression
       expect(sub_exp).toBeInstanceOf @components.classes.fraction
+
+  describe "handling function syntax", ->
+    it "converts to a Fn object", ->
+      expression = @builder(fn: ["doot", 2])
+      sub_exp = expression.first()
+      expect(sub_exp).toBeInstanceOf @components.classes.fn
+
 
   describe "open expressions", ->
     it "uses object syntax with label 'open_expression' to signify an open expression", ->
@@ -106,7 +113,6 @@ describe "BuildExpressionFromJavascriptObject", ->
 
       expect(open).toBeInstanceOf @components.classes.expression
       expect(open.isOpen()).toEqual true
-
 
       ten = open.first()
       expect(ten).toBeInstanceOf @components.classes.number
@@ -135,6 +141,8 @@ describe "BuildExpressionFromJavascriptObject", ->
 
       ten = second_open.first()
       expect(ten.value()).toEqual 10
+
+
 
 
   describe "building with position", ->
