@@ -482,16 +482,16 @@ describe "expression manipulations", ->
       expect(new_exp.last(1)).toBeInstanceOf @components.classes.multiplication
 
 
-  describe "appending numerator and denominator fraction", ->
+  describe "appending a fraction", ->
     it_plays_manipulation_role
       subject: ->
-        @manip.build_append_numerator_denominator()
+        @manip.build_append_fraction()
       expression_for_performance: ->
         @exp_pos_builder()
 
     it "adds a numerator/denominator where we expect", ->
       exp = @exp_pos_builder(1)
-      new_exp = @manip.build_append_numerator_denominator().perform(exp).expression()
+      new_exp = @manip.build_append_fraction().perform(exp).expression()
 
       expect(new_exp.last()).toBeInstanceOf @components.classes.fraction
       expect(new_exp.last().numerator()).toBeInstanceOf @components.classes.expression
