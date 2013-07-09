@@ -547,7 +547,7 @@ ttm.define "lib/math/expression_manipulation",
 
       invokeD: (expression)->
         last = expression.last()
-        if last && (last.isNumber() || last instanceof @comps.classes.expression || last instanceof @comps.classes.pi)
+        if last && (last.isNumber() || last instanceof @comps.classes.expression || last instanceof @comps.classes.pi || last instanceof @comps.classes.variable)
           expression.appendD(@comps.build_multiplication())
           expression
         else

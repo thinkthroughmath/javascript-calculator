@@ -88,6 +88,25 @@ ttm.define 'lib/math/expression_equality',
     })
 
 
+    # Fn
+    ref.forType(comps.classes.fn, {
+      isEqual: (buildIsEqual(comps.classes.fn, "checkNameAndArgumentEquality")),
+      checkNameAndArgumentEquality: (other, eq_comp)->
+        name_equal = @name() == other.name()
+        argument_equal = ref.refine(@argument()).isEqual(other.argument(), eq_comp)
+        name_equal && argument_equal
+      })
+
+    # Fraction
+    ref.forType(comps.classes.fraction, {
+      isEqual: (buildIsEqual(comps.classes.fraction, "checkNumeratorAndDenominatorEquality")),
+      checkNumeratorAndDenominatorEquality: (other, eq_comp)->
+        numerator_equal = ref.refine(@numerator()).isEqual(other.numerator(), eq_comp)
+        denominator_equal = ref.refine(@denominator()).isEqual(other.denominator(), eq_comp)
+        numerator_equal && denominator_equal
+      })
+
+
     # Multiplication
     ref.forType(comps.classes.multiplication, {
       isEqual: (buildIsEqual(comps.classes.multiplication))
