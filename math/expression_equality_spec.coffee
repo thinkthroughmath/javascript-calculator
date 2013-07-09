@@ -172,3 +172,30 @@ describe "expression equality", ->
       a = @exp_builder(variable: "doot")
       b = @exp_builder(variable: "scoot")
       expect(a).not.toBeAnEqualExpressionTo b
+
+  describe "fraction", ->
+    it "accepts with equal fractions", ->
+      a = @exp_builder(fraction: [1, 2])
+      b = @exp_builder(fraction: [1, 2])
+      expect(a).toBeAnEqualExpressionTo b
+
+    it "rejects with not equal fractions", ->
+      a = @exp_builder(fraction: [1, 2])
+      b = @exp_builder(fraction: [3, 4])
+      expect(a).not.toBeAnEqualExpressionTo b
+
+  describe "fn", ->
+    it "accepts with equal function and argument", ->
+      a = @exp_builder(fn: ["sin", 2])
+      b = @exp_builder(fn: ["sin", 2])
+      expect(a).toBeAnEqualExpressionTo b
+
+    it "rejects with different function", ->
+      a = @exp_builder(fn: ["sin", 2])
+      b = @exp_builder(fn: ["cos", 2])
+      expect(a).not.toBeAnEqualExpressionTo b
+
+    it "rejects with different argumetn", ->
+      a = @exp_builder(fn: ["cos", 4])
+      b = @exp_builder(fn: ["cos", 5])
+      expect(a).not.toBeAnEqualExpressionTo b

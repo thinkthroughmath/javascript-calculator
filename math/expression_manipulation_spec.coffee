@@ -511,6 +511,23 @@ describe "expression manipulations", ->
       expect(new_exp.last()).toBeInstanceOf @components.classes.fn
       expect(new_exp.last().argument()).toBeInstanceOf @components.classes.expression
 
+    it "inserts a multiplication symbol between variables and functions", ->
+      exp = @exp_pos_builder(variable: "face")
+      new_exp = @manip.build_append_fn(name: "doot", argument: @components.build_expression()).perform(exp).expression()
+      expect(new_exp).toBeAnEqualExpressionTo(
+        @exp_builder({variable: "face"}, '*', {fn: ["doot", []]})
+      )
+
+
+
+
+    it_inserts_components_where_pointed_to(
+      name: 'fn'
+      subject: -> @manip.build_append_fn(name: 'doot')
+      basic_start_expression: -> @exp_pos_builder 1
+      basic_should_equal_after: -> @exp_builder 1, '*', {fn: ["doot", []]}
+    )
+
   describe "take the square root", ->
     it_plays_manipulation_role
       subject: ->
