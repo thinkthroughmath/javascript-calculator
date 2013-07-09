@@ -23,6 +23,12 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           @processor,
           @component_builder)
 
+        @fn_converter = _FromFnObject.build(
+          @processor,
+          @component_builder
+        )
+
+
         @string_literal_converter = _FromStringLiteralObject.build(@component_builder,{
           "+": "build_addition"
           "-": "build_subtraction"
@@ -51,6 +57,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           @root_converter
           @variable_converter
           @fraction_converter
+          @fn_converter
           ]
 
       process: (js_object)->
@@ -197,8 +204,21 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           numerator: numerator
           denominator: denominator
         )
-
     class_mixer _FromFractionObject
+
+    class _FromFnObject
+      initialize: (@converter, @fn_builder)->
+      isType: (js_object)->
+        js_object['fn'] instanceof Array
+      convert: (js_object)->
+        name = js_object['fn'][0]
+        argument = convert_implicit_subexp(js_object['fn'][1], @converter)
+
+        @fn_builder.build_fn(
+          name: name
+          argument: argument
+        )
+    class_mixer _FromFnObject
 
     class _FromStringLiteralObject
       initialize: (@converter, @literal_mappings)->
