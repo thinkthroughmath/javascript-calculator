@@ -8,7 +8,7 @@ ttm.define 'widgets/ui_elements', ['lib/class_mixer'], (class_mixer)->
     render: (opts={})->
       opts = _.extend({}, @opts, opts)
       button = $("<button class='#{opts.class}' value='#{opts.value}'>#{opts.label || opts.value}</button>")
-      button.click ->
+      button.on "click", ->
         opts.click && opts.click(opts)
       opts.element.append button
   class_mixer(Button)

@@ -307,8 +307,6 @@ ttm.define "lib/math/expression_manipulation",
           ).value()
         expression_position.clone(expression: result_exp)
 
-
-
     class_mixer(AppendPi)
 
     class AppendRoot extends ExpressionManipulation
@@ -353,9 +351,47 @@ ttm.define "lib/math/expression_manipulation",
             _ImplicitMultiplication.build(@comps).invokeD(component)
             component.appendD(variable)
           ).value()
-        expression_position.clone(expression: result_exp, position: @position_id)
+        expression_position.clone(expression: result_exp)
 
     class_mixer(AppendVariable)
+
+
+    class AppendNumeratorDenominator extends ExpressionManipulation
+      perform: (expression_position)->
+        exp = expression_position.expression()
+
+        numerator = @comps.build_expression()
+        denominator = @comps.build_expression()
+        fraction = @comps.build_fraction(numerator: numerator, denominator: denominator)
+        result_exp = _ExpressionManipulator.build(exp, @traversal).clone().
+          withComponent(expression_position, (component)=>
+            _ImplicitMultiplication.build(@comps).invokeD(component)
+            component.appendD(fraction)
+          ).value()
+
+        expression_position.clone(expression: result_exp)
+
+    class_mixer(AppendNumeratorDenominator)
+
+    class AppendFn extends ExpressionManipulation
+      initialize: (opts={})->
+        super
+        @name = opts.name
+
+      perform: (expression_position)->
+        exp = expression_position.expression()
+
+        argument = @comps.build_expression()
+        fn = @comps.build_fn(name: @name, argument: argument)
+        result_exp = _ExpressionManipulator.build(exp, @traversal).clone().
+          withComponent(expression_position, (component)=>
+            _ImplicitMultiplication.build(@comps).invokeD(component)
+            component.appendD(fn)
+          ).value()
+
+        expression_position.clone(expression: result_exp)
+
+    class_mixer(AppendFn)
 
     class SquareRoot extends ExpressionManipulation
       perform: (expression_position)->
@@ -567,7 +603,6 @@ ttm.define "lib/math/expression_manipulation",
           findForID(position.position())
         fn(comp)
         @
-
       value: -> @expr
 
     class_mixer(_ExpressionManipulator)
@@ -596,6 +631,8 @@ ttm.define "lib/math/expression_manipulation",
       substitute_variables: SubstituteVariables
       get_left_side: GetLeftSide
       get_right_side: GetRightSide
+      append_numerator_denominator: AppendNumeratorDenominator
+      append_fn: AppendFn
 
     class ExpressionManipulationSource
       initialize: (@comps, @pos, @traversal)->

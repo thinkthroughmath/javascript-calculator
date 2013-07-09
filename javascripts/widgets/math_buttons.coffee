@@ -128,14 +128,14 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer'], (ui_e
 
     numerator_denominator: (opts)->
       @button({
-        value: 'numeratordenominator'
+        value: 'numerator-slash-denominator'
         label: """
           <div class='numerator'>a</div>
           <div class='vinculum'>&#8212;</div>
           <div class='denominator'>b</div>
           """
         class: 'math-button other numerator-denominator'
-      })
+      }, opts)
 
     lparen: (opts)->
       @button({
@@ -168,15 +168,19 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer'], (ui_e
       variables
 
     fn: (opts)->
+      value = if opts.name
+        "function[#{opts.name}]"
+      else
+        "function"
       @button({
-        value: 'fn'
+        value: value
         label: '&fnof;'
         class: 'math-button other function'
       }, opts)
 
-    button: (type_opts, opts={})->
+    button: (type_opts, opts)->
       ui_elements.button_builder.build(
-        _.extend({}, type_opts, @opts, opts))
+        _.extend({}, type_opts, @opts, opts || {}))
 
   class_mixer(ButtonBuilder)
 

@@ -225,7 +225,8 @@ class Exponentiation extends ExpressionComponent
       base: @base().clone()
       power: @power().clone()
       id: @id_value
-    other = @klass.build(_.extend({}, data, new_vals))
+    base_data = @cloneData()
+    other = @klass.build(_.extend({}, base_data, data, new_vals))
     other
 
   # replace old comp with new comp if it is contained
@@ -259,6 +260,37 @@ class Division extends ExpressionComponent
   isOperator: -> true
   toString: -> "Div"
 ttm.class_mixer(Division)
+
+
+class Fraction extends ExpressionComponent
+  initialize: (opts={})->
+    super
+    @numerator_value = opts.numerator
+    @denominator_value = opts.denominator
+
+  isOperator: -> true
+  toString: ->
+    "Frac(num: #{@numerator().toString()}, den: #{@denominator().toString()})"
+
+  numerator: ->
+    @numerator_value
+
+  denominator: ->
+    @denominator_value
+
+  subExpressions: ->
+    [@numerator(), @denominator()]
+
+  clone: (new_vals={})->
+    data =
+      numerator: @numerator().clone()
+      denominator: @denominator().clone()
+    base_data = @cloneData()
+    other = @klass.build(_.extend({}, base_data, data, new_vals))
+    other
+
+
+ttm.class_mixer(Fraction)
 
 class Blank extends ExpressionComponent
   toString: -> "Blnk"
@@ -313,6 +345,37 @@ class Variable extends ExpressionComponent
     "Var(#{@name()})"
 ttm.class_mixer(Variable)
 
+class Fn extends ExpressionComponent
+  initialize: (opts={})->
+    super
+
+    # we only support single-argument functions
+    @name_value = opts.name
+    @argument_value = opts.argument
+
+  clone: (new_vals={})->
+    data =
+      name: @name_value
+      argument: @argument().clone()
+    base_data = @cloneData()
+    @klass.build(_.extend({}, base_data, data, new_vals))
+
+  subExpressions: ->
+    [@argument()]
+
+  toString: ->
+    "Fn(name: #{@name()}, argument: #{@argument().toString()})"
+
+  argument: ->
+    @argument_value
+
+  name: ->
+    @name_value
+
+  isOperator: -> true
+
+ttm.class_mixer(Fn)
+
 class ExpressionIDSource
   initialize: ->
     @id = 0
@@ -337,6 +400,8 @@ components =
   blank: Blank
   root: Root
   variable: Variable
+  fraction: Fraction
+  fn: Fn
 
 class ExpressionComponentSource
   initialize: ->

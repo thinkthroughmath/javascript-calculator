@@ -1,7 +1,3 @@
-
-
-
-
 # usage examples found in tests
 ttm.define 'lib/math/build_expression_from_javascript_object',
   ['lib/class_mixer'],
@@ -20,6 +16,10 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         @number_converter = _FromNumberObject.build(@component_builder)
 
         @exponentiation_converter = _FromExponentiationObject.build(
+          @processor,
+          @component_builder)
+
+        @fraction_converter = _FromFractionObject.build(
           @processor,
           @component_builder)
 
@@ -50,6 +50,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           @string_literal_converter
           @root_converter
           @variable_converter
+          @fraction_converter
           ]
 
       process: (js_object)->
@@ -153,23 +154,13 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
       initialize: (@processor, @exponentiation_builder)->
       isType: (js_object)-> js_object['^'] instanceof Array
       convert: (js_object)->
-        base = @convertImplicitSubexp(js_object['^'][0])
-        power = @convertImplicitSubexp(js_object['^'][1])
+        base = convert_implicit_subexp(js_object['^'][0], @processor)
+        power = convert_implicit_subexp(js_object['^'][1], @processor)
 
         @exponentiation_builder.build_exponentiation(
           base: base
           power: power
         )
-
-      convertImplicitSubexp: (subexp)->
-        maybe_wrapped =
-          if typeof subexp == "number"
-            [subexp]
-          else if subexp == null || subexp == false
-            []
-          else
-            subexp
-        processed = @processor.process(maybe_wrapped)
     class_mixer _FromExponentiationObject
 
 
@@ -177,23 +168,13 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
       initialize: (@processor, @root_builder)->
       isType: (js_object)-> js_object['root'] instanceof Array
       convert: (js_object)->
-        degree = @convertImplicitSubexp(js_object['root'][0])
-        radicand = @convertImplicitSubexp(js_object['root'][1])
+        degree = convert_implicit_subexp(js_object['root'][0], @processor)
+        radicand = convert_implicit_subexp(js_object['root'][1], @processor)
 
         @root_builder.build_root(
           degree: degree
           radicand: radicand
         )
-
-      convertImplicitSubexp: (subexp)->
-        maybe_wrapped =
-          if typeof subexp == "number"
-            [subexp]
-          else if subexp == null || subexp == false
-            []
-          else
-            subexp
-        processed = @processor.process(maybe_wrapped)
     class_mixer _FromRootObject
 
     class _FromVariableObject
@@ -202,6 +183,22 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
       convert: (js_object)->
         @variable_builder.build_variable(name: js_object['variable'])
     class_mixer _FromVariableObject
+
+    class _FromFractionObject
+      initialize: (@processor, @fraction_builder)->
+      isType: (js_object)->
+        js_object['fraction'] instanceof Array
+
+      convert: (js_object)->
+        numerator = convert_implicit_subexp(js_object['fraction'][0], @processor)
+        denominator = convert_implicit_subexp(js_object['fraction'][1], @processor)
+
+        @fraction_builder.build_fraction(
+          numerator: numerator
+          denominator: denominator
+        )
+
+    class_mixer _FromFractionObject
 
     class _FromStringLiteralObject
       initialize: (@converter, @literal_mappings)->
@@ -214,6 +211,16 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
         @converter[@literal_mappings[js_object]]()
 
     class_mixer _FromStringLiteralObject
+
+    convert_implicit_subexp = (subexp, processor)->
+        maybe_wrapped =
+          if typeof subexp == "number"
+            [subexp]
+          else if subexp == null || subexp == false
+            []
+          else
+            subexp
+        processed = processor.process(maybe_wrapped)
 
     # export for now
     ttm.lib.math.BuildExpressionFromJavascriptObject = BuildExpressionFromJavascriptObject
