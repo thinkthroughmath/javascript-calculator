@@ -3,12 +3,13 @@ it_adheres_to_the_expression_component_interface = (opts)->
   describe "expression component interface", ->
     beforeEach ->
       @comp = opts.instance_fn.call(@)
-
-    it "returns the correct repsonse for isOperator", ->
-      expect(@comp.isOperator()).toEqual opts.is_operator
-
     it "responds to ID", ->
       expect(@comp.id()).toEqual opts.id
+
+    describe "after cloning it", ->
+      it "maintains its id", ->
+        new_comp = @comp.clone()
+        expect(new_comp.id()).toEqual opts.id
 
 describe "Expression Components", ->
   beforeEach ->
@@ -16,12 +17,12 @@ describe "Expression Components", ->
     @expression_to_string = ttm.require('lib/math/expression_to_string').toString
     @expect_value = (expression, value)->
       expect(@expression_to_string(expression)).toEqual value
+    @h = new Helper(@comps)
 
-  describe "Expression", ->
+  describe "expressions", ->
     it_adheres_to_the_expression_component_interface {
       instance_fn: ->
         @comps.build_expression(id: 9876)
-      is_operator: false
       id: 9876
     }
 
@@ -64,26 +65,46 @@ describe "Expression Components", ->
       expect(@n(value: 1).futureAsDecimal().concatenate(0).concatenate(1).value()).toEqual '1.01'
 
   describe "roots", ->
+    it_adheres_to_the_expression_component_interface {
+      instance_fn: ->
+        @comps.build_root(
+          degree: @h.numberExpression(2),
+          radicand: @h.numberExpression(100),
+          id: 12345)
+
+      id: 12345
+    }
+
     beforeEach ->
-      @root = @comps.classes.root.build(degree: 2, radicand: 100)
+      @root = @comps.build_root(
+        degree: @h.numberExpression(2),
+        radicand: @h.numberExpression(100)
+      )
 
     it "has a reference to the degree", ->
-      expect(@root.degree()).toEqual 2
+      expect(@root.degree()).toBeAnEqualExpressionTo @h.numberExpression(2)
 
     it "has a reference to the radicand", ->
-      expect(@root.radicand()).toEqual 100
+      expect(@root.radicand()).toBeAnEqualExpressionTo @h.numberExpression(100)
 
     it "can update its radicand", ->
-      updated = @root.updateRadicand(5)
-      expect(updated.degree()).toEqual 2
-      expect(updated.radicand()).toEqual 5
+      new_rad = @h.numberExpression(5)
+      updated = @root.updateRadicand(new_rad)
 
+      expect(updated.degree()).toBeAnEqualExpressionTo @h.numberExpression(2)
+      expect(updated.radicand()).toBeAnEqualExpressionTo @h.numberExpression(5)
+
+    it "clones correctly", ->
+      new_root = @root.clone()
+      new_root.doot = 10
+
+      expect(@root).toBeAnEqualExpressionTo(new_root)
+      expect(@root.doot).not.toBeAnEqualExpressionTo new_root.doot
 
   describe "division", ->
     it_adheres_to_the_expression_component_interface {
       instance_fn: ->
         @comps.classes.division.build(id: 12345)
-      is_operator: true
       id: 12345
     }
 
@@ -91,7 +112,6 @@ describe "Expression Components", ->
     it_adheres_to_the_expression_component_interface {
       instance_fn: ->
         @comps.classes.variable.build(name: "example", id: 678)
-      is_operator: false
       id: 678
     }
 
@@ -99,10 +119,19 @@ describe "Expression Components", ->
       @variable = @comps.classes.variable.build(name: "doot")
       expect(@variable.name()).toEqual("doot")
 
-  describe "a function component", ->
+  describe "fns", ->
     it_adheres_to_the_expression_component_interface {
       instance_fn: ->
-        @comps.classes.fn.build(name: "example", id: 678)
-      is_operator: true
+        @comps.build_fn(name: "example", id: 678)
       id: 678
     }
+
+
+class Helper
+  constructor: (@comps)->
+  number: (num)->
+    @comps.build_number(value: num)
+  expression: (cont)->
+    @comps.build_expression expression: cont
+  numberExpression: (num)->
+    @expression(@number(num))

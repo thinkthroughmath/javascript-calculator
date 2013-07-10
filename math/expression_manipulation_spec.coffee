@@ -83,7 +83,7 @@ describe "expression manipulations", ->
       results = @manip.build_append_multiplication().perform(exp_pos)
       expect(results.expression().last() instanceof @components.classes.multiplication).toEqual true
 
-    it "correctly adds multiplication to an exponentiation", ->
+    it "correctly adds multiplication after an exponentiation", ->
       exp_pos = @exp_pos_builder('^': [1, 2])
       new_exp = @manip.build_append_multiplication().perform(exp_pos)
       expected = @exp_builder({'^': [1, 2]}, '*')
