@@ -122,7 +122,7 @@ ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer'], (ui_e
           <div class='radix'>&radic;</div>
           <div class='vinculum'>&#8212;</div>
         """
-        class: 'math-button other square-root'
+        class: 'math-button other root'
       }, opts)
 
 

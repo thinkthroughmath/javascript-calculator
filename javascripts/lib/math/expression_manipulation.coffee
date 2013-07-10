@@ -3,10 +3,99 @@
 #= require lib/math/expression_traversal
 #= require ./base
 
+
 ttm.define "lib/math/expression_manipulation",
   ["lib/class_mixer",
     'lib/math/expression_evaluation', 'lib/object_refinement'],
   (class_mixer, expression_evaluation, object_refinement)->
+
+    # First, the utilities that most of these classes link to
+
+    class _FinalOpenSubExpressionApplication
+      initialize: (opts={})->
+        @comps = opts.comps
+        @expr = opts.expr
+        @found = false
+
+      findAndPerformAction: (expr)->
+        subexp = @nextSubExpression(expr)
+        if subexp
+          subexp = @findAndPerformAction(subexp)
+        if @found # the child element below me was updated
+          @updateWithNewSubexp(expr, subexp)
+        else if expr instanceof @comps.classes.expression and expr.isOpen()
+          @found = true
+          @action expr
+        else # not closable, not handled, return
+          expr
+
+      perform: (@action)->
+        @findAndPerformAction(@expr)
+
+      wasFound: -> @found
+
+      updateWithNewSubexp: (expr, subexp)->
+        if expr instanceof @comps.classes.expression
+          expr.replaceLast(subexp)
+        else if expr instanceof @comps.classes.exponentiation
+          expr.updatePower(subexp)
+        else if expr instanceof @comps.classes.root
+          expr.updateRadicand(subexp)
+
+      nextSubExpression: (expr)->
+        if expr instanceof @comps.classes.expression
+          expr.last()
+        else if expr instanceof @comps.classes.exponentiation
+          expr.power()
+        else if expr instanceof @comps.classes.root
+          expr.radicand()
+        else false
+
+      performOrDefault: (@action)->
+        result = @findAndPerformAction(@expr)
+        if @wasFound()
+          result
+        else
+          @action(@expr)
+
+    class_mixer(_FinalOpenSubExpressionApplication)
+
+
+    class _ImplicitMultiplication
+      initialize: (@comps)->
+      invoke: (expression)->
+        last = expression.last()
+        if last && (last.isNumber() || last instanceof @comps.classes.expression || last instanceof @comps.classes.pi)
+          expression.append(@comps.build_multiplication())
+        else
+          expression
+
+      invokeD: (expression)->
+        last = expression.last()
+        if last && (last.isNumber() || last instanceof @comps.classes.expression || last instanceof @comps.classes.pi || last instanceof @comps.classes.variable)
+          expression.appendD(@comps.build_multiplication())
+          expression
+        else
+          expression
+
+    class_mixer(_ImplicitMultiplication)
+
+    class _ExpressionManipulator
+      initialize: (@expr, @traversal)->
+      clone: ->
+        @expr = @expr.clone()
+        @
+      withComponent: (position, fn)->
+        comp = @traversal.build(@expr).
+          findForID(position.position())
+        fn(comp)
+        @
+      value: -> @expr
+
+    class_mixer(_ExpressionManipulator)
+
+
+    # next, the manipulations themselves
 
     class ExpressionManipulation
       initialize: (opts={})->
@@ -20,6 +109,22 @@ ttm.define "lib/math/expression_manipulation",
         result = expression_evaluation.build(exp).evaluate()
         if result then result.value() else 0
 
+      M: (@expr)->
+        _ExpressionManipulator.build(@expr, @traversal)
+
+      isOperator: (comp)->
+        c = @comps.classes
+        # for these manipulations do we consider the comp to be an operator
+        switch comp.klass
+          when c.equals, c.addition, c.subtraction, c.multiplication, c.division
+            true
+          else false
+
+      # @destructive
+      withoutTrailingOperatorD: (exp)->
+        if @isOperator(exp.last())
+          exp.withoutLastD()
+        exp
     class Calculate extends ExpressionManipulation
       perform: (expression_position)->
         results = @evaluate(expression_position.expression())
@@ -47,7 +152,7 @@ ttm.define "lib/math/expression_manipulation",
           expression.appendD(new_last)
 
       perform: (expression_position)->
-        result_exp = _ExpressionManipulator.build(expression_position.expression(), @traversal).clone().
+        result_exp = @M(expression_position.expression()).clone().
           withComponent(expression_position, (component)=>
             @doAppendD(component, expression_position)
           ).value()
@@ -68,7 +173,7 @@ ttm.define "lib/math/expression_manipulation",
         if last
           if last instanceof @comps.classes.number
             expression.last().concatenateD(@val)
-          else if (last instanceof @comps.classes.exponentiation) or !last.isOperator()
+          else if (last instanceof @comps.classes.exponentiation) or !@isOperator(last)
             expression.appendD(@comps.build_multiplication())
             expression.appendD(number_to_append)
           else
@@ -77,7 +182,7 @@ ttm.define "lib/math/expression_manipulation",
           expression.appendD(number_to_append)
 
       perform: (expression_position)->
-        result_exp = _ExpressionManipulator.build(expression_position.expression(), @traversal).clone().
+        result_exp = @M(expression_position.expression()).clone().
           withComponent(expression_position, (component)=>
             @doAppendD(component, expression_position)
           ).value()
@@ -124,7 +229,7 @@ ttm.define "lib/math/expression_manipulation",
 
         # if the previous element is an operator but has no sub-expression,
         # then we are dropping the operator and use the number prior to the operator
-        else if last.isOperator()
+        else if @isOperator(last)
           component.withoutLastD() #remove useless operator
           base = @baseExpression(component.last())
 
@@ -148,7 +253,7 @@ ttm.define "lib/math/expression_manipulation",
         expression = expression_position.expression()
         return expression_position if expression.isEmpty()
 
-        result_exp = _ExpressionManipulator.build(expression_position.expression(), @traversal).clone().
+        result_exp = @M(expression_position.expression()).clone().
           withComponent(expression_position, (component)=>
             @exponentiateLastOfComponent(component)
           ).value()
@@ -162,7 +267,7 @@ ttm.define "lib/math/expression_manipulation",
         base = @comps.build_expression()
         power = @comps.build_expression()
 
-        result_exp = _ExpressionManipulator.build(expression_position.expression(), @traversal).clone().
+        result_exp = @M(expression_position.expression()).clone().
           withComponent(expression_position, (component)=>
             _ImplicitMultiplication.build(@comps).invokeD(component)
             component.appendD(@comps.build_exponentiation(base: base, power: power))
@@ -178,11 +283,9 @@ ttm.define "lib/math/expression_manipulation",
         expr = expression_position.expression()
         return expression_position if expr.isEmpty()
 
-        result_exp = _ExpressionManipulator.build(expr, @traversal).clone().
+        result_exp = @M(expression_position.expression()).clone().
           withComponent(expression_position, (component)=>
-            _OverrideIfOperatorOrAppend.build(@comps, component).withD(
-              @comps.build_multiplication()
-            )
+            @withoutTrailingOperatorD(component).appendD(@comps.build_multiplication())
           ).value()
 
         expression_position.clone(expression: result_exp)
@@ -200,10 +303,13 @@ ttm.define "lib/math/expression_manipulation",
         expr = expression_position.expression()
         return expression_position if expr.isEmpty()
 
-        result_exp = _ExpressionManipulator.build(expr, @traversal).clone().
+        result_exp = @M(expr).clone().
           withComponent(expression_position, (component)=>
-            _OverrideIfOperatorOrAppend.build(@comps, component).withD(@comps.build_division())
+            @withoutTrailingOperatorD(component).appendD(@comps.build_division())
           ).value()
+
+
+
         expression_position.clone(expression: result_exp)
     class_mixer(AppendDivision)
 
@@ -213,9 +319,9 @@ ttm.define "lib/math/expression_manipulation",
         expr = expression_position.expression()
         return expression_position if expr.isEmpty()
 
-        result_exp = _ExpressionManipulator.build(expr, @traversal).clone().
+        result_exp = @M(expr).clone().
           withComponent(expression_position, (component)=>
-            _OverrideIfOperatorOrAppend.build(@comps, component).withD(@comps.build_addition())
+            @withoutTrailingOperatorD(component).appendD(@comps.build_addition())
           ).value()
 
         expression_position.clone(expression: result_exp)
@@ -226,9 +332,9 @@ ttm.define "lib/math/expression_manipulation",
       perform: (expression_position)->
         expr = expression_position.expression()
 
-        result_exp = _ExpressionManipulator.build(expr, @traversal).clone().
+        result_exp = @M(expr).clone().
           withComponent(expression_position, (component)=>
-            _OverrideIfOperatorOrAppend.build(@comps, component).withD(@comps.build_subtraction())
+            @withoutTrailingOperatorD(component).appendD(@comps.build_subtraction())
           ).value()
         expression_position.clone(expression: result_exp)
 
@@ -240,9 +346,9 @@ ttm.define "lib/math/expression_manipulation",
         expr = expression_position.expression()
         return expression_position if expr.isEmpty()
 
-        result_exp = _ExpressionManipulator.build(expr, @traversal).clone().
+        result_exp = @M(expr).clone().
           withComponent(expression_position, (component)=>
-            _OverrideIfOperatorOrAppend.build(@comps, component).withD(@comps.build_division())
+            @withoutTrailingOperatorD(component).appendD(@comps.build_division())
           ).value()
         expression_position.clone(expression: result_exp)
     class_mixer(AppendDivision)
@@ -262,7 +368,7 @@ ttm.define "lib/math/expression_manipulation",
 
       perform: (expression_position)->
         expr = expression_position.expression()
-        result_exp = _ExpressionManipulator.build(expr, @traversal).clone().
+        result_exp = @M(expr).clone().
           withComponent(expression_position, (component)=>
             @negateComp(component)
           ).value()
@@ -275,7 +381,7 @@ ttm.define "lib/math/expression_manipulation",
         expr = expression_position.expression()
         new_exp = @comps.build_expression().open()
 
-        result_exp = _ExpressionManipulator.build(expr, @traversal).clone().
+        result_exp = @M(expr).clone().
           withComponent(expression_position, (component)=>
             _ImplicitMultiplication.build(@comps).invokeD(component)
             component.appendD(new_exp)
@@ -288,7 +394,7 @@ ttm.define "lib/math/expression_manipulation",
     class CloseSubExpression extends ExpressionManipulation
       perform: (expression_position)->
         expr = expression_position.expression()
-        result_exp = _ExpressionManipulator.build(expr, @traversal).clone().
+        result_exp = @M(expr).clone().
           withComponent(expression_position, (component)=>
             component.closeD()
             parent = component.parent()
@@ -300,7 +406,7 @@ ttm.define "lib/math/expression_manipulation",
     class AppendPi extends ExpressionManipulation
       perform: (expression_position)->
         expr = expression_position.expression()
-        result_exp = _ExpressionManipulator.build(expr, @traversal).clone().
+        result_exp = @M(expr).clone().
           withComponent(expression_position, (component)=>
             _ImplicitMultiplication.build(@comps).invokeD(component)
             component.appendD(@comps.build_pi())
@@ -325,7 +431,7 @@ ttm.define "lib/math/expression_manipulation",
         radicand = @comps.build_expression(expression: [])
         root = @comps.build_root(degree: degree, radicand: radicand)
 
-        result_exp = _ExpressionManipulator.build(expression_position.expression(), @traversal).clone().
+        result_exp = @M(expression_position.expression()).clone().
           withComponent(expression_position, (component)=>
             _ImplicitMultiplication.build(@comps).invokeD(component)
             component.appendD(root)
@@ -346,7 +452,7 @@ ttm.define "lib/math/expression_manipulation",
 
         variable = @comps.build_variable(name: @variable_name)
 
-        result_exp = _ExpressionManipulator.build(expr, @traversal).clone().
+        result_exp = @M(expr).clone().
           withComponent(expression_position, (component)=>
             _ImplicitMultiplication.build(@comps).invokeD(component)
             component.appendD(variable)
@@ -363,7 +469,7 @@ ttm.define "lib/math/expression_manipulation",
         numerator = @comps.build_expression()
         denominator = @comps.build_expression()
         fraction = @comps.build_fraction(numerator: numerator, denominator: denominator)
-        result_exp = _ExpressionManipulator.build(exp, @traversal).clone().
+        result_exp = @M(exp).clone().
           withComponent(expression_position, (component)=>
             _ImplicitMultiplication.build(@comps).invokeD(component)
             component.appendD(fraction)
@@ -383,7 +489,7 @@ ttm.define "lib/math/expression_manipulation",
 
         argument = @comps.build_expression()
         fn = @comps.build_fn(name: @name, argument: argument)
-        result_exp = _ExpressionManipulator.build(exp, @traversal).clone().
+        result_exp = @M(exp).clone().
           withComponent(expression_position, (component)=>
             _ImplicitMultiplication.build(@comps).invokeD(component)
             component.appendD(fn)
@@ -485,126 +591,6 @@ ttm.define "lib/math/expression_manipulation",
     class_mixer(GetRightSide)
 
 
-    class _FinalOpenSubExpressionApplication
-      initialize: (opts={})->
-        @comps = opts.comps
-        @expr = opts.expr
-        @found = false
-
-      findAndPerformAction: (expr)->
-        subexp = @nextSubExpression(expr)
-        if subexp
-          subexp = @findAndPerformAction(subexp)
-        if @found # the child element below me was updated
-          @updateWithNewSubexp(expr, subexp)
-        else if expr instanceof @comps.classes.expression and expr.isOpen()
-          @found = true
-          @action expr
-        else # not closable, not handled, return
-          expr
-
-      perform: (@action)->
-        @findAndPerformAction(@expr)
-
-      wasFound: -> @found
-
-      updateWithNewSubexp: (expr, subexp)->
-        if expr instanceof @comps.classes.expression
-          expr.replaceLast(subexp)
-        else if expr instanceof @comps.classes.exponentiation
-          expr.updatePower(subexp)
-        else if expr instanceof @comps.classes.root
-          expr.updateRadicand(subexp)
-
-      nextSubExpression: (expr)->
-        if expr instanceof @comps.classes.expression
-          expr.last()
-        else if expr instanceof @comps.classes.exponentiation
-          expr.power()
-        else if expr instanceof @comps.classes.root
-          expr.radicand()
-        else false
-
-      performOrDefault: (@action)->
-        result = @findAndPerformAction(@expr)
-        if @wasFound()
-          result
-        else
-          @action(@expr)
-
-    class_mixer(_FinalOpenSubExpressionApplication)
-
-
-    class _ImplicitMultiplication
-      initialize: (@comps)->
-      invoke: (expression)->
-        last = expression.last()
-        if last && (last.isNumber() || last instanceof @comps.classes.expression || last instanceof @comps.classes.pi)
-          expression.append(@comps.build_multiplication())
-        else
-          expression
-
-      invokeD: (expression)->
-        last = expression.last()
-        if last && (last.isNumber() || last instanceof @comps.classes.expression || last instanceof @comps.classes.pi || last instanceof @comps.classes.variable)
-          expression.appendD(@comps.build_multiplication())
-          expression
-        else
-          expression
-
-    class_mixer(_ImplicitMultiplication)
-
-    class _OverrideIfOperatorOrAppend
-      initialize: (@comps, @expression)->
-      with: (operator, append_method="append", replace_method="replaceLast")->
-        last = @expression.last()
-
-        action =
-          if last
-            if last.isOperator()
-              if last instanceof @comps.classes.exponentiation
-                "append"
-              else
-                "replace"
-            else
-              "append"
-          else
-            "append"
-
-        if action == "append"
-          @expression[append_method](operator)
-        else if action == "replace"
-          @expression[replace_method](operator)
-
-      # @destructive
-      withD: (operator)->
-        @with(operator, "appendD", "replaceLastD")
-
-    class_mixer(_OverrideIfOperatorOrAppend)
-
-
-    class _TrailingOperatorHandling
-      initialize: (@expression)->
-
-      getSubexpression: ->
-        last = @expression.last()
-        last.preceedingSubexpression()
-
-    class_mixer(_TrailingOperatorHandling)
-
-    class _ExpressionManipulator
-      initialize: (@expr, @traversal)->
-      clone: ->
-        @expr = @expr.clone()
-        @
-      withComponent: (position, fn)->
-        comp = @traversal.build(@expr).
-          findForID(position.position())
-        fn(comp)
-        @
-      value: -> @expr
-
-    class_mixer(_ExpressionManipulator)
 
     exports =
       calculate: Calculate

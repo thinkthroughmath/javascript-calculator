@@ -104,21 +104,21 @@ $other_border: #adadad;
         margin: 3px * $scalar;
     }
 
-    button.math-button.other.exponent {
-        font-size: 15px * $scalar;
-    }
-
     button.math-button.clear {
         font-size: 8px * $scalar;
     }
-    button.math-button.square sup {
-        font-size: 15px  * $scalar;
-        margin-left: 1px  * $scalar;
+
+    button.math-button.exponent {
+        font-size: 30px * $scalar;
+        sup {
+            font-size: 15px * $scalar;
+            margin-left: 1px * $scalar;
+        }
     }
     button.math-button.pi {
-        font-size: 35px  * $scalar;
+        font-size: 35px * $scalar;
     }
-    button.math-button.square-root
+    button.math-button.root
     {
         line-height: 30px * $scalar;
         font-style: normal;
@@ -130,8 +130,8 @@ $other_border: #adadad;
         }
         div.degree {
             font-size: 15px * $scalar;
-            left: 7px * $scalar;
-            top: 1px * $scalar;
+            left: -11px * $scalar;
+            top: -3px * $scalar;
         }
 
         div.radix
@@ -157,27 +157,28 @@ $other_border: #adadad;
         }
     }
 
-    button.math-button.numerator-denominator {
+    button.math-button.fraction {
         position: relative;
-        $size: 15px;
+        $size: 15px * $scalar;
 
         .numerator, .denominator, .vinculum {
-            position: absolute;
+            position: relative;
             font-size: $size;
+            width: 100%;
         }
         .numerator, .denominator {
-            font-size: $size;
         }
         .numerator {
-            top: -2px;
         }
         .vinculum {
-            top: -10px;
+            font-size: 28px * $scalar;
+            top: -12px * $scalar;
         }
         .denominator {
-            top: -16px;
+            top: -21px * $scalar;
         }
     }
+
 }
 
 .ie {
@@ -223,7 +224,7 @@ button.math-button:focus{
     outline: none;
 }
 
-button.math-button.square {
+button.math-button.exponent {
     font-family: "Times New Roman", serif;
     font-style: italic;
     sup {

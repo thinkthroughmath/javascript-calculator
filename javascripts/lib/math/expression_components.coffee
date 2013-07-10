@@ -4,7 +4,6 @@ class ExpressionComponent
   initialize: (opts={})->
     @id_value = opts.id
     @parent_value = opts.parent
-  isOperator: -> false
   isNumber: -> false
   preceedingSubexpression: -> false
   cloneData: (opts)=> ttm.defaults(opts, {id: @id_value, parent: @parent_value})
@@ -25,7 +24,6 @@ class ExpressionComponent
 
 class Equals extends ExpressionComponent
   toString: -> "="
-  isOperator: -> true
 ttm.class_mixer(Equals)
 
 
@@ -57,14 +55,14 @@ class Expression extends ExpressionComponent
     @is_error = opts.is_error
     @is_open = opts.is_open
 
-  clone: (new_vals={})->
-    data =
+  cloneData: (new_vals={})->
+    ttm.defaults(super,
+    {
       expression: _.map(@expression, (it)-> it.clone())
       is_error: @is_error
       is_open: @is_open
       id: @id_value
-    other = @klass.build(_.extend({}, data, new_vals))
-    other
+    })
 
   # returns part of an expression
   last: (from_end=0)->
@@ -203,7 +201,6 @@ class Exponentiation extends ExpressionComponent
     super
     @baseval = opts.base
     @powerval = opts.power
-  isOperator: -> true
   base: -> @baseval
   power: -> @powerval
 
@@ -243,21 +240,17 @@ ttm.class_mixer(Pi)
 
 class Addition extends ExpressionComponent
   toString: -> "Add"
-  isOperator: -> true
 ttm.class_mixer(Addition)
 
 class Subtraction extends ExpressionComponent
-  isOperator: -> true
   toString: -> "Sub"
 ttm.class_mixer(Subtraction)
 
 class Multiplication extends ExpressionComponent
-  isOperator: -> true
   toString: -> "Mult"
 ttm.class_mixer(Multiplication)
 
 class Division extends ExpressionComponent
-  isOperator: -> true
   toString: -> "Div"
 ttm.class_mixer(Division)
 
@@ -268,7 +261,6 @@ class Fraction extends ExpressionComponent
     @numerator_value = opts.numerator
     @denominator_value = opts.denominator
 
-  isOperator: -> true
   toString: ->
     "Frac(num: #{@numerator().toString()}, den: #{@denominator().toString()})"
 
@@ -312,15 +304,24 @@ class Root extends ExpressionComponent
   updateRadicand: (new_radic)->
     @clone(radicand: new_radic)
 
-  clone: (new_vals={})->
+
+  cloneData: (new_vals={})->
+
     data =
-      degree: @degree_value
-      radicand: @radicand_value
-    @klass.build(_.extend({}, data, new_vals))
+      degree: @degree_value && @degree_value.clone()
+      radicand: @radicand_value && @radicand_value.clone()
+
+    ttm.defaults(super, data)
+
+
+  # clone: (new_vals={})->
+  #   data =
+  #     degree: @degree_value
+  #     radicand: @radicand_value
+  #   @klass.build()
 
   subExpressions: ->
     [@degree(), @radicand()]
-
 
   # replace old comp with new comp if it is contained
   # immediately within this root
@@ -354,12 +355,11 @@ class Fn extends ExpressionComponent
     @name_value = opts.name
     @argument_value = opts.argument
 
-  clone: (new_vals={})->
-    data =
+  cloneData: (new_vals={})->
+    ttm.defaults(super, {
       name: @name_value
-      argument: @argument().clone()
-    base_data = @cloneData()
-    @klass.build(_.extend({}, base_data, data, new_vals))
+      argument: @argument() && @argument().clone()
+    })
 
   subExpressions: ->
     [@argument()]
@@ -372,8 +372,6 @@ class Fn extends ExpressionComponent
 
   name: ->
     @name_value
-
-  isOperator: -> true
 
 ttm.class_mixer(Fn)
 
