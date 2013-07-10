@@ -87,4 +87,10 @@ ttm.define "lib/object_refinement", ['lib/class_mixer'], (class_mixer)->
 
   return Refinement
 
-
+_.mixin {
+  compactObject: (o) ->
+    _.each o, (v, k) ->
+      if(!v)
+        delete o[k]
+    o
+}
