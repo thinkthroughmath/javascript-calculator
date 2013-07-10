@@ -339,7 +339,8 @@ class Variable extends ExpressionComponent
   clone: (new_vals={})->
     data =
       name: @name_value
-    @klass.build(ttm.defaults(new_vals, data))
+    base_data = @cloneData()
+    @klass.build(_.extend({}, base_data, data, new_vals))
 
   toString: ->
     "Var(#{@name()})"

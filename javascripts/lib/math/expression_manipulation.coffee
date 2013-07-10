@@ -430,19 +430,18 @@ ttm.define "lib/math/expression_manipulation",
       initialize: (opts={})->
         super
         @variables = opts.variables
-
       perform: (expression_position)->
         expr = expression_position.expression()
         clone = expr.clone()
         @traversal.build(clone).each (comp)=>
           if comp instanceof @comps.classes.variable
-            if @hasVariableValue(comp.name())
+            if @isThisVariable(comp.name())
               number = @comps.build_number(value: @variableValue(comp.name()))
               comp.parent().replaceD(comp, number)
 
         expression_position.clone(expression: clone)
 
-      hasVariableValue: (variable_name)->
+      isThisVariable: (variable_name)->
         for variable in @variables
           return true if variable.name == variable_name
 
