@@ -21,6 +21,13 @@ class ExpressionTraversal
       found_equals = true if exp instanceof @expr_classes.equals
     found_equals
 
+  hasVariableNamed: (name)->
+    found_equals = false
+    @each (exp)=>
+      found_equals = true if exp instanceof @expr_classes.variable and exp.name() == name
+    found_equals
+
+
 ttm.class_mixer(ExpressionTraversal)
 
 class ExpressionTraversalBuilder
