@@ -263,9 +263,18 @@ ttm.define "lib/math/expression_manipulation",
     class_mixer(ExponentiateLast)
 
     class AppendExponentiation extends ExpressionManipulation
+      initialize: (opts={})->
+        super
+        @exponent_content = opts.power
+
       perform: (expression_position)->
+        exp = if @exponent_content
+          [@comps.build_number(value: @exponent_content)]
+        else
+          []
+
         base = @comps.build_expression()
-        power = @comps.build_expression()
+        power = @comps.build_expression(expression: exp)
 
         result_exp = @M(expression_position.expression()).clone().
           withComponent(expression_position, (component)=>
