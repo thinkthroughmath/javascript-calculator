@@ -5,6 +5,7 @@
 #= require lib/math/expression_evaluation
 #= require lib/math/expression_manipulation
 #= require lib/math/build_expression_from_javascript_object
+#= require lib/math/precise
 
 class MathLib
   initialize: (opts={})->

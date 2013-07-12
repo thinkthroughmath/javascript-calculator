@@ -2,7 +2,7 @@
 
 
 class EvaluationRefinementBuilder
-  initialize: (comps, class_mixer, object_refinement, MalformedExpressionError)->
+  initialize: (comps, class_mixer, object_refinement, MalformedExpressionError, precise)->
     comps = comps
     refinement = object_refinement.build()
     refinement.forType(comps.classes.number,
@@ -39,7 +39,7 @@ class EvaluationRefinementBuilder
           next = evaluation.nextValue()
           if prev && next
             evaluation.handledSurrounding()
-            comps.classes.number.build(value: (parseFloat(prev) + parseFloat(next)))
+            comps.classes.number.build(value: precise.add(prev, next))
           else
             throw new MalformedExpressionError("Invalid Expression")
       });
@@ -53,7 +53,7 @@ class EvaluationRefinementBuilder
           next = evaluation.nextValue()
           if prev && next
             evaluation.handledSurrounding()
-            comps.classes.number.build(value: (parseFloat(prev) - parseFloat(next)))
+            comps.classes.number.build(value: precise.sub(prev, next))
           else
             throw new MalformedExpressionError("Invalid Expression")
       });
@@ -67,7 +67,7 @@ class EvaluationRefinementBuilder
           next = evaluation.nextValue()
           if prev && next
             evaluation.handledSurrounding()
-            comps.classes.number.build(value: (parseFloat(prev) * parseFloat(next)))
+            comps.classes.number.build(value: precise.mul(prev, next))
           else
             throw new MalformedExpressionError("Invalid Expression")
       });
@@ -82,7 +82,7 @@ class EvaluationRefinementBuilder
           next = evaluation.nextValue()
           if prev && next
             evaluation.handledSurrounding()
-            comps.classes.number.build(value: (parseFloat(prev) / parseFloat(next)))
+            comps.classes.number.build(value: precise.div(prev, next))
           else
             throw new MalformedExpressionError("Invalid Expression")
 
@@ -163,7 +163,8 @@ ttm.define "lib/math/expression_evaluation",
     class ExpressionEvaluation
       initialize: (@expression, @opts={})->
         @comps = @opts.comps || comps
-        @refinement = EvaluationRefinementBuilder.build(@comps, class_mixer, object_refinement, MalformedExpressionError).refinement()
+        @precise = ttm.lib.math.Precise.build()
+        @refinement = EvaluationRefinementBuilder.build(@comps, class_mixer, object_refinement, MalformedExpressionError, @precise).refinement()
 
       resultingExpression: ->
         results = false
@@ -186,3 +187,4 @@ ttm.define "lib/math/expression_evaluation",
     ttm.lib.math.ExpressionEvaluation = ExpressionEvaluation
 
     return ExpressionEvaluation
+
