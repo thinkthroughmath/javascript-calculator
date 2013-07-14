@@ -88,6 +88,19 @@ class EvaluationRefinementBuilder
 
       });
 
+    refinement.forType(comps.classes.fraction,
+      {
+        eval: (evaluation, pass)->
+          return if pass != "multiplication"
+          num = refinement.refine(@numerator()).eval().toCalculable()
+          denom = refinement.refine(@denominator()).eval().toCalculable()
+          if num && denom
+            comps.build_number(value: precise.div(num, denom))
+          else
+            throw new MalformedExpressionError("Invalid Expression")
+      }
+    )
+
 
     @refinement_val = refinement
 
