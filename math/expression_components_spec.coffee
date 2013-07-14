@@ -17,6 +17,7 @@ describe "Expression Components", ->
     @expression_to_string = ttm.require('lib/math/expression_to_string').toString
     @expect_value = (expression, value)->
       expect(@expression_to_string(expression)).toEqual value
+    @math = ttm.lib.math.math_lib.build()
     @h = new Helper(@comps)
 
   describe "expressions", ->
@@ -52,17 +53,20 @@ describe "Expression Components", ->
 
   describe "numbers", ->
     beforeEach ->
-      @n = @comps.classes.number.build
+      @n = (arg)=> @math.components.build_number(arg)
     it "returns a number with a negative version", ->
       num = @comps.classes.number.build(value: 10)
       neg_num = num.negated()
-      expect(neg_num.value()).toEqual -10
+      expect(neg_num.value()).toEqual "-10"
 
     it "supports concatenation", ->
       expect(@n(value: 1).concatenate(0).concatenate(1).value()).toEqual '101'
 
     it "supports concatenation with a decimal", ->
       expect(@n(value: 1).futureAsDecimal().concatenate(0).concatenate(1).value()).toEqual '1.01'
+
+    it "normalizes fractions in its constructor", ->
+      expect(@n(value: "1/4").value()).toEqual '0.25'
 
   describe "roots", ->
     it_adheres_to_the_expression_component_interface {

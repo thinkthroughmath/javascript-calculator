@@ -13,7 +13,7 @@ describe "BuildExpressionFromJavascriptObject", ->
 
   it "handles numbers", ->
     expression = @builder(10)
-    expect(expression.first().value()).toEqual 10
+    expect(expression.first().value()).toEqual "10"
 
   it "handles numbers that have trailing decimals", ->
     expression = @builder("0.")
@@ -26,19 +26,19 @@ describe "BuildExpressionFromJavascriptObject", ->
     expression = @builder(10, '+', 11)
     expect(expression.nth(0)).toBeInstanceOf @components.classes.number
     expect(expression.nth(1)).toBeInstanceOf @components.classes.addition
-    expect(expression.last().value()).toEqual 11
+    expect(expression.last().value()).toEqual "11"
 
   it "handles division", ->
     expression = @builder(10, '/', 11)
     expect(expression.nth(0)).toBeInstanceOf @components.classes.number
     expect(expression.nth(1)).toBeInstanceOf @components.classes.division
-    expect(expression.last().value()).toEqual 11
+    expect(expression.last().value()).toEqual "11"
 
   it "handles multiplication", ->
     expression = @builder(10, '*', 11)
     expect(expression.nth(0)).toBeInstanceOf @components.classes.number
     expect(expression.nth(1)).toBeInstanceOf @components.classes.multiplication
-    expect(expression.last().value()).toEqual 11
+    expect(expression.last().value()).toEqual "11"
 
   it "handles roots", ->
     expression = @builder(root: [2, 4])
@@ -48,7 +48,7 @@ describe "BuildExpressionFromJavascriptObject", ->
     expression = @builder(10, 'pi', 11)
     expect(expression.nth(0)).toBeInstanceOf @components.classes.number
     expect(expression.nth(1)).toBeInstanceOf @components.classes.pi
-    expect(expression.last().value()).toEqual 11
+    expect(expression.last().value()).toEqual "11"
 
   it "handles variables", ->
     expression = @builder({variable: "doot"})
@@ -63,11 +63,11 @@ describe "BuildExpressionFromJavascriptObject", ->
 
       base = exponentiation.base()
       expect(base).toBeInstanceOf @components.classes.expression
-      expect(base.first().value()).toEqual 10
+      expect(base.first().value()).toEqual "10"
 
       power = exponentiation.power()
       expect(power).toBeInstanceOf @components.classes.expression
-      expect(power.first().value()).toEqual 11
+      expect(power.first().value()).toEqual "11"
 
     it 'supports incomplete exponentiations (as an empty expression)', ->
       expression = @builder '^': [10, null]
@@ -116,7 +116,7 @@ describe "BuildExpressionFromJavascriptObject", ->
 
       ten = open.first()
       expect(ten).toBeInstanceOf @components.classes.number
-      expect(ten.value()).toEqual 10
+      expect(ten.value()).toEqual "10"
 
     it "building a closed expression inside an open expression", ->
       exp = @builder(open_expression: [[]])
@@ -140,7 +140,7 @@ describe "BuildExpressionFromJavascriptObject", ->
       expect(second_open.isOpen()).toEqual(true)
 
       ten = second_open.first()
-      expect(ten.value()).toEqual 10
+      expect(ten.value()).toEqual "10"
 
 
 
