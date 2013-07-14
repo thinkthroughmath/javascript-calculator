@@ -139,7 +139,8 @@ ttm.class_mixer(Expression)
 class Number extends ExpressionComponent
   initialize: (opts)->
     super
-    @val = opts.value
+    @precise = opts.precise_lib
+    @val = @normalizeValue(opts.value)
     @future_as_decimal = opts.future_as_decimal
 
   toString: ->
@@ -193,6 +194,14 @@ class Number extends ExpressionComponent
 
   hasDecimal: ->
     /\./.test(@val)
+
+  normalizeValue: (val)->
+    val = "#{val}"
+    if val.search(/\//) != -1
+      [num, denom] = val.split("/")
+      val = @precise.div(num, denom)
+    val
+
 
 ttm.class_mixer(Number)
 
@@ -388,8 +397,8 @@ ttm.class_mixer(ExpressionIDSource)
 
 components =
   expression: Expression
-  number: Number
   addition: Addition
+  number: Number
   multiplication: Multiplication
   division: Division
   subtraction: Subtraction
@@ -403,17 +412,24 @@ components =
   fn: Fn
 
 class ExpressionComponentSource
-  initialize: ->
+  initialize: (precise_lib)->
     @id_source = ExpressionIDSource.build()
+    @precise_lib = precise_lib
   classes: components
 
 for name, klass of components
+  continue if name == "number"
   build_klass = do (name, klass)->
     (opts={})->
       opts.id ||= @id_source.next()
       klass.build(opts)
 
   ExpressionComponentSource.prototype["build_#{name}"] = build_klass
+
+ExpressionComponentSource.prototype.build_number = (opts={})->
+  opts.id ||= @id_source.next()
+  opts.precise_lib ||= @precise_lib
+  Number.build(opts)
 
 
 ttm.lib.math.ExpressionComponentSource =

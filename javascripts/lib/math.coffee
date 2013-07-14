@@ -14,7 +14,8 @@ class MathLib
     ttm.require('lib/math/build_expression_from_javascript_object')
     ttm.require('lib/math/expression_evaluation')
     ttm.require('lib/math/expression_equality')
-    comps = opts.comps || ttm.lib.math.ExpressionComponentSource.build()
+    precise = opts.precise || ttm.lib.math.Precise.build()
+    comps = opts.comps || ttm.lib.math.ExpressionComponentSource.build(precise)
 
     @components = opts.components || comps
     @equation = opts.equation || comps.equation
