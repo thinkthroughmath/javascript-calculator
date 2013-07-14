@@ -1,5 +1,12 @@
 #= require lib/math/expression_evaluation
 
+expect_evaluation = (orig, goal)->
+  exp = @exp(orig)
+  new_exp = @evaluation.build(exp).resultingExpression()
+  expect(new_exp).toBeAnEqualExpressionTo @exp(goal)
+
+
+
 
 describe "math expression evaluation", ->
   beforeEach ->
@@ -7,7 +14,7 @@ describe "math expression evaluation", ->
     @math = ttm.lib.math.math_lib.build()
     builder_lib = ttm.require('lib/math/build_expression_from_javascript_object')
     @exp = @math.object_to_expression.buildExpressionFunction()
-
+    @expect_evaluation = expect_evaluation
   it "evaluates a simple addition", ->
     exp = @exp(2, '+', 7)
     results = @evaluation.build(exp).resultingExpression()
@@ -28,4 +35,16 @@ describe "math expression evaluation", ->
     exp = @exp(10, '*', [2, '+', 4])
     new_exp = @evaluation.build(exp).resultingExpression()
     expect(new_exp).toBeAnEqualExpressionTo @exp(60)
+
+  it "evaluates division", ->
+    @expect_evaluation(
+      ['20', '/', '2.5'],
+      '8'
+    )
+
+  it "evaluates fractional division", ->
+    @expect_evaluation(
+      {fraction: ['20', '2.5']}
+      '8'
+    )
 
