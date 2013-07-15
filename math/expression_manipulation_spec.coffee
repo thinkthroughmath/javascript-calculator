@@ -581,6 +581,18 @@ describe "expression manipulations", ->
         expected = @exp_builder({variable: 'chunky'})
         expect(new_exp.expression()).toBeAnEqualExpressionTo(expected)
 
+  describe "removing the pointed-at element", ->
+    it_plays_manipulation_role
+      subject: ->
+        @manip.build_remove_pointed_at()
+      expression_for_performance: ->
+        @exp_pos_builder({variable: "funky"}, '=', {variable: 'chunky'})
+
+    it "removes an item from  an expression", ->
+      expr = @exp_pos_builder({variable: "funky"}, '=', {variable: 'chunky'})
+      new_exp = @manip.build_remove_pointed_at().perform(expr)
+      expected = @exp_builder({variable: "funky"}, '=')
+      expect(new_exp.expression()).toBeAnEqualExpressionTo(expected)
 
   describe "utilities", ->
     describe "implicit multiplication", ->
