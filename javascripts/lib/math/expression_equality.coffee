@@ -121,7 +121,7 @@ ttm.define 'lib/math/expression_equality',
         # The real "todo" here is that
         # numbers are internally of questionable state.
         # Im not entirely sure how to state that number expresison components are equal
-        check = "#{@value()}" == "#{other.value()}"
+        check = parseFloat("#{@value()}").toFixed(2) == parseFloat("#{other.value()}").toFixed(2)
         eq_calc.saveFalseForReport(check, @unrefined(), other, "Numeric values not equal")
     })
 
