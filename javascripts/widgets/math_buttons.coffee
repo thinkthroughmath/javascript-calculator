@@ -1,187 +1,192 @@
+#= require ./base
 #= require almond_wrapper
 #= require widgets/ui_elements
 #= require lib
 
-ttm.define 'lib/math/buttons', ['widgets/ui_elements', 'lib/class_mixer'], (ui_elements, class_mixer)->
+class ButtonBuilder
+  initialize: (@opts={})->
+    @ui_elements = @opts.ui_elements
 
-  class ButtonBuilder
-    initialize: (@opts={})->
-    base10Digits: (opts={})->
-      for num in [0..9]
-        do (num)=>
-          @button({
-            value: "#{num}"
-            class: 'math-button number-specifier number'
-          }, opts)
+  base10Digits: (opts={})->
+    for num in [0..9]
+      do (num)=>
+        @button({
+          value: "#{num}"
+          class: 'math-button number-specifier number'
+        }, opts)
 
-    caret: (opts)->
-      @button({
-        value: '^'
-        label: '&circ;'
-        class: 'math-button other caret'
-      }, opts)
+  caret: (opts)->
+    @button({
+      value: '^'
+      label: '&circ;'
+      class: 'math-button other caret'
+    }, opts)
 
-    negative: (opts)->
-      @button({
-        value: 'negative'
-        label: '(&ndash;)'
-        class: 'math-button number-specifier negative'
-      }, opts)
+  negative: (opts)->
+    @button({
+      value: 'negative'
+      label: '(&ndash;)'
+      class: 'math-button number-specifier negative'
+    }, opts)
 
-    negative_slash_positive: (opts)->
-      @button({
-        value: 'negative-slash-positive'
-        label: "&ndash;/+"
-        class: 'math-button number-specifier'
-      }, opts)
+  negative_slash_positive: (opts)->
+    @button({
+      value: 'negative-slash-positive'
+      label: "&ndash;/+"
+      class: 'math-button number-specifier'
+    }, opts)
 
-    decimal: (opts)->
-      @button({
-        value: '.'
-        class: 'math-button number-specifier decimal'
-      }, opts)
+  decimal: (opts)->
+    @button({
+      value: '.'
+      class: 'math-button number-specifier decimal'
+    }, opts)
 
-    addition: (opts)->
-      @button({
-        value: '+'
-        class: 'math-button operation'
-      }, opts)
+  addition: (opts)->
+    @button({
+      value: '+'
+      class: 'math-button operation'
+    }, opts)
 
-    multiplication: (opts)->
-      @button({
-        value: '*'
-        label: '&times;'
-        class: 'math-button operation'
-      }, opts)
+  multiplication: (opts)->
+    @button({
+      value: '*'
+      label: '&times;'
+      class: 'math-button operation'
+    }, opts)
 
-    division: (opts)->
-      @button({
-        value: '/'
-        label: '&divide;'
-        class: 'math-button operation'
-      }, opts)
+  division: (opts)->
+    @button({
+      value: '/'
+      label: '&divide;'
+      class: 'math-button operation'
+    }, opts)
 
-    subtraction: (opts)->
-      @button({
-        value: '-'
-        label: '&ndash;'
-        class: 'math-button operation'
-      }, opts)
+  subtraction: (opts)->
+    @button({
+      value: '-'
+      label: '&ndash;'
+      class: 'math-button operation'
+    }, opts)
 
 
-    subtraction: (opts)->
-      @button({
-        value: '-'
-        label: '&ndash;'
-        class: 'math-button operation'
-      }, opts)
+  subtraction: (opts)->
+    @button({
+      value: '-'
+      label: '&ndash;'
+      class: 'math-button operation'
+    }, opts)
 
-    equals: (opts)->
-      @button({
-        value: '='
-        class: 'math-button operation equal'
-      }, opts)
+  equals: (opts)->
+    @button({
+      value: '='
+      class: 'math-button operation equal'
+    }, opts)
 
-    clear: (opts)->
-      @button({
-        value: 'clear'
-        class: 'math-button other clear'
-      }, opts)
+  clear: (opts)->
+    @button({
+      value: 'clear'
+      class: 'math-button other clear'
+    }, opts)
 
-    square: (opts)->
-      @button({
-        value: 'square'
-        label: 'x<sup>2</sup>'
-        class: 'math-button other square'
-      }, opts)
+  del: (opts)->
+    @button({
+      value: 'del'
+      class: 'math-button other del'
+    }, opts)
 
-    exponent: (opts)->
-      base = opts.base || "x"
-      power = opts.power || "y"
-      @button({
-        value: 'exponent'
-        label: "#{base}<sup>#{power}</sup>"
-        class: 'math-button other exponent'
-      }, opts)
+  square: (opts)->
+    @button({
+      value: 'square'
+      label: 'x<sup>2</sup>'
+      class: 'math-button other square'
+    }, opts)
 
-    root: (opts)->
-      degree = if opts.degree
-        "<div class='degree'>#{opts.degree}</div>"
-      else
-        ""
-      radicand = if opts.radicand
-        "<div class='radicand'>#{opts.radicand}</div>"
-      else
-        ""
+  exponent: (opts)->
+    base = opts.base || "x"
+    power = opts.power || "y"
+    @button({
+      value: 'exponent'
+      label: "#{base}<sup>#{power}</sup>"
+      class: 'math-button other exponent'
+    }, opts)
 
-      @button({
-        value: 'root'
-        label: """
-          #{degree}
-          #{radicand}
-          <div class='radix'>&radic;</div>
-          <div class='vinculum'>&#8212;</div>
+  root: (opts)->
+    degree = if opts.degree
+      "<div class='degree'>#{opts.degree}</div>"
+    else
+      ""
+    radicand = if opts.radicand
+      "<div class='radicand'>#{opts.radicand}</div>"
+    else
+      ""
+
+    @button({
+      value: 'root'
+      label: """
+        #{degree}
+        #{radicand}
+        <div class='radix'>&radic;</div>
+        <div class='vinculum'>&#8212;</div>
+      """
+      class: 'math-button other root'
+    }, opts)
+
+
+  fraction: (opts)->
+    @button({
+      value: 'fraction'
+      label: """
+        <div class='numerator'>a</div>
+        <div class='vinculum'>&#8212;</div>
+        <div class='denominator'>b</div>
         """
-        class: 'math-button other root'
-      }, opts)
+      class: 'math-button other fraction'
+    }, opts)
 
+  lparen: (opts)->
+    @button({
+      value: '('
+      class: 'math-button parentheses other'
+    }, opts)
 
-    fraction: (opts)->
-      @button({
-        value: 'fraction'
-        label: """
-          <div class='numerator'>a</div>
-          <div class='vinculum'>&#8212;</div>
-          <div class='denominator'>b</div>
-          """
-        class: 'math-button other fraction'
-      }, opts)
+  rparen: (opts)->
+    @button({
+      value: ')'
+      class: 'math-button parentheses other'
+    }, opts)
 
-    lparen: (opts)->
-      @button({
-        value: '('
-        class: 'math-button parentheses other'
-      }, opts)
+  pi: (opts)->
+    @button({
+      value: 'pi'
+      label: '&pi;'
+      class: 'math-button pi other'
+    }, opts)
 
-    rparen: (opts)->
-      @button({
-        value: ')'
-        class: 'math-button parentheses other'
-      }, opts)
+  variables: (opts)->
+    variables =
+      for v in opts.variables
+        do (v)=>
+          @button({
+            value: "#{v.name}"
+            class: 'math-button variable other'
+            variable: v
+          }, opts)
+    variables
 
-    pi: (opts)->
-      @button({
-        value: 'pi'
-        label: '&pi;'
-        class: 'math-button pi other'
-      }, opts)
+  fn: (opts)->
+    value = if opts.name
+      "function[#{opts.name}]"
+    else
+      "function"
+    @button({
+      value: value
+      label: '&fnof;'
+      class: 'math-button other function'
+    }, opts)
 
-    variables: (opts)->
-      variables =
-        for v in opts.variables
-          do (v)=>
-            @button({
-              value: "#{v.name}"
-              class: 'math-button variable other'
-              variable: v
-            }, opts)
-      variables
+  button: (type_opts, opts)->
+    @ui_elements.button_builder.build(
+      _.extend({}, type_opts, @opts, opts || {}))
 
-    fn: (opts)->
-      value = if opts.name
-        "function[#{opts.name}]"
-      else
-        "function"
-      @button({
-        value: value
-        label: '&fnof;'
-        class: 'math-button other function'
-      }, opts)
-
-    button: (type_opts, opts)->
-      ui_elements.button_builder.build(
-        _.extend({}, type_opts, @opts, opts || {}))
-
-  class_mixer(ButtonBuilder)
-
-  return makeBuilder: ButtonBuilder.build
+window.ttm.widgets.ButtonBuilder = ttm.class_mixer(ButtonBuilder)

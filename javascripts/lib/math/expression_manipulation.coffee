@@ -568,8 +568,6 @@ ttm.define "lib/math/expression_manipulation",
     class_mixer(SubstituteVariables)
 
 
-
-
     class GetLeftSide extends ExpressionManipulation
       perform: (expression_position)->
         new_exp = expression_position.expression().clone()
@@ -595,11 +593,18 @@ ttm.define "lib/math/expression_manipulation",
       indexOfEquals: (expression)->
         for index, exp of expression
           return (index*1) if exp instanceof @comps.classes.equals
-
-
     class_mixer(GetRightSide)
 
+    class RemovePointedAt extends ExpressionManipulation
+      perform: (expression_position)->
+        exp = expression_position.expression()
+        result_exp = @M(exp).clone().
+          withComponent(expression_position, (component)=>
+            component.withoutLastD()
+          ).value()
+        expression_position.clone(expression: result_exp)
 
+    class_mixer(RemovePointedAt)
 
     exports =
       calculate: Calculate
@@ -627,6 +632,7 @@ ttm.define "lib/math/expression_manipulation",
       get_right_side: GetRightSide
       append_fraction: AppendFraction
       append_fn: AppendFn
+      remove_pointed_at: RemovePointedAt
 
     class ExpressionManipulationSource
       initialize: (@comps, @pos, @traversal)->

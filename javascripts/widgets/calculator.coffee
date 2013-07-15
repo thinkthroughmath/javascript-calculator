@@ -7,9 +7,12 @@
 #= require lib/math/expression_components
 
 ttm.define "calculator",
-  ["lib/class_mixer", "widgets/ui_elements", "lib/math/buttons", 'lib/math/expression_to_string', 'lib/historic_value'],
-  (class_mixer,  ui_elements, math_buttons,
+  ["lib/class_mixer", 'lib/math/expression_to_string', 'lib/historic_value'],
+  (class_mixer,
     expression_to_string, historic_value)->
+
+    ui_elements = window.ttm.widgets.UIElements.build()
+    math_buttons_lib = window.ttm.widgets.ButtonBuilder
     components = ttm.lib.math.ExpressionComponentSource.build()
 
     open_widget_dialog = (element)->
@@ -110,15 +113,6 @@ ttm.define "calculator",
       piClick: ->
         @updateCurrentExpressionWithCommand @math.commands.build_append_pi()
 
-      buttonFor: (opts)->
-        opts = _.extend({
-          button_builder: @button_builder
-          logic: @logic
-          element: @element
-        }, opts)
-
-        @button_builder.build opts
-
     class_mixer(Calculator)
 
     class ButtonLayout
@@ -157,9 +151,9 @@ ttm.define "calculator",
     class CalculatorView
       initialize: (@calc, @element, @math)->
 
-        @button_builder = ui_elements.button_builder
-        math_button_builder = math_buttons.makeBuilder
+        math_button_builder = math_buttons_lib.build
           element: @element
+          ui_elements: ui_elements
 
         # for button layout
         buttons = {}
