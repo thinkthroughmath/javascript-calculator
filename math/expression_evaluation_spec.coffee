@@ -15,6 +15,7 @@ describe "math expression evaluation", ->
     builder_lib = ttm.require('lib/math/build_expression_from_javascript_object')
     @exp = @math.object_to_expression.buildExpressionFunction()
     @expect_evaluation = expect_evaluation
+
   it "evaluates a simple addition", ->
     exp = @exp(2, '+', 7)
     results = @evaluation.build(exp).resultingExpression()
@@ -47,4 +48,15 @@ describe "math expression evaluation", ->
       {fraction: ['20', '2.5']}
       '8'
     )
+
+  it "evaluates this expression correctly", ->
+    @expect_evaluation(
+      [
+        [
+          "41", '/', "32.75", '-', '1'
+        ], '*', '100'
+      ],
+      '25.19'
+    )
+
 
