@@ -2,6 +2,24 @@
 ttm.define 'lib/math/build_expression_from_javascript_object',
   ['lib/class_mixer'],
   (class_mixer)->
+    # conversion process is used
+    # to figure out which child node has a a cursor
+    # if any
+    class ConversionProcess
+      initialize: (@processor, @js_object)->
+        @position_val = false
+      convert: ->
+        @converted_val = @processor.convert(@js_object, @)
+      converted: ->
+        @converted_val
+      checkForPosition: (expression_component, js_object)->
+        if js_object && js_object.has_cursor
+          @position_val = expression_component.id()
+      position: ->
+        @position_val
+
+    class_mixer ConversionProcess
+
     class BuildExpressionFromJavascriptObject
       initialize: (@opts={})->
         @component_builder = @opts.component_builder
@@ -46,11 +64,8 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           @processor,
           @component_builder)
 
-        @open_expression_converter = _FromOpenExpressionObject.build(@closed_expression_converter)
-
         @processor.converters [
           @closed_expression_converter
-          @open_expression_converter
           @number_converter
           @exponentiation_converter
           @string_literal_converter
@@ -61,71 +76,53 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
           ]
 
       process: (js_object)->
-        @processor.process(js_object)
-
-      processBuildExpression: (data)->
-        @process(data)
+        cp = ConversionProcess.build(@processor, js_object)
+        cp.convert()
+        cp
 
       buildExpressionFunction: ->
-        @builderFunction()
+        =>
+          arguments_as_array = Array.prototype.slice.call(arguments, 0)
+          conversion_process = @process(arguments_as_array)
+          conversion_process.converted()
+
       buildExpressionPositionFunction: ->
-        @builderFunctionExpressionWithPositionAsLast()
-
-      builderFunction: ->
         =>
           arguments_as_array = Array.prototype.slice.call(arguments, 0)
-          converted_part = @processBuildExpression(arguments_as_array)
-          converted_part
-
-      builderFunctionExpressionWithPositionAsLast: ->
-        =>
-          arguments_as_array = Array.prototype.slice.call(arguments, 0)
-          expression = @processBuildExpression(arguments_as_array)
-          ttm.lib.math.ExpressionPosition.buildExpressionPositionAsLast(expression)
-
+          conversion_process = @process(arguments_as_array)
+          if conversion_process.position()
+            ttm.lib.math.ExpressionPosition.build(
+              expression: conversion_process.converted()
+              position: conversion_process.position()
+            )
+          else
+            # default is to use last
+            ttm.lib.math.ExpressionPosition.buildExpressionPositionAsLast(
+              conversion_process.converted()
+            )
     class_mixer BuildExpressionFromJavascriptObject
 
     class _JSObjectExpressionProcessor
       converters: (@js_object_converters)->
 
-      process: (js_object)->
+      convert: (js_object, conversion_process)->
         for converter in @js_object_converters
           if converter.isType(js_object)
-            return converter.convert(js_object)
+            return converter.convert(js_object, conversion_process)
         throw "Unhandled js object: #{JSON.stringify js_object}"
     class_mixer _JSObjectExpressionProcessor
-
-    class _FromOpenExpressionObject
-      initialize: (@expression_converter)->
-      isType: (js_object)->
-        js_object['open_expression'] != undefined
-
-      convert = (js_object)->
-        subexp = js_object['open_expression']
-        maybe_wrapped =
-          if typeof subexp == "number"
-            [subexp]
-          else if subexp == null || subexp == false
-            []
-          else if @isType(subexp) # this open expression contains another open expression
-            [subexp]
-          else subexp
-        @expression_converter.convert(maybe_wrapped).open()
-
-      convert: logger.instrument(name: "_FromOpenExpressionObject#convert", fn: convert)
-
-    class_mixer _FromOpenExpressionObject
 
     class _FromClosedExpressionObject
       initialize: (@expression_builder, @processor)->
       isType: (js_object)->
         typeof js_object == "object" && js_object instanceof Array
 
-      convert: (js_object)->
+      convert: (js_object, conversion_process)->
         exp = @expression_builder.build_expression()
         for part in js_object
-          converted_part = @processor.process(part)
+          converted_part = @processor.convert(part, conversion_process)
           exp = exp.append(converted_part)
+        conversion_process.checkForPosition(exp, js_object)
         exp
     class_mixer _FromClosedExpressionObject
 
@@ -141,7 +138,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
       isStringNumber: (js_object)->
         typeof js_object == "string" and js_object.search(/\d+/) != -1
 
-      convert: (js_object)->
+      convert: (js_object, conversion_process)->
         if @isJSNumber(js_object)
           @number_builder.build_number(value: js_object)
         else if @isStringNumber(js_object)
@@ -160,9 +157,16 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
     class _FromExponentiationObject
       initialize: (@processor, @exponentiation_builder)->
       isType: (js_object)-> js_object['^'] instanceof Array
-      convert: (js_object)->
-        base = convert_implicit_subexp(js_object['^'][0], @processor)
-        power = convert_implicit_subexp(js_object['^'][1], @processor)
+      convert: (js_object, conversion_process)->
+
+        base_obj = js_object['^'][0]
+        power_obj = js_object['^'][1]
+
+        base = convert_implicit_subexp(base_obj, @processor, conversion_process)
+        power = convert_implicit_subexp(power_obj, @processor, conversion_process)
+
+        conversion_process.checkForPosition(base, base_obj)
+        conversion_process.checkForPosition(power, power_obj)
 
         @exponentiation_builder.build_exponentiation(
           base: base
@@ -174,9 +178,9 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
     class _FromRootObject
       initialize: (@processor, @root_builder)->
       isType: (js_object)-> js_object['root'] instanceof Array
-      convert: (js_object)->
-        degree = convert_implicit_subexp(js_object['root'][0], @processor)
-        radicand = convert_implicit_subexp(js_object['root'][1], @processor)
+      convert: (js_object, conversion_process)->
+        degree = convert_implicit_subexp(js_object['root'][0], @processor, conversion_process)
+        radicand = convert_implicit_subexp(js_object['root'][1], @processor, conversion_process)
 
         @root_builder.build_root(
           degree: degree
@@ -187,7 +191,7 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
     class _FromVariableObject
       initialize: (@processor, @variable_builder)->
       isType: (js_object)-> typeof js_object['variable'] == "string"
-      convert: (js_object)->
+      convert: (js_object, conversion_process)->
         @variable_builder.build_variable(name: js_object['variable'])
     class_mixer _FromVariableObject
 
@@ -196,9 +200,14 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
       isType: (js_object)->
         js_object['fraction'] instanceof Array
 
-      convert: (js_object)->
-        numerator = convert_implicit_subexp(js_object['fraction'][0], @processor)
-        denominator = convert_implicit_subexp(js_object['fraction'][1], @processor)
+      convert: (js_object, conversion_process)->
+        num_obj = js_object['fraction'][0]
+        numerator = convert_implicit_subexp(num_obj, @processor, conversion_process)
+        den_obj = js_object['fraction'][1]
+        denominator = convert_implicit_subexp(den_obj, @processor, conversion_process)
+
+        conversion_process.checkForPosition(numerator, num_obj)
+        conversion_process.checkForPosition(denominator, den_obj)
 
         @fraction_builder.build_fraction(
           numerator: numerator
@@ -210,9 +219,9 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
       initialize: (@converter, @fn_builder)->
       isType: (js_object)->
         js_object['fn'] instanceof Array
-      convert: (js_object)->
+      convert: (js_object, conversion_process)->
         name = js_object['fn'][0]
-        argument = convert_implicit_subexp(js_object['fn'][1], @converter)
+        argument = convert_implicit_subexp(js_object['fn'][1], @converter, conversion_process)
 
         @fn_builder.build_fn(
           name: name
@@ -227,20 +236,20 @@ ttm.define 'lib/math/build_expression_from_javascript_object',
       isType: (js_object)->
         @keys.indexOf(js_object) != -1
 
-      convert: (js_object)->
+      convert: (js_object, conversion_process)->
         @converter[@literal_mappings[js_object]]()
 
     class_mixer _FromStringLiteralObject
 
-    convert_implicit_subexp = (subexp, processor)->
+    convert_implicit_subexp = (subexp, processor, conversion_process)->
         maybe_wrapped =
           if typeof subexp == "number"
             [subexp]
-          else if subexp == null || subexp == false
+          else if !subexp
             []
           else
             subexp
-        processed = processor.process(maybe_wrapped)
+        processed = processor.convert(maybe_wrapped, conversion_process)
 
     # export for now
     ttm.lib.math.BuildExpressionFromJavascriptObject = BuildExpressionFromJavascriptObject

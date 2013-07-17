@@ -1,7 +1,11 @@
 #= require lib/math/expression_traversal
 
+
+
+
 class ExpressionTraversal
-  initialize: (@expr_classes, @expr)->
+  initialize: (@expr_classes, @expression_position)->
+    @expr = @expression_position.expression()
 
   each: (fn, expr=@expr)->
     fn(expr)
@@ -27,14 +31,42 @@ class ExpressionTraversal
       found_equals = true if exp instanceof @expr_classes.variable and exp.name() == name
     found_equals
 
+  buildExpressionComponentContainsCursor: ->
+    ExpressionComponentContainsCursor.build(@expression_position, @)
 
 ttm.class_mixer(ExpressionTraversal)
 
 class ExpressionTraversalBuilder
   initialize: (@expression_component_classes)->
-  build: (@expression)->
-    ExpressionTraversal.build(@expression_component_classes, @expression)
-ttm.class_mixer(ExpressionTraversal)
+  build: (@expression_position)->
+    ExpressionTraversal.build(@expression_component_classes, @expression_position)
+
+ttm.class_mixer(ExpressionTraversalBuilder)
+
+# class takes an ExpressionPosition object
+# It can then tell via isCursorWithinComponent
+# whether or not the current component "contains" the cursor
+class ExpressionComponentContainsCursor
+  initialize: (@expression_position, @traversal)->
+
+  isCursorWithinComponent: (comp)->
+    @componentIDsWithCursor().indexOf(comp.id()) != -1
+
+  # privates below
+  cursorComponent: ->
+    @cursorComponent_val ||= @traversal.findForID(@expression_position.position())
+
+  componentIDsWithCursor: ->
+    if not @componentIDsWithCursor_val
+      ids_with_cursor = []
+      comp = @cursorComponent()
+      while comp
+        ids_with_cursor += comp.id()
+        comp = comp.parent()
+      @componentIDsWithCursor_val = ids_with_cursor
+    @componentIDsWithCursor_val
+
+ttm.class_mixer(ExpressionComponentContainsCursor)
 
 
 window.ttm.lib.math.ExpressionTraversal = ttm.class_mixer(ExpressionTraversal)

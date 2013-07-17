@@ -2,9 +2,14 @@
 
 class ExpressionComponent
   initialize: (opts={})->
+    @component_source = opts.component_source
     @id_value = opts.id
     @parent_value = opts.parent
+
   isNumber: -> false
+  isExpression: -> false
+  isFraction: -> false
+
   preceedingSubexpression: -> false
   cloneData: (opts)=> ttm.defaults(opts, {id: @id_value, parent: @parent_value})
   clone: (opts={})-> @klass.build(@cloneData(opts))
@@ -43,7 +48,6 @@ class Expression extends ExpressionComponent
   initialize: (opts={})->
     super
     defaults =
-      is_open: false
       expression: []
       is_error: false
     opts = _.extend({}, defaults, opts)
@@ -53,14 +57,12 @@ class Expression extends ExpressionComponent
       @expression.push(part.withParent(@))
 
     @is_error = opts.is_error
-    @is_open = opts.is_open
 
   cloneData: (new_vals={})->
     ttm.defaults(super,
     {
       expression: _.map(@expression, (it)-> it.clone())
       is_error: @is_error
-      is_open: @is_open
       id: @id_value
     })
 
@@ -119,17 +121,13 @@ class Expression extends ExpressionComponent
     @expression.splice(@expression.length-1, 1)
 
   isError: -> @is_error
-
-  isOpen: -> @is_open
-  open: -> @clone(is_open: true)
-  close: -> @clone(is_open: false)
-  closeD: -> @is_open = false;
+  isExpression: -> true
 
   toString: ->
     tf = (it)-> it ? "t" : "f"
     subexpressions = _(@expression).chain().map((it)->
       it.toString()).join(", ").value()
-    "Expression(o: #{tf @is_open}, e: #{tf @is_error}, exp: [#{subexpressions}])"
+    "Expression(e: #{tf @is_error}, exp: [#{subexpressions}])"
 
   subExpressions: -> @expression
 
@@ -208,8 +206,8 @@ ttm.class_mixer(Number)
 class Exponentiation extends ExpressionComponent
   initialize: (opts={})->
     super
-    @baseval = opts.base
-    @powerval = opts.power
+    @baseval = opts.base.clone(parent: @)
+    @powerval = opts.power.clone(parent: @)
   base: -> @baseval
   power: -> @powerval
 
@@ -267,8 +265,15 @@ ttm.class_mixer(Division)
 class Fraction extends ExpressionComponent
   initialize: (opts={})->
     super
-    @numerator_value = opts.numerator
-    @denominator_value = opts.denominator
+    @numerator_value = if opts.numerator
+      opts.numerator.withParent(@)
+    else
+      @component_source.build_expression(parent: @)
+
+    @denominator_value = if opts.denominator
+      opts.denominator.withParent(@)
+    else
+      @component_source.build_expression(parent: @)
 
   toString: ->
     "Frac(num: #{@numerator().toString()}, den: #{@denominator().toString()})"
@@ -281,6 +286,8 @@ class Fraction extends ExpressionComponent
 
   subExpressions: ->
     [@numerator(), @denominator()]
+
+  isFraction: -> true
 
   clone: (new_vals={})->
     data =
@@ -322,13 +329,6 @@ class Root extends ExpressionComponent
 
     ttm.defaults(super, data)
 
-
-  # clone: (new_vals={})->
-  #   data =
-  #     degree: @degree_value
-  #     radicand: @radicand_value
-  #   @klass.build()
-
   subExpressions: ->
     [@degree(), @radicand()]
 
@@ -359,7 +359,6 @@ ttm.class_mixer(Variable)
 class Fn extends ExpressionComponent
   initialize: (opts={})->
     super
-
     # we only support single-argument functions
     @name_value = opts.name
     @argument_value = opts.argument
@@ -422,6 +421,7 @@ for name, klass of components
   build_klass = do (name, klass)->
     (opts={})->
       opts.id ||= @id_source.next()
+      opts.component_source = @
       klass.build(opts)
 
   ExpressionComponentSource.prototype["build_#{name}"] = build_klass

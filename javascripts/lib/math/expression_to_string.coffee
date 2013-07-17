@@ -3,8 +3,10 @@ ttm.define 'lib/math/expression_to_string',
   (class_mixer, object_refinement)->
 
     class ExpressionToString
-      initialize: (@expression, @comps)->
-        @comps ||= ttm.lib.math.ExpressionComponentSource.build()
+      initialize: (@expression_position, expression_contains_cursor)->
+        @expression = @expression_position.expression()
+        @position = @expression_position.position()
+        @comps = ttm.lib.math.ExpressionComponentSource.build()
         comps = @comps
 
         @ref = ref = object_refinement.build()
@@ -26,7 +28,7 @@ ttm.define 'lib/math/expression_to_string',
           base: ->
             ref.refine(@unrefined().base()).toString(include_parentheses_if_single: false)
           power: ->
-            ref.refine(@unrefined().power()).toString(include_parentheses_if_single: false)
+            ref.refine(@unrefined().power()).toString(include_parentheses_if_single: true)
           toString: ->
             "#{@base()} ^ #{@power()}"
 
@@ -71,24 +73,21 @@ ttm.define 'lib/math/expression_to_string',
 
           maybeWrapWithParentheses: (str, opts)->
             if !opts.skip_parentheses # ie this is the "root" expression
-              opening_paren = if @isOpen()
-                "( "
-              else if (@expression.length > 1)
+              opening_paren = if (@expression.length > 1)
                 "( "
               else if opts.include_parentheses_if_single and @expression.length == 1
                 "( "
               else
                 ""
-
-              closing_paren = if !@isOpen(opts)
-                if @expression.length > 1
+              closing_paren =
+                if expression_contains_cursor.isCursorWithinComponent(@)
+                  ""
+                else if @expression.length > 1
                   " )"
                 else if opts.include_parentheses_if_single and @expression.length == 1
                   " )"
                 else
                   ""
-              else
-                ""
               "#{opening_paren}#{str}#{closing_paren}"
             else
               str
@@ -135,9 +134,9 @@ ttm.define 'lib/math/expression_to_string',
 
     class_mixer ExpressionToString
 
-    ExpressionToString.toString = (expression)->
-      ExpressionToString.build(expression).toString()
+    ExpressionToString.toString = (expression_position, expression_contains_cursor)->
+      ExpressionToString.build(expression_position, expression_contains_cursor).toString()
 
-    ExpressionToString.toHTMLString = (expression)->
-      ExpressionToString.build(expression).toHTMLString()
+    ExpressionToString.toHTMLString = (expression_position, expression_contains_cursor)->
+      ExpressionToString.build(expression_position, expression_contains_cursor).toHTMLString()
     ExpressionToString

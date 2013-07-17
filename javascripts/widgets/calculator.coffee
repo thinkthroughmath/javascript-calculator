@@ -32,10 +32,13 @@ ttm.define "calculator",
         @expression_position = historic_value.build()
         @updateCurrentExpressionWithCommand @math.commands.build_reset()
 
+
       displayValue: ->
-        exp = @expression_position.current().expression()
+        exp_pos = @expression_position.current()
+        exp = exp_pos.expression()
+        exp_contains_cursor = @math.traversal.build(exp_pos).buildExpressionComponentContainsCursor()
         if !exp.isError()
-          val = expression_to_string.toHTMLString(exp)
+          val = expression_to_string.toHTMLString(exp_pos, exp_contains_cursor)
           if val.length == 0
             '0'
           else
@@ -105,10 +108,10 @@ ttm.define "calculator",
         @reset_on_next_number = true
 
       lparenClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.build_append_open_sub_expression()
+        @updateCurrentExpressionWithCommand @math.commands.build_append_sub_expression()
 
       rparenClick: ->
-        @updateCurrentExpressionWithCommand @math.commands.build_close_sub_expression()
+        @updateCurrentExpressionWithCommand @math.commands.build_exit_sub_expression()
 
       piClick: ->
         @updateCurrentExpressionWithCommand @math.commands.build_append_pi()

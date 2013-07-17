@@ -17,7 +17,7 @@ class ExpressionPosition
 
   clone: (new_vals={})->
     data =
-      expression: @expr
+      expression: @expr.clone()
       position: @pos
       type: @type_val
     other = @klass.build(_.extend({}, data, new_vals))
