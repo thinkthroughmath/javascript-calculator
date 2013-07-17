@@ -26,6 +26,12 @@ window.f = (html="")->
     cont.html(html)
   cont
 
+# method to assign a cursor to a js literal object
+# used in equation builder
+window.cursor = (thing)->
+  thing.has_cursor = true
+  thing
+
 
 window.parsedDomText = (txt)->
   $("<p>#{txt}</p>").text()

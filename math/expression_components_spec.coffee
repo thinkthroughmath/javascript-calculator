@@ -11,10 +11,20 @@ it_adheres_to_the_expression_component_interface = (opts)->
         new_comp = @comp.clone()
         expect(new_comp.id()).toEqual opts.id
 
+    it "has type-introspection methods", ->
+      # just want to verify that these are methods
+      # would fail if they weren't
+      @comp.isExpression()
+      @comp.isFraction()
+      @comp.isNumber()
+
 describe "Expression Components", ->
   beforeEach ->
     @comps = ttm.lib.math.ExpressionComponentSource.build()
-    @expression_to_string = ttm.require('lib/math/expression_to_string').toString
+
+    @expression_to_string = (exp)->
+      ttm.require('lib/math/expression_to_string').toString(exp)
+
     @expect_value = (expression, value)->
       expect(@expression_to_string(expression)).toEqual value
     @math = ttm.lib.math.math_lib.build()
@@ -32,24 +42,11 @@ describe "Expression Components", ->
         expression: [
           @comps.build_number(value: '10')
         ])
-      @expect_value(exp, '10')
+      exp_pos = @math.expression_position.buildExpressionPositionAsLast(exp)
+      @expect_value(exp_pos, '10')
 
-    describe "'openness'/'incompleteness'", ->
-      beforeEach ->
-        @exp = @comps.build_expression()
-
-      it "responds to isOpen with 'false' by default", ->
-        expect(@exp.isOpen()).toEqual false
-
-      it "has an opening method which returns an open expression", ->
-        open_exp = @exp.open()
-        expect(open_exp.isOpen()).toEqual true
-        expect(open_exp).toBeInstanceOf @comps.classes.expression
-
-      it "has a closing method which returns a closed expression", ->
-        exp = @exp.open().close()
-        expect(exp.isOpen()).toEqual false
-        expect(exp).toBeInstanceOf @comps.classes.expression
+    it "is isExpression", ->
+      expect(@comps.build_expression().isExpression()).toEqual true
 
   describe "numbers", ->
     beforeEach ->
@@ -108,19 +105,19 @@ describe "Expression Components", ->
   describe "division", ->
     it_adheres_to_the_expression_component_interface {
       instance_fn: ->
-        @comps.classes.division.build(id: 12345)
+        @comps.build_division(id: 12345)
       id: 12345
     }
 
   describe "variables", ->
     it_adheres_to_the_expression_component_interface {
       instance_fn: ->
-        @comps.classes.variable.build(name: "example", id: 678)
+        @comps.build_variable(name: "example", id: 678)
       id: 678
     }
 
     it "will tell you its name", ->
-      @variable = @comps.classes.variable.build(name: "doot")
+      @variable = @comps.build_variable(name: "doot")
       expect(@variable.name()).toEqual("doot")
 
   describe "fns", ->
@@ -129,6 +126,17 @@ describe "Expression Components", ->
         @comps.build_fn(name: "example", id: 678)
       id: 678
     }
+
+  describe "fraction", ->
+    it_adheres_to_the_expression_component_interface {
+      instance_fn: ->
+        @comps.build_fraction(id: 678)
+      id: 678
+    }
+
+    it "is isFraction", ->
+      @frac = @comps.build_fraction()
+      expect(@frac.isFraction()).toEqual true
 
 
 class Helper

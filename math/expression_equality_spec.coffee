@@ -9,7 +9,7 @@ describe "expression equality", ->
     builder_lib = ttm.require('lib/math/build_expression_from_javascript_object')
 
     @math = ttm.lib.math.math_lib.build()
-    @exp_builder = @math.object_to_expression.builderFunction()
+    @exp_builder = @math.object_to_expression.buildExpressionFunction()
 
   describe "numbers", ->
     it "with different values are different", ->

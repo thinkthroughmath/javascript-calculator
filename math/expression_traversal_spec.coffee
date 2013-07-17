@@ -6,6 +6,8 @@ describe "expression traversal", ->
     @comps = @math.components
     @expression_traversal = @math.traversal
 
+    @exp_pos_builder = @math.object_to_expression.buildExpressionPositionFunction()
+
   it "it returns the expression if that id matches", ->
 
     power_id = @comps.id_source.next()
@@ -17,5 +19,18 @@ describe "expression traversal", ->
     exponentiation = @comps.build_exponentiation(power: power, base: base)
 
     expression = @comps.build_expression().append(exponentiation)
-    power_node = @expression_traversal.build(expression).findForID(power_id)
+
+    expression_position = @math.expression_position.buildExpressionPositionAsLast(expression)
+
+    power_node = @expression_traversal.build(expression_position).findForID(power_id)
     expect(power_node.id()).toEqual power_id
+
+  describe "expression component contains cursor process", ->
+    it "works", ->
+      exp_pos = @exp_pos_builder({fraction: []}, cursor([]))
+      contains_decider = @expression_traversal.build(exp_pos)
+
+      contains_decider = contains_decider.buildExpressionComponentContainsCursor()
+      wrapping_exp = exp_pos.expression()
+      expect(contains_decider.isCursorWithinComponent(wrapping_exp)).toEqual true
+

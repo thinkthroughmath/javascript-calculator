@@ -95,61 +95,27 @@ describe "BuildExpressionFromJavascriptObject", ->
       sub_exp = expression.first()
       expect(sub_exp).toBeInstanceOf @components.classes.fn
 
-
-  describe "open expressions", ->
-    it "uses object syntax with label 'open_expression' to signify an open expression", ->
-      expression = @builder open_expression: [10]
-      sub_exp = expression.first()
-      expect(sub_exp.isOpen()).toEqual(true)
-
-
-    it "building an open expression with some elements in it", ->
-      exp = @builder open_expression: [10, '*',  10]
-
-      expect(exp).toBeInstanceOf @components.classes.expression
-      expect(exp.isOpen()).toEqual false # it is wrapped with a closed expression
-
-      open = exp.first()
-
-      expect(open).toBeInstanceOf @components.classes.expression
-      expect(open.isOpen()).toEqual true
-
-      ten = open.first()
-      expect(ten).toBeInstanceOf @components.classes.number
-      expect(ten.value()).toEqual "10"
-
-    it "building a closed expression inside an open expression", ->
-      exp = @builder(open_expression: [[]])
-
-      open = exp.first()
-      expect(open).toBeInstanceOf @components.classes.expression
-      expect(open.isOpen()).toEqual true
-
-      closed = open.first()
-      expect(closed).toBeInstanceOf @components.classes.expression
-      expect(closed.isOpen()).toEqual false
-      expect(closed.size()).toEqual 0
-
-    it "building nested open expressions", ->
-      expression = @builder {open_expression: {open_expression: 10}}
-
-      first_open = expression.first()
-      expect(first_open.isOpen()).toEqual(true)
-
-      second_open = first_open.first()
-      expect(second_open.isOpen()).toEqual(true)
-
-      ten = second_open.first()
-      expect(ten.value()).toEqual "10"
-
-
-
-
-  describe "building with position", ->
-    describe "position as last", ->
-      it "works", ->
-        ebp = @exp_pos_builder
-        results = ebp(10)
+  describe "building expression position", ->
+    describe "with nothing marked", ->
+      it "sets the last item in the expression list as the current expression", ->
+        results = @exp_pos_builder(10)
         expect(results.expression()).toBeAnEqualExpressionTo @builder(10)
         expect(results.position()).toEqual results.expression().id()
+
+    describe "with an element marked", ->
+      describe "setting the marked item in the expression list as the current expression works for", ->
+        it "fractions", ->
+          results = @exp_pos_builder({fraction:[null, cursor([])]})
+          expect(results.expression()).toBeAnEqualExpressionTo @builder(fraction: [])
+          expect(results.position()).toEqual results.expression().last().denominator().id()
+
+        it "exponents", ->
+          results = @exp_pos_builder({'^':[null, cursor([])]})
+          expect(results.expression()).toBeAnEqualExpressionTo @builder('^': [])
+          expect(results.position()).toEqual results.expression().last().power().id()
+
+        it "subexpressions", ->
+          results = @exp_pos_builder([cursor([])])
+          expect(results.expression()).toBeAnEqualExpressionTo @builder([[]])
+          expect(results.position()).toEqual results.expression().first().first().id()
 

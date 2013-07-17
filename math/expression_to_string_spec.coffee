@@ -2,50 +2,60 @@
 
 describe "expression to string conversion", ->
   beforeEach ->
-    @to_string = ttm.require("lib/math/expression_to_string").toString
-    @to_html_string = ttm.require("lib/math/expression_to_string").toHTMLString
     @math = ttm.lib.math.math_lib.build()
-    @builder = @math.object_to_expression.builderFunction()
+    trav =
+    @to_string = (exp)->
+      exp_contains_cursor = @math.traversal.build(exp).buildExpressionComponentContainsCursor()
+      ttm.require("lib/math/expression_to_string").toString(exp, exp_contains_cursor)
+
+    @to_html_string = (exp)->
+      exp_contains_cursor = @math.traversal.build(exp).buildExpressionComponentContainsCursor()
+      ttm.require("lib/math/expression_to_string").toHTMLString(exp, exp_contains_cursor)
+
+    @exp_pos_builder = @math.object_to_expression.buildExpressionFunction()
+    @exp_pos_builder = @math.object_to_expression.buildExpressionPositionFunction()
 
   it "converts a simple addition expression", ->
-    expect(@to_string(@builder(1, '+', 2))).toEqual "1 + 2"
+    expect(@to_string(@exp_pos_builder(1, '+', 2))).toEqual "1 + 2"
 
   it "correctly displays a complicated decimal number", ->
-    expect(@to_string(@builder(Math.PI))).toEqual "3.1416"
+    expect(@to_string(@exp_pos_builder(Math.PI))).toEqual "3.1416"
 
   describe "exponentiation", ->
     it "converts to a string", ->
-      exp = @builder('^': [1, 2])
-      expect(@to_string(exp)).toEqual "1 ^ 2"
-      expect(@to_html_string(exp)).toEqual "1 &circ; 2"
+      exp = @exp_pos_builder('^': [1, 2])
+      expect(@to_string(exp)).toEqual "1 ^ ( 2 )"
+      expect(@to_html_string(exp)).toEqual "1 &circ; ( 2 )"
 
     it "displays incomplete exponentiations correctly", ->
-      exp = @builder('^': [10, null])
+      power = []
+
+      exp = @exp_pos_builder('^': [10, []])
       expect(@to_string(exp)).toEqual "10 ^ "
       expect(@to_html_string(exp)).toEqual "10 &circ; "
 
   describe "multiplication", ->
     it "", ->
-      exp = @builder(10, '*',  10)
+      exp = @exp_pos_builder(10, '*',  10)
       expect(@to_string(exp)).toEqual "10 * 10"
       expect(@to_html_string(exp)).toEqual "10 &times; 10"
 
   describe "sub-expressions", ->
     it "displays them as parentheses", ->
-      exp = @builder([10, '*',  10])
+      exp = @exp_pos_builder([10, '*',  10])
       expect(@to_string(exp)).toEqual "( 10 * 10 )"
       expect(@to_html_string(exp)).toEqual "( 10 &times; 10 )"
 
-    it "displays open sub-expressions with a single parenthesis", ->
-      exp = @builder({open_expression: [10, '*',  10]})
+    it "displays sub-expressions that contain the cursor with a single parenthesis", ->
+      exp = @exp_pos_builder(cursor([10, '*',  10]))
       expect(@to_string(exp)).toEqual "( 10 * 10"
 
     it "displays partial parentheses", ->
-      exp = @builder(10, '*', {open_expression: null})
+      exp = @exp_pos_builder(10, '*', [])
       actual = @to_html_string(exp)
-      expect(actual).toEqual "10 &times; ( "
+      expect(actual).toEqual "10 &times; "
 
     it "displays single sub-expressions with parentheses", ->
-      exp = @builder(10, '*', [5])
+      exp = @exp_pos_builder(10, '*', [5])
       actual = @to_html_string(exp)
       expect(actual).toEqual "10 &times; ( 5 )"
