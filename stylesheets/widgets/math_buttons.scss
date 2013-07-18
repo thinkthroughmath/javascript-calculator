@@ -178,14 +178,12 @@ $other_border: #adadad;
     }
 
 
-
     button.math-button.negative-slash-positive {
         width: 50px * $scalar;
         .ie & {
             font-size: 15px * $scalar;
         }
     }
-
 
     button.math-button.fraction {
         position: relative;
@@ -219,7 +217,6 @@ $other_border: #adadad;
         }
         .denominator {
             top: 21px * $scalar;
-
             .ie8 & {
                 top: 0 * $scalar;
             }
