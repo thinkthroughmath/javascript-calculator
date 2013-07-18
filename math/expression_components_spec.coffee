@@ -20,6 +20,7 @@ it_adheres_to_the_expression_component_interface = (opts)->
       @comp.isVariable()
       @comp.isFraction()
       @comp.isExponentiation()
+      @comp.isRoot()
 
 describe "Expression Components", ->
   beforeEach ->
