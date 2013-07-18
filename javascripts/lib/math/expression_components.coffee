@@ -9,6 +9,9 @@ class ExpressionComponent
   isNumber: -> false
   isExpression: -> false
   isFraction: -> false
+  isVariable: -> false
+  isExponentiation: -> false
+  isRoot: -> false
 
   preceedingSubexpression: -> false
   cloneData: (opts)=> ttm.defaults(opts, {id: @id_value, parent: @parent_value})
@@ -213,13 +216,13 @@ class Exponentiation extends ExpressionComponent
 
   preceedingSubexpression: -> @base()
 
+  isExponentiation: -> true
+
   updatePower: (power)->
     @klass.build base: @base(), power: power
 
   toString: ->
     "^(b: #{@base().toString()}, p: #{@power().toString()})"
-
-  isPowerOpen: -> @power().isOpen()
 
   subExpressions: ->
     [@base(), @power()]
@@ -243,6 +246,7 @@ ttm.class_mixer(Exponentiation)
 
 class Pi extends ExpressionComponent
   toString: -> "PI"
+  isVariable: -> true
 ttm.class_mixer(Pi)
 
 class Addition extends ExpressionComponent
@@ -320,6 +324,7 @@ class Root extends ExpressionComponent
   updateRadicand: (new_radic)->
     @clone(radicand: new_radic)
 
+  isRoot: -> true
 
   cloneData: (new_vals={})->
 
@@ -354,6 +359,7 @@ class Variable extends ExpressionComponent
 
   toString: ->
     "Var(#{@name()})"
+  isVariable: -> true
 ttm.class_mixer(Variable)
 
 class Fn extends ExpressionComponent

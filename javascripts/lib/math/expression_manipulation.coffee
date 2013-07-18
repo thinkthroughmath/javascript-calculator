@@ -72,7 +72,8 @@ ttm.define "lib/math/expression_manipulation",
 
       invokeD: (expression)->
         last = expression.last()
-        if last && (last.isNumber() || last instanceof @comps.classes.expression || last instanceof @comps.classes.pi || last instanceof @comps.classes.variable)
+
+        if last && (last.isNumber() || last.isExpression() || last.isVariable() || last.isFraction() || last.isExponentiation() || last.isRoot() )
           expression.appendD(@comps.build_multiplication())
           expression
         else
@@ -295,7 +296,7 @@ ttm.define "lib/math/expression_manipulation",
             component.appendD(exponentiation)
           ).value()
 
-        result_exp
+        result_exp.clone(position: base.id())
 
     class_mixer(AppendExponentiation)
 
@@ -378,7 +379,6 @@ ttm.define "lib/math/expression_manipulation",
       negateComp: (comp)->
         last = comp.last()
 
-
         if last instanceof @comps.classes.number
           last.negatedD()
 
@@ -456,8 +456,7 @@ ttm.define "lib/math/expression_manipulation",
             component.appendD(root)
           ).value()
 
-        # would be same position, but a new expression
-        result_exp
+        result_exp.clone position: radicand.id()
 
     class_mixer(AppendRoot)
 
@@ -494,7 +493,7 @@ ttm.define "lib/math/expression_manipulation",
             component.appendD(fraction)
           ).value()
 
-        result_exp
+        result_exp.clone position: numerator.id()
 
     class_mixer(AppendFraction)
 
