@@ -127,6 +127,12 @@ ttm.define 'lib/math/expression_to_string',
               "#{@val}"
           })
 
+        ref.forType(comps.classes.pi, {
+          toString: -> 'pi'
+          toHTMLString: -> "<span class='expression-to-string-pi'>&pi;</span>"
+          });
+
+
       toString: ->
         @ref.refine(@expression).toString(skip_parentheses: true)
       toHTMLString: ->
