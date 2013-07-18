@@ -31,8 +31,8 @@ describe "expression to string conversion", ->
       power = []
 
       exp = @exp_pos_builder('^': [10, []])
-      expect(@to_string(exp)).toEqual "10 ^ "
-      expect(@to_html_string(exp)).toEqual "10 &circ; "
+      expect(@to_string(exp)).toEqual "10 ^ ( "
+      expect(@to_html_string(exp)).toEqual "10 &circ; ( "
 
   describe "multiplication", ->
     it "", ->
@@ -53,7 +53,7 @@ describe "expression to string conversion", ->
     it "displays partial parentheses", ->
       exp = @exp_pos_builder(10, '*', [])
       actual = @to_html_string(exp)
-      expect(actual).toEqual "10 &times; "
+      expect(actual).toEqual "10 &times; ( "
 
     it "displays single sub-expressions with parentheses", ->
       exp = @exp_pos_builder(10, '*', [5])
@@ -63,4 +63,4 @@ describe "expression to string conversion", ->
   it "correctly displays pi", ->
     exp = @exp_pos_builder('pi')
     actual = @to_html_string(exp)
-    expect(actual).toEqual "&pi;"
+    expect(actual).toEqual "<span class='expression-to-string-pi'>&pi;</span>"
