@@ -387,6 +387,7 @@ ttm.define "lib/math/expression_manipulation",
       negateComp: (comp)->
         last = comp.last()
 
+
         if last instanceof @comps.classes.number
           last.negatedD()
 
