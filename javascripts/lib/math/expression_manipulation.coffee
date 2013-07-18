@@ -316,8 +316,16 @@ ttm.define "lib/math/expression_manipulation",
 
     class AppendEquals extends ExpressionManipulation
       perform: (expression_position)->
-        expression_position.clone(
-          expression: expression_position.expression().append(@comps.build_equals()))
+        # appending an equals moves the cursor to after the equals sign
+        # so update to that position
+        expression_position = expression_position.clone(position: expression_position.expression().id())
+        equals = @comps.build_equals()
+        result_exp = @M(expression_position).clone().
+          withComponent(expression_position, (component)=>
+            @withoutTrailingOperatorD(component).appendD(equals)
+          ).value()
+
+        result_exp
     class_mixer(AppendEquals)
 
     class AppendDivision extends ExpressionManipulation
