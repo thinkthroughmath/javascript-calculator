@@ -33,7 +33,7 @@ class ButtonBuilder
     @button({
       value: '-/+'
       label: "&ndash;/+"
-      class: 'math-button number-specifier'
+      class: 'math-button number-specifier negative-slash-positive'
     }, opts)
 
   decimal: (opts)->

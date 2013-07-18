@@ -157,25 +157,31 @@ $other_border: #adadad;
         }
     }
 
+    button.math-button.negative-slash-positive {
+        width: 50px * $scalar;
+    }
+
     button.math-button.fraction {
         position: relative;
         $size: 15px * $scalar;
-
+        padding: 0px;
         .numerator, .denominator, .vinculum {
-            position: relative;
+            margin: 0px;
+            position: absolute;
             font-size: $size;
             width: 100%;
         }
         .numerator, .denominator {
         }
         .numerator {
+            top: 0px;
         }
         .vinculum {
             font-size: 28px * $scalar;
-            top: -12px * $scalar;
+            top: 3px * $scalar;
         }
         .denominator {
-            top: -21px * $scalar;
+            top: 21px * $scalar;
         }
     }
 
