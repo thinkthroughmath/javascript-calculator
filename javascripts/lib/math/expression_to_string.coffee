@@ -73,12 +73,13 @@ ttm.define 'lib/math/expression_to_string',
 
           maybeWrapWithParentheses: (str, opts)->
             if !opts.skip_parentheses # ie this is the "root" expression
-              opening_paren = if (@expression.length > 1)
-                "( "
-              else if opts.include_parentheses_if_single and @expression.length == 1
-                "( "
-              else
+              opening_paren = if opts.skip_parentheses
                 ""
+              else if !opts.include_parentheses_if_single and @expression.length == 1
+                ""
+              else
+                "( "
+
               closing_paren =
                 if expression_contains_cursor.isCursorWithinComponent(@)
                   ""
@@ -135,6 +136,7 @@ ttm.define 'lib/math/expression_to_string',
 
       toString: ->
         @ref.refine(@expression).toString(skip_parentheses: true)
+
       toHTMLString: ->
         @ref.refine(@expression).toHTMLString(skip_parentheses: true)
 
