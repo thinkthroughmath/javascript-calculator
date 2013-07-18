@@ -59,3 +59,8 @@ describe "expression to string conversion", ->
       exp = @exp_pos_builder(10, '*', [5])
       actual = @to_html_string(exp)
       expect(actual).toEqual "10 &times; ( 5 )"
+
+  it "correctly displays pi", ->
+    exp = @exp_pos_builder('pi')
+    actual = @to_html_string(exp)
+    expect(actual).toEqual "&pi;"
