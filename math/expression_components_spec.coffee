@@ -17,6 +17,9 @@ it_adheres_to_the_expression_component_interface = (opts)->
       @comp.isExpression()
       @comp.isFraction()
       @comp.isNumber()
+      @comp.isVariable()
+      @comp.isFraction()
+      @comp.isExponentiation()
 
 describe "Expression Components", ->
   beforeEach ->
