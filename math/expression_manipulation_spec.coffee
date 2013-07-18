@@ -445,6 +445,11 @@ describe "expression manipulations", ->
       new_exp = @manip.build_negate_last().perform(exp)
       expect(new_exp.expression().last().value()).toEqual -1
 
+    it "does nothing when the last element is not a number", ->
+      exp = @exp_pos_builder()
+      new_exp = @manip.build_negate_last().perform(exp)
+      expect(new_exp.expression().last()).toEqual undefined
+
   describe "appending pi", ->
     it_plays_manipulation_role
       subject: ->
