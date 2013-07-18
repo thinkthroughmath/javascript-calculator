@@ -374,15 +374,13 @@ ttm.define "lib/math/expression_manipulation",
         result_exp
     class_mixer(AppendDivision)
 
-    class Negation extends ExpressionManipulation
+    class NegateLast extends ExpressionManipulation
       negateComp: (comp)->
         last = comp.last()
 
+
         if last instanceof @comps.classes.number
           last.negatedD()
-        else
-          new_last = comps.build_number(value: 0).negated()
-          comp.appendD(new_last)
 
       perform: (expression_position)->
         expr = expression_position.expression()
@@ -392,7 +390,7 @@ ttm.define "lib/math/expression_manipulation",
           ).value()
         result_exp
 
-    class_mixer(Negation)
+    class_mixer(NegateLast)
 
     class AppendSubExpression extends ExpressionManipulation
       perform: (expression_position)->
@@ -625,7 +623,7 @@ ttm.define "lib/math/expression_manipulation",
       append_addition: AppendAddition
       append_equals: AppendEquals
       append_subtraction: AppendSubtraction
-      negate_last: Negation
+      negate_last: NegateLast
       append_sub_expression: AppendSubExpression
       exit_sub_expression: ExitSubExpression
       append_division: AppendDivision
