@@ -185,6 +185,7 @@ $other_border: #adadad;
         }
     }
 
+
     button.math-button.fraction {
         position: relative;
         $size: 15px * $scalar;
@@ -207,6 +208,10 @@ $other_border: #adadad;
         .vinculum {
             font-size: 28px * $scalar;
             top: 4px * $scalar;
+
+            .ie8 & {
+                top: -18px * $scalar;
+            }
         }
         .denominator {
             top: 21px * $scalar;
