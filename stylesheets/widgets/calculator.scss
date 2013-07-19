@@ -74,6 +74,19 @@ div.calculator-dialog {
             background: transparent !important;
         }
     }
+
+    button.number, button.number-specifier {
+        @include math-button-blue;
+    }
+
+    button.operation {
+        @include math-button-orange;
+    }
+
+    button.other {
+        @include math-button-gray;
+    }
+
 }
 
 

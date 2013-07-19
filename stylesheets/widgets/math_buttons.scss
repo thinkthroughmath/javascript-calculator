@@ -32,6 +32,13 @@ $other_border: #adadad;
         @include simple-gradient($other_darker, $other_lighter);
     }
 
+    &:hover {
+        box-shadow:inset 0 0 10px $other_border;
+    }
+    &:active {
+        @include simple-gradient($other_darker, $other_lighter);
+    }
+
     .ie & {
         border: 1px solid;
         border-color: $other_border;
@@ -64,7 +71,7 @@ $other_border: #adadad;
 @mixin math-button-orange
 {
     color: white;
-    border: 1px solid $operation_border;
+    border-color: $operation_border;
     @include simple-gradient($operation_lighter, $operation_darker);
 
     &:hover {
@@ -118,6 +125,7 @@ $other_border: #adadad;
     button.math-button.pi {
         font-size: 35px * $scalar;
     }
+
     button.math-button.root
     {
         line-height: 30px * $scalar;
@@ -146,13 +154,13 @@ $other_border: #adadad;
         {
             text-shadow: none;
             z-index: 4;
-            left: 9px * $scalar;
+            left: 10px * $scalar;
             top: -5px * $scalar;
         }
 
         div.radicand
         {
-            left: 4px * $scalar;
+            left: 6px * $scalar;
             top: 6px * $scalar;
         }
     }
@@ -178,7 +186,7 @@ $other_border: #adadad;
         }
         .vinculum {
             font-size: 28px * $scalar;
-            top: 3px * $scalar;
+            top: 4px * $scalar;
         }
         .denominator {
             top: 21px * $scalar;
@@ -187,31 +195,8 @@ $other_border: #adadad;
 
 }
 
-.ie {
-    button.math-button.operation {
-    }
-
-}
-
-
-button.math-button.number-specifier {
+.math-button {
     border: 1px solid;
-    @include math-button-blue;
-}
-
-button.math-button.operation {
-    @include math-button-orange;
-}
-button.math-button.operation:hover {
-
-}
-
-button.math-button.other {
-    border: 1px solid;
-    @include math-button-gray;
-}
-
-button.math-button {
     color: white;
     text-shadow: 1px 1px 1px #222;
     text-align: middle;
@@ -230,12 +215,23 @@ button.math-button:focus{
     outline: none;
 }
 
+
+button.math-button {
+    .math-variable {
+        font-family: "Times New Roman", serif;
+        font-style: italic;
+    }
+}
+
+
 button.math-button.exponent {
     font-family: "Times New Roman", serif;
     font-style: italic;
     sup {
         font-family: arial;
         font-style: normal;
+        top: -10px;
+        left: 2px;
     }
 }
 

@@ -3,6 +3,9 @@
 #= require widgets/ui_elements
 #= require lib
 
+math_var = (name)->
+  "<span class='math-variable'>#{name}</span>"
+
 class ButtonBuilder
   initialize: (@opts={})->
     @ui_elements = @opts.ui_elements
@@ -98,13 +101,13 @@ class ButtonBuilder
   square: (opts)->
     @button({
       value: 'square'
-      label: 'x<sup>2</sup>'
+      label: "#{math_var('x')}<sup>2</sup>"
       class: 'math-button other square'
     }, opts)
 
   exponent: (opts)->
-    base = opts.base || "x"
-    power = opts.power || "y"
+    base = opts.base || math_var('x')
+    power = opts.power || math_var('y')
     @button({
       value: 'exponent'
       label: "#{base}<sup>#{power}</sup>"
@@ -119,7 +122,7 @@ class ButtonBuilder
     radicand = if opts.radicand
       "<div class='radicand'>#{opts.radicand}</div>"
     else
-      ""
+      "<div class='radicand'>#{math_var('x')}</div>"
 
     @button({
       value: 'root'
@@ -137,9 +140,9 @@ class ButtonBuilder
     @button({
       value: 'fraction'
       label: """
-        <div class='numerator'>a</div>
+        <div class='numerator'>#{math_var('a')}</div>
         <div class='vinculum'>&#8212;</div>
-        <div class='denominator'>b</div>
+        <div class='denominator'>#{math_var('b')}</div>
         """
       class: 'math-button other fraction'
     }, opts)
