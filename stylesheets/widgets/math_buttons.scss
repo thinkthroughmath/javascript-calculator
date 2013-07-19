@@ -3,8 +3,6 @@ $calculator_border_radius: 2px;
 $box_shadow_color: #000;
 
 
-
-
 // TODO rename all of these e.g. $math_button_blue_lighter
 // these are all variations on a blueish-teal
 $number_specifier_lighter: #3e6372;
@@ -106,7 +104,7 @@ $other_border: #adadad;
 {
     button.math-button {
         font-size: 25px * $scalar;
-        min-width: 50px * $scalar;
+        width: 50px * $scalar;
         height: 40px * $scalar;
         margin: 3px * $scalar;
     }
@@ -140,6 +138,9 @@ $other_border: #adadad;
             font-size: 15px * $scalar;
             left: -11px * $scalar;
             top: -3px * $scalar;
+            .ie8 & {
+                top: -20px * $scalar;
+            }
         }
 
         div.radix
@@ -148,6 +149,9 @@ $other_border: #adadad;
             z-index: 5;
             left: -9px * $scalar;
             top: 10px * $scalar;
+            .ie8 & {
+                top: -7px * $scalar;
+            }
         }
 
         div.vinculum
@@ -156,23 +160,38 @@ $other_border: #adadad;
             z-index: 4;
             left: 10px * $scalar;
             top: -5px * $scalar;
+            .ie8 & {
+                top: -22px * $scalar;
+            }
+
+
         }
 
         div.radicand
         {
             left: 6px * $scalar;
             top: 6px * $scalar;
+            .ie8 & {
+                top: -11px * $scalar;
+            }
         }
     }
 
+
+
     button.math-button.negative-slash-positive {
         width: 50px * $scalar;
+        .ie & {
+            font-size: 15px * $scalar;
+        }
     }
+
 
     button.math-button.fraction {
         position: relative;
         $size: 15px * $scalar;
         padding: 0px;
+
         .numerator, .denominator, .vinculum {
             margin: 0px;
             position: absolute;
@@ -183,16 +202,26 @@ $other_border: #adadad;
         }
         .numerator {
             top: 0px;
+            .ie8 & {
+                top: -17px;
+            }
         }
         .vinculum {
             font-size: 28px * $scalar;
             top: 4px * $scalar;
+
+            .ie8 & {
+                top: -18px * $scalar;
+            }
         }
         .denominator {
             top: 21px * $scalar;
+
+            .ie8 & {
+                top: 0 * $scalar;
+            }
         }
     }
-
 }
 
 .math-button {
