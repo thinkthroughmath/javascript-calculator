@@ -212,6 +212,9 @@ $other_border: #adadad;
             .ie8 & {
                 top: -18px * $scalar;
             }
+            .ie9 & {
+                top: 2px * $scalar;
+            }
         }
         .denominator {
             top: 21px * $scalar;
