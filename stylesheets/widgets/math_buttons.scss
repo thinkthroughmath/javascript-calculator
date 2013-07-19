@@ -207,13 +207,6 @@ $other_border: #adadad;
         .vinculum {
             font-size: 28px * $scalar;
             top: 4px * $scalar;
-
-            .ie8 & {
-                top: -18px * $scalar;
-            }
-            .ie9 & {
-                top: 2px * $scalar;
-            }
         }
         .denominator {
             top: 21px * $scalar;
