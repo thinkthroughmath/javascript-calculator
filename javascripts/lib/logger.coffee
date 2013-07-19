@@ -107,7 +107,7 @@ class LoggerPolicy
     switch level
       when 'production' then ['error', 'warn']
       when 'firehose' then @log_entry_types # all
-
+      else []
   logLevelActive: (level)->
     @log_entry_display_types.indexOf(level) != -1
 

@@ -2,7 +2,7 @@
 #= require underscore-min
 #= require lib/class_mixer
 #= require lib/logger
-
+#= require lib/polyfill
 
 window.ttm ||= {}
 
