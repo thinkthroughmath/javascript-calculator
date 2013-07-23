@@ -122,6 +122,7 @@ $other_border: #adadad;
     }
     button.math-button.pi {
         font-size: 35px * $scalar;
+        padding: 0;
     }
 
     button.math-button.root
@@ -200,15 +201,14 @@ $other_border: #adadad;
         .numerator, .denominator {
         }
         .numerator {
-            top: 0px;
+            top: -1px;
             .ie8 & {
                 top: -17px;
             }
         }
         .vinculum {
             font-size: 28px * $scalar;
-            top: 4px * $scalar;
-
+            top: 1.5px * $scalar;
             .ie8 & {
                 top: -18px * $scalar;
             }
@@ -217,7 +217,8 @@ $other_border: #adadad;
             }
         }
         .denominator {
-            top: 21px * $scalar;
+            top: 18.5px * $scalar;
+
             .ie8 & {
                 top: 0 * $scalar;
             }
