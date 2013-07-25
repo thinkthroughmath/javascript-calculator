@@ -35,7 +35,7 @@ class ButtonBuilder
   negative_slash_positive: (opts)->
     @button({
       value: '-/+'
-      label: "&ndash;/+"
+      label: "(&ndash;/+)"
       class: 'math-button number-specifier negative-slash-positive'
     }, opts)
 
@@ -140,9 +140,9 @@ class ButtonBuilder
     @button({
       value: 'fraction'
       label: """
-        <div class='numerator'>#{math_var('a')}</div>
+        <div class='numerator'>a</div>
         <div class='vinculum'>&#8212;</div>
-        <div class='denominator'>#{math_var('b')}</div>
+        <div class='denominator'>b</div>
         """
       class: 'math-button other fraction'
     }, opts)
