@@ -52,9 +52,9 @@ ttm.define 'lib/math/expression_to_string',
 
         ref.forType(comps.classes.subtraction, {
           toString: ->
-            "*"
+            "-"
           toHTMLString: ->
-            "&times;"
+            "-"
           })
 
         ref.forType(comps.classes.expression, {
