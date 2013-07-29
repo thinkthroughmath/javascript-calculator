@@ -357,6 +357,11 @@ describe "expression manipulations", ->
       basic_should_equal_after: -> @exp_builder '1.'
     )
 
+    it "adds an implicit multiplication after a variable", ->
+      exp = @exp_pos_builder({variable: "doot"})
+      new_exp = @manip.build_append_decimal().perform(exp).expression()
+      expect(new_exp.last().isNumber()).toBeTruthy()
+      expect(new_exp.last(1).isMultiplication()).toBeTruthy()
 
     it "correctly adds a decimal to the value", ->
       exp = @exp_pos_builder()
