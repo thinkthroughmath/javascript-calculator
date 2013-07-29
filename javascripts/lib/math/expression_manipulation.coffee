@@ -63,16 +63,8 @@ ttm.define "lib/math/expression_manipulation",
 
     class _ImplicitMultiplication
       initialize: (@comps)->
-      invoke: (expression)->
-        last = expression.last()
-        if last && (last.isNumber() || last instanceof @comps.classes.expression || last instanceof @comps.classes.pi)
-          expression.append(@comps.build_multiplication())
-        else
-          expression
-
       invokeD: (expression)->
         last = expression.last()
-
         if last && (last.isNumber() || last.isExpression() || last.isVariable() || last.isFraction() || last.isExponentiation() || last.isRoot() )
           expression.appendD(@comps.build_multiplication())
           expression
@@ -167,12 +159,19 @@ ttm.define "lib/math/expression_manipulation",
       # @destructive
       doAppendD: (expression, expression_position)->
         last = expression.last()
-        if last instanceof @comps.classes.number
-          last.futureAsDecimalD(true)
+        if last
+          if last.isNumber()
+            last.futureAsDecimalD(true)
+          else
+            _ImplicitMultiplication.build(@comps).invokeD(expression)
+            new_last = @comps.build_number(value: 0)
+            new_last.futureAsDecimalD(true)
+            expression.appendD(new_last)
         else
           new_last = @comps.build_number(value: 0)
           new_last.futureAsDecimalD(true)
           expression.appendD(new_last)
+
 
       perform: (expression_position)->
         result_exp = @M(expression_position).clone().

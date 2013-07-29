@@ -8,6 +8,7 @@ class ExpressionComponent
 
   isNumber: -> false
   isExpression: -> false
+  isMultiplication: -> false
   isFraction: -> false
   isVariable: -> false
   isExponentiation: -> false
@@ -259,6 +260,7 @@ ttm.class_mixer(Subtraction)
 
 class Multiplication extends ExpressionComponent
   toString: -> "Mult"
+  isMultiplication: -> true
 ttm.class_mixer(Multiplication)
 
 class Division extends ExpressionComponent
