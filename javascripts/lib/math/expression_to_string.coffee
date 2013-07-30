@@ -110,22 +110,6 @@ ttm.define 'lib/math/expression_to_string',
             @toDisplay()
           toHTMLString: ->
             @toDisplay()
-          toDisplay: ->
-            if @hasDecimal()
-              @valueAtPrecision()
-            else
-              if @future_as_decimal
-                "#{@val}."
-              else
-                "#{@val}"
-
-          valueAtPrecision: ->
-            number_decimal_places = 4
-            parts = "#{@val}".split(".")
-            if parts[1].length > number_decimal_places
-              "#{((@val*1).toFixed(number_decimal_places) * 1)}"
-            else
-              "#{@val}"
           })
 
         ref.forType(comps.classes.pi, {
