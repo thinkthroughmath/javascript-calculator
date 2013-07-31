@@ -25,15 +25,14 @@ ttm.define 'lib/math/expression_to_string',
           });
 
         ref.forType(comps.classes.exponentiation, {
-          base: ->
-            ref.refine(@unrefined().base()).toString(include_parentheses_if_single: false)
-          power: ->
-            ref.refine(@unrefined().power()).toString(include_parentheses_if_single: true)
+          base: (method="toString")->
+            ref.refine(@unrefined().base())[method](include_parentheses_if_single: false)
+          power: (method="toString")->
+            ref.refine(@unrefined().power())[method](include_parentheses_if_single: true)
           toString: ->
             "#{@base()} ^ #{@power()}"
-
           toHTMLString: ->
-            "#{@base()} &circ; #{@power()}"
+            "#{@base('toHTMLString')} &circ; #{@power('toHTMLString')}"
           });
 
         ref.forType(comps.classes.multiplication, {
