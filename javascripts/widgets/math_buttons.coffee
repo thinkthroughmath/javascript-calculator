@@ -35,7 +35,7 @@ class ButtonBuilder
   negative_slash_positive: (opts)->
     @button({
       value: '-/+'
-      label: "(&ndash;/+)"
+      label: "&ndash;/+"
       class: 'math-button number-specifier negative-slash-positive'
     }, opts)
 
