@@ -26,8 +26,8 @@ class EvaluationRefinementBuilder
 
     refinement.forType(comps.classes.pi,
       {
-        eval: ()->
-          comps.classes.number.build(value: Math.PI)
+        eval: ->
+          comps.classes.number.build(value: @value())
       });
 
     refinement.forType(comps.classes.addition,

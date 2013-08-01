@@ -430,12 +430,15 @@ ttm.define "lib/math/expression_manipulation",
     class_mixer(ExitSubExpression)
 
     class AppendPi extends ExpressionManipulation
+      initialize: (opts={})->
+        super
+        @pi_value = opts.value
       perform: (expression_position)->
         expr = expression_position.expression()
         result_exp = @M(expression_position).clone().
           withComponent(expression_position, (component)=>
             _ImplicitMultiplication.build(@comps).invokeD(component)
-            component.appendD(@comps.build_pi())
+            component.appendD(@comps.build_pi(value: @pi_value))
           ).value()
         result_exp
 

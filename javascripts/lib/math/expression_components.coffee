@@ -263,8 +263,18 @@ class Exponentiation extends ExpressionComponent
 ttm.class_mixer(Exponentiation)
 
 class Pi extends ExpressionComponent
+  initialize: (opts={})->
+    super
+    @pi_value = opts.value
   toString: -> "PI"
+  cloneData: (new_vals={})->
+    data = value: @pi_value
+    ttm.defaults(super, data)
+
   isVariable: -> true
+  # this wouldnt support a pi value of 0, but you wouldhnt do that, woudl you?
+  value: -> @pi_value || Math.PI
+
 ttm.class_mixer(Pi)
 
 class Addition extends ExpressionComponent
