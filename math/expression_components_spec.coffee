@@ -142,6 +142,18 @@ describe "Expression Components", ->
       @frac = @comps.build_fraction()
       expect(@frac.isFraction()).toEqual true
 
+  describe "pi", ->
+    it_adheres_to_the_expression_component_interface {
+      instance_fn: ->
+        @comps.build_pi(id: 678)
+      id: 678
+    }
+
+    it "defaults to the js value", ->
+      expect(@comps.build_pi().value()).toMatch /3.14159/
+
+    it "allows overridden values", ->
+      expect(@comps.build_pi(value: 3).value()).toEqual 3
 
 class Helper
   constructor: (@comps)->

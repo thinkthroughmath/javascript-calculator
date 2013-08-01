@@ -469,6 +469,15 @@ describe "expression manipulations", ->
       expect(new_exp.last()).toBeInstanceOf @components.classes.pi
       expect(new_exp.last(1)).toBeInstanceOf @components.classes.multiplication
 
+    it "allows the value of pi to be specified", ->
+      exp = @exp_pos_builder(1)
+      new_exp = @manip.build_append_pi(value: "1").perform(exp).expression()
+      expect(new_exp.last()).toBeInstanceOf @components.classes.pi
+      debugger
+      expect(new_exp.last().value()).toEqual "1"
+
+
+
 
   describe "appending a fraction", ->
     it_plays_manipulation_role
