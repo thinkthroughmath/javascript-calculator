@@ -1,0 +1,17 @@
+{
+  "name": "ttm-coffeescript-utilities",
+  "version": "0.0.0",
+  "description": "doot",
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/thinkthroughmath/ttm-coffeescript-utilities.git"
+  }
+}
+
+
+
