@@ -154,21 +154,21 @@ module.exports = function (grunt) {
     //     src: ['test/**/*.js']
     //   }
     // },
-    qunit: {
-      all: {
-        options: {
-          urls: ['http://localhost:9000/test/<%= pkg.name %>.html']
-        }
-      }
-    },
-    mocha: {
-      all: {
-        options: {
-          run: true,
-          urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html']
-        }
-      }
-    },
+    // qunit: {
+    //   all: {
+    //     options: {
+    //       urls: ['http://localhost:9000/test/<%= pkg.name %>.html']
+    //     }
+    //   }
+    // },
+    // mocha: {
+    //   all: {
+    //     options: {
+    //       run: true,
+    //       urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html']
+    //     }
+    //   }
+    // },
     compass: {
       options: {
         sassDir: '<%= yeoman.src %>/styles',
@@ -411,7 +411,9 @@ module.exports = function (grunt) {
   // });
 
   grunt.registerTask('test', [
-    // 'jshint',
-    'connect', 'qunit']);
+    'build',
+    'connect:test',
+    // 'qunit'
+  ]);
 
 };
