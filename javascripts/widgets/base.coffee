@@ -1,3 +1,0 @@
-# any basic widget code should go here...
-
-window.ttm.widgets ||= {}
