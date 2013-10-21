@@ -9,7 +9,18 @@ that out asap.
 
 plan
 
-start gruntfile, etc
+start gruntfile
+
+currently for utils
+just need
+ - coffee
+ - test
+ - watch
+ - build
+
+
+removing any lint references for now
+
 
 ## Getting Started
 

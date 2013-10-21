@@ -15,9 +15,8 @@ module.exports = function (grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    // Metadata.
+    // Metadata
     pkg: grunt.file.readJSON('package.json'),
-
     banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
       '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
       '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
@@ -26,8 +25,27 @@ module.exports = function (grunt) {
     // configurable paths
     yeoman: {
       src: 'src',
+      test: 'test',
       dist: 'dist'
     },
+    coffee: {
+      lib: {
+        expand: true,
+        cwd: '<%= yeoman.src %>/javascripts/',
+        src: ['lib/**/*.coffee'],
+        dest: 'out/javascripts/',
+        ext: '.js'
+      },
+      test: {
+        expand: true,
+        cwd: 'spec',
+        src: ['**/*.coffee'],
+        dest: 'out/spec/',
+        ext: '.js'
+      }
+    },
+
+    // EVERYTHING BELOW THIS LINE NEEDS CHECKED
     watch: {
       compass: {
         files: ['<%= yeoman.src %>/styles/{,*/}*.{scss,sass}'],
@@ -37,18 +55,18 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.src %>/styles/{,*/}*.css'],
         tasks: ['copy:styles', 'autoprefixer']
       },
-      gruntfile: {
-        files: '<%= jshint.gruntfile.src %>',
-        tasks: ['jshint:gruntfile']
-      },
-      src: {
-        files: '<%= jshint.src.src %>',
-        tasks: ['jshint:src', 'qunit']
-      },
-      test: {
-        files: '<%= jshint.test.src %>',
-        tasks: ['jshint:test', 'qunit']
-      },
+      // gruntfile: {
+      //   files: '<%= jshint.gruntfile.src %>',
+      //   tasks: ['jshint:gruntfile']
+      // },
+      // src: {
+      //   files: '<%= jshint.src.src %>',
+      //   tasks: ['jshint:src', 'qunit']
+      // },
+      // test: {
+      //   files: '<%= jshint.test.src %>',
+      //   tasks: ['jshint:test', 'qunit']
+      // },
       livereload: {
         options: {
           livereload: '<%= connect.options.livereload %>'
@@ -61,6 +79,7 @@ module.exports = function (grunt) {
         ]
       }
     },
+
     connect: {
       options: {
         port: 9000,
@@ -106,35 +125,35 @@ module.exports = function (grunt) {
       },
       server: '.tmp'
     },
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc'
-      },
-      all: [
-        'Gruntfile.js',
-        '<%= yeoman.src %>/scripts/{,*/}*.js',
-        '!<%= yeoman.src %>/scripts/vendor/*',
-        'test/spec/{,*/}*.js'
-      ],
-      gruntfile: {
-        options: {
-          jshintrc: '.jshintrc'
-        },
-        src: 'Gruntfile.js'
-      },
-      src: {
-        options: {
-          jshintrc: 'src/.jshintrc'
-        },
-        src: ['src/**/*.js']
-      },
-      test: {
-        options: {
-          jshintrc: 'test/.jshintrc'
-        },
-        src: ['test/**/*.js']
-      }
-    },
+    // jshint: {
+    //   options: {
+    //     jshintrc: '.jshintrc'
+    //   },
+    //   all: [
+    //     'Gruntfile.js',
+    //     '<%= yeoman.src %>/scripts/{,*/}*.js',
+    //     '!<%= yeoman.src %>/scripts/vendor/*',
+    //     'test/spec/{,*/}*.js'
+    //   ],
+    //   gruntfile: {
+    //     options: {
+    //       jshintrc: '.jshintrc'
+    //     },
+    //     src: 'Gruntfile.js'
+    //   },
+    //   src: {
+    //     options: {
+    //       jshintrc: 'src/.jshintrc'
+    //     },
+    //     src: ['src/**/*.js']
+    //   },
+    //   test: {
+    //     options: {
+    //       jshintrc: 'test/.jshintrc'
+    //     },
+    //     src: ['test/**/*.js']
+    //   }
+    // },
     qunit: {
       all: {
         options: {
@@ -176,19 +195,19 @@ module.exports = function (grunt) {
         }
       }
     },
-    // autoprefixer: {
-    //   options: {
-    //     browsers: ['last 1 version']
-    //   },
-    //   dist: {
-    //     files: [{
-    //       expand: true,
-    //       cwd: '.tmp/styles/',
-    //       src: '{,*/}*.css',
-    //       dest: '.tmp/styles/'
-    //     }]
-    //   }
-    // },
+    autoprefixer: {
+      options: {
+        browsers: ['last 1 version']
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '.tmp/styles/',
+          src: '{,*/}*.css',
+          dest: '.tmp/styles/'
+        }]
+      }
+    },
     concat: {
       options: {
         banner: '<%= banner %>',
@@ -263,17 +282,17 @@ module.exports = function (grunt) {
       // This task is pre-configured if you do not wish to use Usemin
       // blocks for your CSS. By default, the Usemin block from your
       // `index.html` will take care of minification, e.g.
-      //
+
       //     <!-- build:css({.tmp,app}) styles/main.css -->
-      //
-      // dist: {
-      //     files: {
-      //         '<%= yeoman.dist %>/styles/main.css': [
-      //             '.tmp/styles/{,*/}*.css',
-      //             '<%= yeoman.src %>/styles/{,*/}*.css'
-      //         ]
-      //     }
-      // }
+
+      dist: {
+        files: {
+          '<%= yeoman.dist %>/styles/main.css': [
+            '.tmp/styles/{,*/}*.css',
+            '<%= yeoman.src %>/styles/{,*/}*.css'
+          ]
+        }
+      }
     },
     htmlmin: {
       dist: {
@@ -338,20 +357,6 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('server', function (target) {
-    if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
-    }
-
-    grunt.task.run([
-      'clean:server',
-      'concurrent:server',
-      'autoprefixer',
-      'connect:livereload',
-      'watch'
-    ]);
-  });
-
   grunt.registerTask('test', [
     'clean:server',
     'concurrent:test',
@@ -378,17 +383,35 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
+  // grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
 
   grunt.registerTask('default', [
-    'jshint', 'qunit', 'clean', 'concat', 'uglify',
+    // 'jshint',
+    'qunit', 'clean', 'concat', 'uglify',
     'test',
     'build'
   ]);
 
-  grunt.registerTask('server', ['connect', 'watch']);
-  grunt.registerTask('test', ['jshint', 'connect', 'qunit']);
+  // grunt.registerTask('server', ['connect', 'watch']);
+
+
+  // grunt.registerTask('server', function (target) {
+  //   if (target === 'dist') {
+  //     return grunt.task.run(['build', 'connect:dist:keepalive']);
+  //   }
+  //   grunt.task.run([
+  //     'clean:server',
+  //     'concurrent:server',
+  //     'autoprefixer',
+  //     'connect:livereload',
+  //     'watch'
+  //   ]);
+  // });
+
+  grunt.registerTask('test', [
+    // 'jshint',
+    'connect', 'qunit']);
 
 };
