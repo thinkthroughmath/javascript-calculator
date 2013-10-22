@@ -1,4 +1,3 @@
-#= require almond_wrapper
 #= require widgets/calculator
 #= require lib/math
 

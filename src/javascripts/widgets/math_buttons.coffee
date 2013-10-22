@@ -1,5 +1,4 @@
 #= require ./base
-#= require almond_wrapper
 #= require widgets/ui_elements
 #= require lib
 

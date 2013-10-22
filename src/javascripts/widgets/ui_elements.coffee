@@ -1,5 +1,4 @@
 #= require ./base
-#= require almond_wrapper
 #= require lib
 #= require jquery
 

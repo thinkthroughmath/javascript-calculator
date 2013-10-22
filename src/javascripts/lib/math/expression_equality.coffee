@@ -2,7 +2,6 @@
 #= require lib
 #= require lib/math/expression_components
 #= require lib/math/expression_equality
-#= require almond_wrapper
 
 ttm.define 'lib/math/expression_equality',
   ['lib/class_mixer', 'lib/object_refinement'],

@@ -1,4 +1,3 @@
-#= require almond_wrapper
 #= require lib/math/expression_evaluation
 #= require lib/math/expression_traversal
 #= require ./base
