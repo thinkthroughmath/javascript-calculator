@@ -5,23 +5,51 @@
   <meta charset="utf-8">
 
   <title>FLOOP</title>
-
-  <link href="main.css" media="all" rel="stylesheet" type="text/css">
+  <link href="ttm-coffeescript-utilities.css"
+        media="all"
+        rel="stylesheet"
+        type="text/css">
 
 </head>
 <body>
   <h1>TTM OPEN SOURCE</h1>
 
-  <div class="calculator-location"></div>
 
+
+
+  <div class="equation-builder-location"></div>
+  <div class="calculator-location calculator-wrapper"></div>
+
+  <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
   <script src="jquery/jquery.min.js"></script>
   <script src="underscore/underscore-min.js"></script>
   <script src="ttm-coffeescript-utilities.js"></script>
+
   <script>
     $(function(){
     var ttm = thinkthroughmath;
     ttm.widgets.Calculator.build_widget($(".calculator-location"))
+    eb = ttm.widgets.EquationBuilder.build_widget($(".equation-builder-location"))
+    eb.registerVariables(
+    [
+    {name: "distance",
+    value: 10,
+    unit: "km",
+    is_unknown: true},
+    {name: "rate",
+    value: 10,
+    unit: "kph",
+    is_unknown: false},
+    {name: "time",
+    value: 10,
+    unit: "h",
+    is_unknown: false}
+
+    ])
     });
+
   </script>
 </body>
 </html>

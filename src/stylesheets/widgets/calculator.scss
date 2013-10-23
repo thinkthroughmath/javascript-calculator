@@ -2,8 +2,9 @@
 @import "math_buttons";
 $calculator_border_radius: 2px;
 $box_shadow_color: #000;
+$background_color: #444;
 
-.ie div.calculator-dialog figure.calculator-display {
+.ie div.calculator figure.calculator-display {
     height: 45px;
 }
 
@@ -16,11 +17,11 @@ $box_shadow_color: #000;
 }
 
 
-div.calculator-dialog {
+div.calculator-wrapper {
     font-family: arial;
-    background: image-url('widgets/calculator_bg.png') !important;
+    background-color: $background_color;
     padding: 0px;
-
+    width: 239px;
     figure.calculator-display {
         background-color: white;
         border-radius: $calculator_border_radius;
@@ -53,6 +54,9 @@ div.calculator-dialog {
     & > * {
         border: 0px !important;
     }
+
+
+
 
     .ui-dialog-titlebar {
         background: transparent !important;
@@ -88,6 +92,10 @@ div.calculator-dialog {
     }
 
 }
+
+
+
+
 
 
 $scalar: 1.0;

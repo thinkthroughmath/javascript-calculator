@@ -149,12 +149,24 @@ module.exports = function (grunt) {
       serve: {
         options: {
           open: true,
-          keepalive: true,
           base: [
             '<%= yeoman.site %>',
             '<%= yeoman.dist %>',
             '<%= yeoman.bower %>'
           ]
+        }
+      }
+    },
+
+    watch: {
+      coffee: {
+        files: [
+          '<%= yeoman.src %>/**/*.{coffee,scss}',
+          '<%= yeoman.test %>/**/*.coffee',
+        ],
+        tasks: ['build'],
+        options: {
+          interrupt: false
         }
       }
     },
@@ -172,6 +184,7 @@ module.exports = function (grunt) {
         }]
       }
     },
+
     uglify: {
       options: {
         banner: '<%= banner %>'
@@ -331,6 +344,11 @@ module.exports = function (grunt) {
 
 
 
+  grunt.registerTask('watch-serve', [
+    'connect:serve', 'watch'
+  ]);
+
+
   grunt.registerTask('build', [
     'clean',
     'coffee',
@@ -350,7 +368,9 @@ module.exports = function (grunt) {
   ]);
 
 
+  grunt.registerTask('serve', ['build', 'connect:serve:keepalive']);
 
   grunt.registerTask('default', ['build']);
+
 
 };
