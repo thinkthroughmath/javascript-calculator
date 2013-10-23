@@ -1,0 +1,27 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>FLOOP</title>
+
+  <link href="main.css" media="all" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+  <h1>TTM OPEN SOURCE</h1>
+
+  <div class="calculator-location"></div>
+
+  <script src="jquery/jquery.min.js"></script>
+  <script src="underscore/underscore-min.js"></script>
+  <script src="ttm-coffeescript-utilities.js"></script>
+  <script>
+    $(function(){
+    var ttm = thinkthroughmath;
+    ttm.widgets.Calculator.build_widget($(".calculator-location"))
+    });
+  </script>
+</body>
+</html>

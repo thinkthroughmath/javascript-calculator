@@ -24,7 +24,7 @@ open_widget_dialog = (element)->
 class Calculator
   @build_widget: (element)->
     math = ttm.lib.math.math_lib.build()
-    Calculator.build(element, math, logger)
+    Calculator.build(element, math, ttm.logger)
 
   initialize: (@element, @math, @logger)->
     @view = CalculatorView.build(@, @element, @math)
