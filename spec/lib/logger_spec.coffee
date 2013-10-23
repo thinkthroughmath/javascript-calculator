@@ -1,4 +1,4 @@
-#= require lib/logger
+ttm = thinkthroughmath
 
 describe "javascript logger", ->
   beforeEach ->

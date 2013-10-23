@@ -1,7 +1,4 @@
-#= require lib/math/expression_traversal
-
-
-
+ttm = thinkthroughmath
 
 class ExpressionTraversal
   initialize: (@expr_classes, @expression_position)->
@@ -69,5 +66,5 @@ class ExpressionComponentContainsCursor
 ttm.class_mixer(ExpressionComponentContainsCursor)
 
 
-window.ttm.lib.math.ExpressionTraversal = ttm.class_mixer(ExpressionTraversal)
-window.ttm.lib.math.ExpressionTraversalBuilder = ttm.class_mixer(ExpressionTraversalBuilder)
+ttm.lib.math.ExpressionTraversal = ttm.class_mixer(ExpressionTraversal)
+ttm.lib.math.ExpressionTraversalBuilder = ttm.class_mixer(ExpressionTraversalBuilder)

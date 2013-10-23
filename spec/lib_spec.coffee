@@ -1,4 +1,5 @@
-#= require lib
+ttm = thinkthroughmath
+
 describe "lib/object_refinement", ->
   describe "example usage", ->
     beforeEach ->
@@ -9,7 +10,7 @@ describe "lib/object_refinement", ->
       class XTypeToRefine
         normal: -> 'x'
 
-      @refinement = ttm.require('lib/object_refinement').build()
+      @refinement = ttm.lib.object_refinement.build()
       @refinement.forType(ATypeToRefine, {refined: -> 'a'})
       @refinement.forType(BTypeToRefine, {refined: -> 'b'})
 

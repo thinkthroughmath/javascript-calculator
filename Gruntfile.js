@@ -24,26 +24,99 @@ module.exports = function (grunt) {
       ' Licensed MIT */\n',
     // configurable paths
     yeoman: {
+      bower: 'bower_components',
       src: 'src',
-      test: 'test',
+      test: 'spec',
+      out: 'out',
       dist: 'dist'
     },
     coffee: {
       lib: {
         expand: true,
         cwd: '<%= yeoman.src %>/javascripts/',
-        src: ['lib/**/*.coffee'],
-        dest: 'out/javascripts/',
+        src: ['**/*.coffee'],
+        dest: '<%= yeoman.out %>/javascripts/',
         ext: '.js'
       },
       test: {
         expand: true,
         cwd: 'spec',
         src: ['**/*.coffee'],
-        dest: 'out/spec/',
+        dest: '<%= yeoman.out %>/spec/',
         ext: '.js'
       }
     },
+
+    concat: {
+      options: {
+        banner: '<%= banner %>',
+        stripBanners: true,
+      },
+      dist: {
+        src: [
+          '<%= yeoman.out %>/**/*.js'
+        ],
+        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
+      }
+    },
+
+
+    // Put files not handled in other tasks here
+    copy: {
+      dist: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.src %>',
+          dest: '<%= yeoman.out %>',
+          src: [
+            '**/*.js',
+          ]
+        }]
+      },
+      spec: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.test %>',
+          dest: '<%= yeoman.out %>/spec/',
+          src: [
+            '**/*.js',
+          ]
+        }]
+      }
+
+      // styles: {
+      //   expand: true,
+      //   dot: true,
+      //   cwd: '<%= yeoman.src %>/styles',
+      //   dest: '.tmp/styles/',
+      //   src: '{,*/}*.css'
+      // }
+    },
+
+    browserify: {
+      dist: {
+        src: '<%= yeoman.out %>/javascripts/browser.js',
+        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
+      }
+    },
+
+    jasmine: {
+      specs: [
+        '<%= yeoman.bower %>/jquery/jquery.js',
+        '<%= yeoman.bower %>/underscore/underscore.js',
+        '<%= yeoman.dist %>/<%= pkg.name %>.js',
+        '<%= yeoman.out %>/spec/support/jasmine-jquery.js',
+        '<%= yeoman.out %>/spec/support/spec_helpers.js',
+        '<%= yeoman.out %>/spec/lib_spec.js',
+        '<%= yeoman.out %>/spec/lib/**/*.js',
+        '<%= yeoman.out %>/spec/math/**/*.js',
+        '<%= yeoman.out %>/spec/widgets/**/*.js'
+      ]
+    },
+
+
 
     // EVERYTHING BELOW THIS LINE NEEDS CHECKED
     watch: {
@@ -208,16 +281,6 @@ module.exports = function (grunt) {
         }]
       }
     },
-    concat: {
-      options: {
-        banner: '<%= banner %>',
-        stripBanners: true
-      },
-      dist: {
-        src: ['<%= yeoman.src %>/<%= pkg.name %>.js'],
-        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
-      }
-    },
     uglify: {
       options: {
         banner: '<%= banner %>'
@@ -316,29 +379,29 @@ module.exports = function (grunt) {
       }
     },
     // Put files not handled in other tasks here
-    copy: {
-      dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.src %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            'images/{,*/}*.{webp,gif}',
-            'styles/fonts/{,*/}*.*'
-          ]
-        }]
-      },
-      styles: {
-        expand: true,
-        dot: true,
-        cwd: '<%= yeoman.src %>/styles',
-        dest: '.tmp/styles/',
-        src: '{,*/}*.css'
-      }
-    },
+    // copy: {
+    //   dist: {
+    //     files: [{
+    //       expand: true,
+    //       dot: true,
+    //       cwd: '<%= yeoman.src %>',
+    //       dest: '<%= yeoman.dist %>',
+    //       src: [
+    //         '*.{ico,png,txt}',
+    //         '.htaccess',
+    //         'images/{,*/}*.{webp,gif}',
+    //         'styles/fonts/{,*/}*.*'
+    //       ]
+    //     }]
+    //   },
+    //   styles: {
+    //     expand: true,
+    //     dot: true,
+    //     cwd: '<%= yeoman.src %>/styles',
+    //     dest: '.tmp/styles/',
+    //     src: '{,*/}*.css'
+    //   }
+    // },
     concurrent: {
       server: [
         'compass',
@@ -355,6 +418,7 @@ module.exports = function (grunt) {
         'htmlmin'
       ]
     }
+
   });
 
   grunt.registerTask('test', [
@@ -365,18 +429,44 @@ module.exports = function (grunt) {
     'mocha'
   ]);
 
-  grunt.registerTask('build', [
-    'clean:dist',
-    'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
+  // grunt.registerTask('build', [
+  //   'clean:dist',
+  //   'useminPrepare',
+  //   'concurrent:dist',
+  //   'autoprefixer',
+  //   'concat',
+  //   'cssmin',
+  //   'uglify',
+  //   'copy:dist',
+  //   'rev',
+  //   'usemin'
+  // ]);
+
+
+
+
+
+  grunt.registerTask('test', [
+    'coffee',
     'concat',
-    'cssmin',
-    'uglify',
-    'copy:dist',
-    'rev',
-    'usemin'
+    'jasmine'
   ]);
+
+
+
+  // grunt.registerTask('test', [
+  //   'build',
+  //   'connect:test',
+  //   'jasmine'
+  // ]);
+
+  grunt.registerTask('default', [
+    // 'jshint',
+    'qunit', 'clean', 'concat', 'uglify',
+    'test',
+    'build'
+  ]);
+
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -386,13 +476,8 @@ module.exports = function (grunt) {
   // grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
-
-  grunt.registerTask('default', [
-    // 'jshint',
-    'qunit', 'clean', 'concat', 'uglify',
-    'test',
-    'build'
-  ]);
+  grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-browserify');
 
   // grunt.registerTask('server', ['connect', 'watch']);
 
@@ -409,11 +494,5 @@ module.exports = function (grunt) {
   //     'watch'
   //   ]);
   // });
-
-  grunt.registerTask('test', [
-    'build',
-    'connect:test',
-    // 'qunit'
-  ]);
 
 };

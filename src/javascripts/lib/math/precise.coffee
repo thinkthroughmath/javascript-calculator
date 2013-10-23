@@ -1,5 +1,3 @@
-# = require ./base
-
 # a really simple library for
 # doing "precise" js math
 #
@@ -7,8 +5,11 @@
 # limits the max value of numbers
 # but makes floats precise, which is what we want.
 
-factor = 10000000
 
+ttm = thinkthroughmath
+
+
+factor = 10000000
 class Precise
   initialize: (@adjustment_factor=factor)->
 
@@ -55,4 +56,4 @@ class Precise
     "#{fn(ac, bc)}"
 
 
-window.ttm.lib.math.Precise = ttm.class_mixer Precise
+ttm.lib.math.Precise = ttm.class_mixer Precise

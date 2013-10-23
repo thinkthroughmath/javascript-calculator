@@ -1,9 +1,13 @@
-#= require lib/math
+
+
+ttm = thinkthroughmath
+
 describe "BuildExpressionFromJavascriptObject", ->
   beforeEach ->
     @math = ttm.lib.math.math_lib.build()
     @components = @math.components
-    builder_lib = ttm.require('lib/math/build_expression_from_javascript_object')
+
+    builder_lib = ttm.lib.math.BuildExpressionFromJavascriptObject
 
     @exp_pos_builder = @math.object_to_expression.buildExpressionPositionFunction()
     @builder = @math.object_to_expression.buildExpressionFunction()

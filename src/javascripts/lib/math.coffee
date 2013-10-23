@@ -1,18 +1,21 @@
-#= require lib
-#= require lib/math/expression_components
-#= require lib/math/expression_equality
-#= require lib/math/expression_evaluation
-#= require lib/math/expression_manipulation
-#= require lib/math/build_expression_from_javascript_object
-#= require lib/math/precise
+ttm = thinkthroughmath
+ttm.lib.math ||= {}
+
+require './math/precise'
+require './math/expression_components'
+require './math/expression_equality'
+require './math/expression_evaluation'
+require './math/expression_manipulation'
+require './math/expression_position'
+require './math/build_expression_from_javascript_object'
+require './math/expression_traversal'
+require './math/equation_checking'
+require './math/expression_to_string'
+require './math/expression_to_mathml_conversion'
+
 
 class MathLib
   initialize: (opts={})->
-    # TODO refactor these removing them
-    ttm.require('lib/math/expression_manipulation')
-    ttm.require('lib/math/build_expression_from_javascript_object')
-    ttm.require('lib/math/expression_evaluation')
-    ttm.require('lib/math/expression_equality')
     precise = opts.precise || ttm.lib.math.Precise.build()
     comps = opts.comps || ttm.lib.math.ExpressionComponentSource.build(precise)
 
@@ -33,8 +36,4 @@ class MathLib
 
     @equation_checking = opts.equation_checking || ttm.lib.math.EquationCheckingBuilder.build(@commands, @traversal, @evaluation, @expression_equality.isEqual)
 
-
-
-ttm.class_mixer MathLib
-
-window.ttm.lib.math.math_lib = MathLib
+ttm.lib.math.math_lib = ttm.class_mixer MathLib

@@ -1,5 +1,4 @@
-#= require ./base
-
+ttm = thinkthroughmath
 
 class ExpressionPosition
   initialize: (opts={})->

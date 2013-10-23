@@ -1,16 +1,15 @@
-#= require lib/math/expression_to_string
+ttm = thinkthroughmath
 
 describe "expression to string conversion", ->
   beforeEach ->
     @math = ttm.lib.math.math_lib.build()
-    trav =
     @to_string = (exp)->
       exp_contains_cursor = @math.traversal.build(exp).buildExpressionComponentContainsCursor()
-      ttm.require("lib/math/expression_to_string").toString(exp, exp_contains_cursor)
+      ttm.lib.math.ExpressionToString.toString(exp, exp_contains_cursor)
 
     @to_html_string = (exp)->
       exp_contains_cursor = @math.traversal.build(exp).buildExpressionComponentContainsCursor()
-      ttm.require("lib/math/expression_to_string").toHTMLString(exp, exp_contains_cursor)
+      ttm.lib.math.ExpressionToString.toHTMLString(exp, exp_contains_cursor)
 
     @exp_pos_builder = @math.object_to_expression.buildExpressionFunction()
     @exp_pos_builder = @math.object_to_expression.buildExpressionPositionFunction()

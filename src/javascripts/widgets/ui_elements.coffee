@@ -1,6 +1,6 @@
-#= require ./base
-#= require lib
-#= require jquery
+
+ttm = thinkthroughmath
+
 
 class Button
   initialize: (@opts={})->
@@ -29,4 +29,4 @@ class UIElements
   button_builder: Button
   math_display_builder: MathDisplay
 
-window.ttm.widgets.UIElements = ttm.class_mixer(UIElements)
+ttm.widgets.UIElements = ttm.class_mixer(UIElements)

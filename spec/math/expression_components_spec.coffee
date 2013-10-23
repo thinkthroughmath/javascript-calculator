@@ -1,3 +1,4 @@
+ttm = thinkthroughmath
 
 it_adheres_to_the_expression_component_interface = (opts)->
   describe "expression component interface", ->
@@ -27,7 +28,7 @@ describe "Expression Components", ->
     @comps = ttm.lib.math.ExpressionComponentSource.build()
 
     @expression_to_string = (exp)->
-      ttm.require('lib/math/expression_to_string').toString(exp)
+      ttm.lib.math.ExpressionToString.toString(exp)
 
     @expect_value = (expression, value)->
       expect(@expression_to_string(expression)).toEqual value

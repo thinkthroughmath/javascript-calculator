@@ -1,5 +1,9 @@
 #= require ./base
 
+ttm = thinkthroughmath
+logger = ttm.logger
+class_mixer = ttm.class_mixer
+object_refinement = ttm.lib.object_refinement
 
 class EvaluationRefinementBuilder
   initialize: (comps, class_mixer, object_refinement, MalformedExpressionError, precise)->
@@ -18,7 +22,7 @@ class EvaluationRefinementBuilder
           if !@base().isEmpty() && !@power().isEmpty()
             base = refinement.refine(@base()).eval().toCalculable()
             power = refinement.refine(@power()).eval().toCalculable()
-            logger.info("exponentiation", base, power)
+            ttm.logger.info("exponentiation", base, power)
             comps.classes.number.build(value: Math.pow(base, power))
           else
             throw new MalformedExpressionError("Invalid Expression")
@@ -163,41 +167,34 @@ class EvaluationRefinementBuilder
 
 ttm.class_mixer EvaluationRefinementBuilder
 
-ttm.define "lib/math/expression_evaluation",
-  ['lib/class_mixer', 'lib/object_refinement'],
-  (class_mixer, object_refinement)->
-    MalformedExpressionError = (message)->
-      @name = 'MalformedExpressionError'
-      @message = message
-      @stack = (new Error()).stack
-    MalformedExpressionError.prototype = new Error;
 
-    comps = ttm.lib.math.ExpressionComponentSource.build()
-    class ExpressionEvaluation
-      initialize: (@expression, @opts={})->
-        @comps = @opts.comps || comps
-        @precise = ttm.lib.math.Precise.build()
-        @refinement = EvaluationRefinementBuilder.build(@comps, class_mixer, object_refinement, MalformedExpressionError, @precise).refinement()
+MalformedExpressionError = (message)->
+  @name = 'MalformedExpressionError'
+  @message = message
+  @stack = (new Error()).stack
+MalformedExpressionError.prototype = new Error;
 
-      resultingExpression: ->
-        results = false
-        try
-          results = @evaluate()
-        catch e
-          throw e unless e instanceof MalformedExpressionError
-        if results
-          @comps.build_expression(expression: [results])
-        else
-          @expression.clone(is_error: true)
+comps = ttm.lib.math.ExpressionComponentSource.build()
+class ExpressionEvaluation
+  initialize: (@expression, @opts={})->
+    @comps = @opts.comps || comps
+    @precise = ttm.lib.math.Precise.build()
+    @refinement = EvaluationRefinementBuilder.build(@comps, class_mixer, object_refinement, MalformedExpressionError, @precise).refinement()
 
-      evaluate: ()->
-        refined = @refinement.refine(@expression)
-        results = refined.eval()
+  resultingExpression: ->
+    results = false
+    try
+      results = @evaluate()
+    catch e
+      throw e unless e instanceof MalformedExpressionError
+    if results
+      @comps.build_expression(expression: [results])
+    else
+      @expression.clone(is_error: true)
 
-    class_mixer(ExpressionEvaluation)
+  evaluate: ()->
+    refined = @refinement.refine(@expression)
+    results = refined.eval()
 
-
-    ttm.lib.math.ExpressionEvaluation = ExpressionEvaluation
-
-    return ExpressionEvaluation
-
+class_mixer(ExpressionEvaluation)
+ttm.lib.math.ExpressionEvaluation = ExpressionEvaluation

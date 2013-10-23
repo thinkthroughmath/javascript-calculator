@@ -1,5 +1,7 @@
-#= require lib/class_mixer
+require './class_mixer'
 
+root = window || global
+ttm = root.thinkthroughmath
 class_mixer = ttm.class_mixer
 
 class LogEntry
@@ -156,4 +158,4 @@ class LoggerBuilder
 class_mixer LoggerBuilder
 
 # library export
-window.ttm.Logger = LoggerBuilder.build()
+thinkthroughmath.Logger = LoggerBuilder.build()

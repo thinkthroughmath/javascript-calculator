@@ -1,4 +1,4 @@
-#= require lib/math/expression_traversal
+ttm = thinkthroughmath
 
 describe "expression traversal", ->
   beforeEach ->

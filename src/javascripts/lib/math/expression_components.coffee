@@ -1,4 +1,4 @@
-#= require lib/math/base
+ttm = thinkthroughmath
 
 class ExpressionComponent
   initialize: (opts={})->
@@ -469,4 +469,3 @@ ExpressionComponentSource.prototype.build_number = (opts={})->
 
 ttm.lib.math.ExpressionComponentSource =
   ttm.class_mixer(ExpressionComponentSource)
-

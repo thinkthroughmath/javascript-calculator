@@ -1,10 +1,12 @@
-#= require widgets/calculator
-#= require lib/math
+ttm = thinkthroughmath
+
+
+calculator = ttm.widgets.Calculator
+
 
 # TODO move most of these to the evaluation class
 describe "Calculator Widget features", ->
   beforeEach ->
-    calculator = ttm.require("calculator")
     math = ttm.lib.math.math_lib.build()
     @calc = calculator.build_widget(f(), math.expression)
     @handle = JSCalculatorHandle.build(f(), calculator)
@@ -167,7 +169,6 @@ describe "Calculator Widget features", ->
 
 describe "Calculator error handling", ->
   beforeEach ->
-    calculator = ttm.require("calculator")
     math = ttm.lib.math.math_lib.build()
     @calc = calculator.build_widget(f(), math.expression)
     @handle = JSCalculatorHandle.build(f(), calculator)

@@ -1,4 +1,4 @@
-#= require lib/math/expression_position
+ttm = thinkthroughmath
 
 describe "expression position library", ->
   beforeEach ->

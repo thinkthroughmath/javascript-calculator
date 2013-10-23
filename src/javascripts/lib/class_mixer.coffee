@@ -1,3 +1,5 @@
+ttm = thinkthroughmath
+
 ttm.ClassMixer = ttm.class_mixer = (klass)->
   klass.build = ->
     it = new klass
@@ -5,7 +7,3 @@ ttm.ClassMixer = ttm.class_mixer = (klass)->
     it
   klass.prototype.klass = klass
   klass
-
-ttm.define "lib/class_mixer", ->
-  return ttm.ClassMixer
-

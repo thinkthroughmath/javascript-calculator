@@ -1,6 +1,4 @@
-#= require ./base
-#= require widgets/ui_elements
-#= require lib
+ttm = thinkthroughmath
 
 math_var = (name)->
   "<span class='math-variable'>#{name}</span>"
@@ -191,4 +189,4 @@ class ButtonBuilder
     @ui_elements.button_builder.build(
       _.extend({}, type_opts, @opts, opts || {}))
 
-window.ttm.widgets.ButtonBuilder = ttm.class_mixer(ButtonBuilder)
+ttm.widgets.ButtonBuilder = ttm.class_mixer(ButtonBuilder)

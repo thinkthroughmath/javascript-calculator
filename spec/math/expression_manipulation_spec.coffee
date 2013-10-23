@@ -1,5 +1,5 @@
-#= require lib/math/expression_manipulation
-
+ttm = thinkthroughmath
+class_mixer = ttm.class_mixer
 
 it_plays_manipulation_role = (options)->
   describe "acting as an expression manipulation", ->
@@ -37,10 +37,10 @@ describe "expression manipulations", ->
     @manip = @math.commands
     @components = @math.components
 
-    builder_lib = ttm.require('lib/math/build_expression_from_javascript_object')
+    builder_lib = ttm.lib.math.BuildExpressionFromJavascriptObject
     @exp_builder = @math.object_to_expression.buildExpressionFunction()
     @exp_pos_builder = @math.object_to_expression.buildExpressionPositionFunction()
-    expression_to_string = ttm.require('lib/math/expression_to_string').toString
+    expression_to_string = ttm.lib.math.ExpressionToString.toString
     @expect_value = (expression, value)->
       expect(expression_to_string(expression)).toEqual value
 

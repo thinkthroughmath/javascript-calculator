@@ -1,4 +1,4 @@
-#= require lib/math/expression_evaluation
+ttm = thinkthroughmath
 
 expect_evaluation = (orig, goal)->
   exp = @exp(orig)
@@ -6,13 +6,11 @@ expect_evaluation = (orig, goal)->
   expect(new_exp).toBeAnEqualExpressionTo @exp(goal)
 
 
-
-
 describe "math expression evaluation", ->
   beforeEach ->
-    @evaluation = ttm.require("lib/math/expression_evaluation")
+    @evaluation = ttm.lib.math.ExpressionEvaluation
     @math = ttm.lib.math.math_lib.build()
-    builder_lib = ttm.require('lib/math/build_expression_from_javascript_object')
+    builder_lib = ttm.lib.math.BuildExpressionFromJavascriptObject
     @exp = @math.object_to_expression.buildExpressionFunction()
     @expect_evaluation = expect_evaluation
 

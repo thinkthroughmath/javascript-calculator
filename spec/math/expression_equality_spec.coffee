@@ -1,12 +1,13 @@
 #= require lib/math/expression_components
 #= require lib/math/expression_equality
 
+ttm = thinkthroughmath
 
 describe "expression equality", ->
   beforeEach ->
     @comps = ttm.lib.math.ExpressionComponentSource.build()
-    @isEqual = ttm.require('lib/math/expression_equality').isEqual
-    builder_lib = ttm.require('lib/math/build_expression_from_javascript_object')
+    @isEqual = ttm.lib.math.ExpressionEquality.isEqual
+    builder_lib = ttm.lib.math.BuildExpressionFromJavascriptObject
 
     @math = ttm.lib.math.math_lib.build()
     @exp_builder = @math.object_to_expression.buildExpressionFunction()

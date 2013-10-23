@@ -1,3 +1,4 @@
+ttm = thinkthroughmath
 describe "precise math", ->
   beforeEach ->
     @prec = ttm.lib.math.Precise.build()

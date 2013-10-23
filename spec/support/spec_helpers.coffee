@@ -1,11 +1,12 @@
 #= require lib/logger
 
+ttm = thinkthroughmath
 
 LOGGING_TYPE="silent"
 window.logger = switch LOGGING_TYPE
-  when "silent" then window.ttm.Logger.buildSilent(stringify_objects: false)
-  when "verbose" then window.ttm.Logger.buildVerbose(stringify_objects: false)
-  else window.ttm.Logger.buildProduction(stringify_objects: false)
+  when "silent" then ttm.Logger.buildSilent(stringify_objects: false)
+  when "verbose" then ttm.Logger.buildVerbose(stringify_objects: false)
+  else ttm.Logger.buildProduction(stringify_objects: false)
 class_mixer = ttm.class_mixer
 
 window.parseEntities = (str)-> $("<div>#{str}</div>").text()
@@ -56,7 +57,7 @@ beforeEach ->
         msg
 
       if @actual and other
-        @check = ttm.require('lib/math/expression_equality').equalityCalculation(@actual, other)
+        @check = ttm.lib.math.ExpressionEquality.equalityCalculation(@actual, other)
         @check.isEqual()
       else
         false
