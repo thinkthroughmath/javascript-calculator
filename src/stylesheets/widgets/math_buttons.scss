@@ -19,8 +19,9 @@ $other_lighter: #7c7c7c;
 $other_darker: #454545;
 $other_border: #adadad;
 
-@mixin math-button-gray()
+@mixin math-button-gray
 {
+    color: white;
     border-color: $other_border;
     @include simple-gradient($other_lighter, $other_darker);
     button.math-button.other:hover {
@@ -228,15 +229,25 @@ $other_border: #adadad;
 
 .math-button {
     border: 1px solid;
-    color: white;
-    text-shadow: 1px 1px 1px #222;
     text-align: middle;
-    border-radius: $calculator_border_radius;
-    -webkit-box-shadow: 0 0 5px $box_shadow_color;
-    -moz-box-shadow: 0 0 5px $box_shadow_color;
-    box-shadow: 0 0 5px $box_shadow_color;
     vertical-align: top;
 }
+
+
+
+@mixin math-button-shadow {
+    .math-button {
+        color: white;
+        text-shadow: 1px 1px 1px #222;
+        border-radius: $calculator_border_radius;
+        -webkit-box-shadow: 0 0 5px $box_shadow_color;
+        -moz-box-shadow: 0 0 5px $box_shadow_color;
+        box-shadow: 0 0 5px $box_shadow_color;
+
+    }
+}
+
+
 
 button.math-button.clear {
     text-transform: uppercase;

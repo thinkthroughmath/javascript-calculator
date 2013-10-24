@@ -14,6 +14,10 @@ ui_elements = ttm.widgets.UIElements.build()
 math_buttons_lib = ttm.widgets.ButtonBuilder
 components = ttm.lib.math.ExpressionComponentSource.build()
 
+
+calculator_wrapper_class = 'ttm-calculator'
+
+
 open_widget_dialog = (element)->
   if element.empty()
     Calculator.build_widget(element)
@@ -187,8 +191,8 @@ class CalculatorView
     disp.scrollLeft(9999999)
 
   render: ->
-    @element.append "<div class='calculator'></div>"
-    calc_div = @element.find('div.calculator')
+    @element.append "<div class='#{calculator_wrapper_class}'></div>"
+    calc_div = @element.find("div.#{calculator_wrapper_class}")
     calc_div.append "<figure class='calculator-display'>0</figure>"
 
     @layout.render calc_div
