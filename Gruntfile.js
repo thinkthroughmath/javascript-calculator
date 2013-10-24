@@ -171,10 +171,23 @@ module.exports = function (grunt) {
       }
     },
 
+    uglify: {
+      dist: {
+        files: {
+          '<%= yeoman.dist %>/<%= pkg.name %>.min.js': '<%= yeoman.dist %>/<%= pkg.name %>.js'
+        }
+      }
+    },
+
+    cssmin: {
+      combine: {
+        files: {
+          '<%= yeoman.dist %>/<%= pkg.name %>.min.css': '<%= yeoman.dist %>/<%= pkg.name %>.css'
+        }
+      }
+    }
+
   });
-
-
-
 
 
   // These plugins provide necessary tasks.
@@ -185,6 +198,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
 
   // grunt.loadNpmTasks('grunt-contrib-qunit');
   // grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -206,6 +220,8 @@ module.exports = function (grunt) {
     'copy:spec',
     'browserify',
     'copy:styles',
+    'uglify',
+    'cssmin'
   ]);
 
 
