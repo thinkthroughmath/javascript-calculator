@@ -1,9 +1,10 @@
 {
-  "name": "ttm-coffeescript-utilities",
+  "name": "math-widgets",
   "version": "0.0.1",
   "dependencies": {
     "jquery": "~1.10.2",
     "underscore": "~1.5.2"
+    "ttm-coffeescript-utilities": "~1.5.2"
   },
   "devDependencies": {}
 }

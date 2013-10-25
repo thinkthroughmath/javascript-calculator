@@ -1,8 +1,8 @@
 {
-  "name": "ttm-coffeescript-utilities",
+  "name": "math-widgets",
   "version": "0.0.1",
-  "description": "TTM CoffeeScript Utilties",
-  "homepage": "https://github.com/thinkthroughmath/ttm-coffeescript-utilties",
+  "description": "Think Through Math Mathematics Widgets",
+  "homepage": "https://github.com/thinkthroughmath/math-widgets",
   "dependencies": {
     "underscore": "~1.5.2",
     "jquery": "~1.8.3"
@@ -10,7 +10,7 @@
   "author": {
     "name": "Think Through Math, Joel McCracken",
     "email": "mccracken.joel@gmail.com",
-    "url": "https://github.com/thinkthroughmath"
+    "url": "https://github.com/thinkthroughmath/math-widgets"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -48,6 +48,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/thinkthroughmath/ttm-coffeescript-utilties.git"
+    "url": "https://github.com/thinkthroughmath/math-widgets.git"
   }
 }
