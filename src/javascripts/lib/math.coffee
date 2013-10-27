@@ -11,7 +11,6 @@ require './math/build_expression_from_javascript_object'
 require './math/expression_traversal'
 require './math/equation_checking'
 require './math/expression_to_string'
-require './math/expression_to_mathml_conversion'
 
 
 class MathLib

@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "dependencies": {
     "jquery": "~1.10.2",
-    "underscore": "~1.5.2"
-    "ttm-coffeescript-utilities": "~1.5.2"
+    "underscore": "~1.5.2",
+    "ttm-coffeescript-utilities": "git@github.com:thinkthroughmath/ttm-coffeescript-utilities.git#~0.0.1"
   },
   "devDependencies": {}
 }
