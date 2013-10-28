@@ -9,7 +9,6 @@ require './math/expression_manipulation'
 require './math/expression_position'
 require './math/build_expression_from_javascript_object'
 require './math/expression_traversal'
-require './math/equation_checking'
 require './math/expression_to_string'
 
 
@@ -32,7 +31,5 @@ class MathLib
     @evaluation = opts.evaluation || ttm.lib.math.ExpressionEvaluation
 
     @expression_equality = opts.expression_equality || ttm.lib.math.ExpressionEquality
-
-    @equation_checking = opts.equation_checking || ttm.lib.math.EquationCheckingBuilder.build(@commands, @traversal, @evaluation, @expression_equality.isEqual)
 
 ttm.lib.math.math_lib = ttm.class_mixer MathLib
