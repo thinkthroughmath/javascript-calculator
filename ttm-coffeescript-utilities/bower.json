@@ -1,0 +1,9 @@
+{
+  "name": "ttm-coffeescript-utilities",
+  "version": "0.0.1",
+  "dependencies": {
+    "jquery": "~1.10.2",
+    "underscore": "~1.5.2"
+  },
+  "devDependencies": {}
+}
