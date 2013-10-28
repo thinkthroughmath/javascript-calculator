@@ -5,7 +5,7 @@
   <meta charset="utf-8">
 
   <title>Think Through Math Open Source</title>
-  <link href="ttm-coffeescript-utilities.min.css"
+  <link href="math-widgets.min.css"
         media="all"
         rel="stylesheet"
         type="text/css">
@@ -21,21 +21,9 @@
   <h2>Calculator</h2>
   <div class="location-to-render-calculator ttm-calculator-themed"></div>
 
-
-  <h2>Equation Builder (themeless)</h2>
-  <div class="location-to-render-equation-builder"></div>
-
-
-  <h2>Equation Builder</h2>
-  <div class="location-to-render-equation-builder ttm-equation-builder-themed"></div>
-
-
-  <script type="text/javascript"
-          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-  </script>
   <script src="jquery/jquery.min.js"></script>
   <script src="underscore/underscore-min.js"></script>
-  <script src="ttm-coffeescript-utilities.min.js"></script>
+  <script src="math-widgets.min.js"></script>
 
   <script>
     $(function(){
@@ -43,26 +31,6 @@
 
     $(".location-to-render-calculator").each(function(i,element){
       ttm.widgets.Calculator.build_widget($(element));
-    });
-
-    var equation_vars = [
-    {name: "distance",
-    value: 10,
-    unit: "km",
-    is_unknown: true},
-    {name: "rate",
-    value: 10,
-    unit: "kph",
-    is_unknown: false},
-    {name: "time",
-    value: 10,
-    unit: "h",
-    is_unknown: false}
-    ];
-
-    $(".location-to-render-equation-builder").each(function(i,element){
-      eb = ttm.widgets.EquationBuilder.build_widget($(element))
-      eb.registerVariables(equation_vars);
     });
 
     });

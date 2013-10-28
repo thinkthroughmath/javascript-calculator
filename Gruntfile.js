@@ -51,7 +51,7 @@ module.exports = function (grunt) {
     sass: {
       dist: {
         files: {
-          '<%= yeoman.out %>/ttm-coffeescript-utilities.css': 'src/stylesheets/browser.scss'
+          '<%= yeoman.out %>/math-widgets.css': 'src/stylesheets/browser.scss'
         }
       }
     },
@@ -104,7 +104,31 @@ module.exports = function (grunt) {
             '**/*.css',
           ]
         }]
+      },
+      site: {
+        files: [
+          {
+            expand: true,
+            dot: true,
+            cwd: '<%= yeoman.site %>',
+            dest: '<%= yeoman.dist %>',
+            src: [
+              '**/*',
+            ]
+          },
+          {
+            expand: true,
+            dot: true,
+            cwd: '<%= yeoman.bower %>',
+            dest: '<%= yeoman.dist %>',
+            src: [
+              '**/*',
+            ]
+          },
+        ]
       }
+
+
     },
 
     browserify: {
@@ -150,9 +174,7 @@ module.exports = function (grunt) {
         options: {
           open: true,
           base: [
-            '<%= yeoman.site %>',
-            '<%= yeoman.dist %>',
-            '<%= yeoman.bower %>'
+            '<%= yeoman.dist %>'
           ]
         }
       }
@@ -185,8 +207,14 @@ module.exports = function (grunt) {
           '<%= yeoman.dist %>/<%= pkg.name %>.min.css': '<%= yeoman.dist %>/<%= pkg.name %>.css'
         }
       }
-    }
+    },
 
+    'gh-pages': {
+      options: {
+        base: '<%= yeoman.dist %>'
+      },
+      src: ['**']
+    }
   });
 
 
@@ -199,11 +227,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
-
-  // grunt.loadNpmTasks('grunt-contrib-qunit');
-  // grunt.loadNpmTasks('grunt-contrib-jshint');
-  // grunt.loadNpmTasks('grunt-contrib-watch');
-
+  grunt.loadNpmTasks('grunt-gh-pages');
 
 
   grunt.registerTask('watch-serve', [
@@ -221,7 +245,8 @@ module.exports = function (grunt) {
     'browserify',
     'copy:styles',
     'uglify',
-    'cssmin'
+    'cssmin',
+    'copy:site'
   ]);
 
 
@@ -230,7 +255,6 @@ module.exports = function (grunt) {
     'build',
     'jasmine'
   ]);
-
 
   grunt.registerTask('serve', ['build', 'connect:serve:keepalive']);
 
