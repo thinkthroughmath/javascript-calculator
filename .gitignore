@@ -4,3 +4,4 @@ dist
 out
 .sass-cache
 bower_components
+.grunt/grunt-gh-pages
