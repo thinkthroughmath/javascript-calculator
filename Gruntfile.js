@@ -51,7 +51,7 @@ module.exports = function (grunt) {
     sass: {
       dist: {
         files: {
-          '<%= yeoman.out %>/math-widgets.css': 'src/stylesheets/browser.scss'
+          '<%= yeoman.dist %>/math-widgets.css': 'src/stylesheets/browser.scss'
         }
       }
     },
@@ -70,19 +70,7 @@ module.exports = function (grunt) {
     },
 
 
-    // Put files not handled in other tasks here
     copy: {
-      out: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.src %>',
-          dest: '<%= yeoman.out %>',
-          src: [
-            '**/*.js',
-          ]
-        }]
-      },
       spec: {
         files: [{
           expand: true,
@@ -91,17 +79,6 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.out %>/spec/',
           src: [
             '**/*.js',
-          ]
-        }]
-      },
-      styles: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.out %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            '**/*.css',
           ]
         }]
       },
@@ -127,8 +104,6 @@ module.exports = function (grunt) {
           },
         ]
       }
-
-
     },
 
     browserify: {
@@ -155,13 +130,12 @@ module.exports = function (grunt) {
       specs: [
         '<%= yeoman.bower %>/jquery/jquery.js',
         '<%= yeoman.bower %>/underscore/underscore.js',
+        '<%= yeoman.bower %>/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
+        '<%= yeoman.bower %>/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
         '<%= yeoman.out %>/spec/support/jasmine-jquery.js',
         '<%= yeoman.dist %>/<%= pkg.name %>.js',
         '<%= yeoman.out %>/spec/support/spec_helpers.js',
-        '<%= yeoman.out %>/spec/lib_spec.js',
-        '<%= yeoman.out %>/spec/lib/**/*.js',
-        '<%= yeoman.out %>/spec/math/**/*.js',
-        '<%= yeoman.out %>/spec/widgets/**/*.js'
+        '<%= yeoman.out %>/spec/**/*.js'
       ]
     },
     connect: {
@@ -240,10 +214,8 @@ module.exports = function (grunt) {
     'coffee',
     'sass',
     'concat',
-    'copy:out',
     'copy:spec',
     'browserify',
-    'copy:styles',
     'uglify',
     'cssmin',
     'copy:site'
