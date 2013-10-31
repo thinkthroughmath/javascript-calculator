@@ -8,7 +8,7 @@ library.
 
 ## Usage
 
-See examples and usage as documented on the demo page at [http://thinkthroughmath.github.io/math-widgets]
+See examples and usage as documented on the [demo page](http://thinkthroughmath.github.io/math-widgets)
 
 
 ## License
