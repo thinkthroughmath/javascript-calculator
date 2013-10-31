@@ -1,7 +1,17 @@
 node_modules
-dist
 .tmp
 out
 .sass-cache
 bower_components
 .grunt/grunt-gh-pages
+
+
+# ignore everything in the dist folder
+# that is used for gh-pages but should
+# not actually be included in the dist
+dist/jquery
+dist/index.html
+dist/ttm-coffeescript-math
+dist/ttm-coffeescript-utilities
+dist/underscore
+
