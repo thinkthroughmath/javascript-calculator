@@ -48,20 +48,6 @@ module.exports = function (grunt) {
       }
     },
 
-    concat: {
-      options: {
-        banner: '<%= banner %>',
-        stripBanners: true,
-      },
-      dist: {
-        src: [
-          '<%= yeoman.out %>/**/*.js'
-        ],
-        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
-      }
-    },
-
-
     // Put files not handled in other tasks here
     copy: {
       out: {
@@ -69,12 +55,23 @@ module.exports = function (grunt) {
           expand: true,
           dot: true,
           cwd: '<%= yeoman.src %>',
-          dest: '<%= yeoman.out %>/src',
+          dest: '<%= yeoman.out %>',
           src: [
             '**/*.js',
           ]
         }]
-      }
+      },
+      spec: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.test %>',
+          dest: '<%= yeoman.out %>/spec/',
+          src: [
+            '**/*.js',
+          ]
+        }]
+      },
     },
 
     browserify: {
@@ -84,12 +81,14 @@ module.exports = function (grunt) {
       }
     },
     clean: {
+      options: {
+      },
       all: {
         files: [{
           dot: true,
           src: [
             '<%= yeoman.out %>',
-            '<%= yeoman.dist %>',
+            '<%= yeoman.dist %>'
           ]
         }]
       }
@@ -97,33 +96,18 @@ module.exports = function (grunt) {
     jasmine: {
       specs: [
         '<%= yeoman.bower %>/underscore/underscore.js',
+        '<%= yeoman.bower %>/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
         '<%= yeoman.dist %>/<%= pkg.name %>.js',
-        '<%= yeoman.out %>/spec/lib_spec.js',
-        '<%= yeoman.out %>/spec/lib/**/*.js',
+        '<%= yeoman.out %>/spec/spec_helpers.js',
+        // '<%= yeoman.out %>/spec/**/*.js',
+        '<%= yeoman.out %>/spec/build_expression_from_javascript_object_spec.js',
       ]
-    },
-    connect: {
-      options: {
-        port: 9000,
-        // change this to '0.0.0.0' to access the server from outside
-        hostname: 'localhost'
-      },
-      serve: {
-        options: {
-          open: true,
-          base: [
-            '<%= yeoman.site %>',
-            '<%= yeoman.dist %>',
-            '<%= yeoman.bower %>'
-          ]
-        }
-      }
     },
 
     watch: {
       coffee: {
         files: [
-          '<%= yeoman.src %>/**/*.coffee',
+          '<%= yeoman.src %>/**/*.{coffee,scss}',
           '<%= yeoman.test %>/**/*.coffee',
         ],
         tasks: ['build'],
@@ -146,7 +130,6 @@ module.exports = function (grunt) {
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-browserify');
@@ -160,8 +143,8 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean',
     'coffee',
-    'concat',
     'copy:out',
+    'copy:spec',
     'browserify',
     'uglify',
   ]);

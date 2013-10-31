@@ -1,0 +1,9 @@
+{
+  "name": "ttm-coffeescript-math",
+  "version": "0.0.1",
+  "dependencies": {
+    "underscore": "~1.5.2",
+    "ttm-coffeescript-utilities": "git@github.com:thinkthroughmath/ttm-coffeescript-utilities.git#~0.0.1"
+  },
+  "devDependencies": {}
+}

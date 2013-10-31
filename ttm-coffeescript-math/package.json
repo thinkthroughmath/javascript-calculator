@@ -1,8 +1,8 @@
 {
-  "name": "ttm-coffeescript-utilities",
+  "name": "ttm-coffeescript-math",
   "version": "0.0.1",
-  "description": "TTM CoffeeScript Utilities",
-  "homepage": "https://github.com/thinkthroughmath/ttm-coffeescript-utilities",
+  "description": "TTM CoffeeScript Math",
+  "homepage": "https://github.com/thinkthroughmath/ttm-coffeescript-math",
   "dependencies": {
     "underscore": "~1.5.2",
     "jquery": "~1.8.3"
@@ -17,15 +17,22 @@
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-connect": "~0.5.0",
     "grunt-bower-install": "~0.5.0",
     "grunt-contrib-watch": "~0.5.2",
     "grunt-contrib-coffee": "~0.7.0",
     "grunt-contrib-clean": "~0.5.0",
+    "grunt-rev": "~0.1.0",
+    "grunt-usemin": "~0.1.10",
+    "grunt-svgmin": "~0.2.0",
+    "grunt-concurrent": "~0.3.0",
     "load-grunt-tasks": "~0.1.0",
     "time-grunt": "~0.1.1",
     "grunt-contrib-jasmine": "~0.5.1",
     "browserify": "~2.34.3",
     "grunt-browserify": "~1.2.9",
+    "grunt-contrib-jst": "~0.5.1",
     "grunt-sass": "~0.7.0"
   },
   "engines": {
@@ -38,6 +45,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/thinkthroughmath/ttm-coffeescript-utilities.git"
+    "url": "https://github.com/thinkthroughmath/ttm-coffeescript-math.git"
   }
 }

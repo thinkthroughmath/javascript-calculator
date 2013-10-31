@@ -4,37 +4,175 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Think Through Math Open Source</title>
-  <link href="math-widgets.min.css"
+  <title>Think Through Math Calculator</title>
+  <link href="javascript-calculator.min.css"
         media="all"
         rel="stylesheet"
         type="text/css">
 
+  <style>
+    * {
+    font-family: sans-serif;
+    }
+  </style>
+
 </head>
 <body>
-  <h1>TTM Open Source</h1>
+  <h1>Think Through Math Calculator</h1>
+  <p>An open source calculator developed for the Think Through Math
+  product.</p>
+
+  <ul>
+    <li><a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#getting-started--dependencies">
+            Dependencies
+        </a></li>
+        <li><a href="#getting-started--downloading-manually">
+            Downloading Manually
+        </a></li>
+        <li><a href="#getting-started--bower-component">
+            Installing as a Bower Component
+        </a></li>
+        <li><a href="#getting-started--using-coffeescript-and-sass">
+            Using Coffeescript and Sass
+        </a></li>
+        <li><a href="#getting-started--including-in-web-page">
+            Including in your Website
+        </a></li>
+      </ul>
+    </li>
+    <li><a href="#calculator">Calculator Usage</a></li>
+  </ul>
 
 
-  <h2>Calculator (themeless)</h2>
+  <h2 id="getting-started">Getting Started</h2>
+  <p>The math widgets library has a few dependencies:</p>
+  <ul>
+    <li>jQuery</li>
+    <li>underscore.js</li>
+    <li>ttm-coffeescript-utilities</li>
+    <li>ttm-coffeescript-math</li>
+  </ul>
+
+  <h3 id="getting-started--downloading-manually">Downloading Manually</h3>
+  <p>
+    The latest version of the math widget library can be downloaded
+    via the links below:
+    Each dependency mentioned above
+  </p>
+  <ul>
+    <li>Minified
+      <ul>
+        <li>
+          <a href="https://raw.github.com/thinkthroughmath/javascript-calculator/master/dist/javascript-calculator.min.js">
+            https://raw.github.com/thinkthroughmath/javascript-calculator/master/dist/javascript-calculator.min.js
+          </a>
+        </li>
+        <li>
+          <a href="https://raw.github.com/thinkthroughmath/javascript-calculator/master/dist/javascript-calculator.min.css">
+            https://raw.github.com/thinkthroughmath/javascript-calculator/master/dist/javascript-calculator.min.css
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li>Expanded
+      <ul>
+        <li>
+          <a href="https://raw.github.com/thinkthroughmath/javascript-calculator/master/dist/javascript-calculator.js">
+            https://raw.github.com/thinkthroughmath/javascript-calculator/master/dist/javascript-calculator.js
+          </a>
+        </li>
+        <li>
+          <a href="https://raw.github.com/thinkthroughmath/javascript-calculator/master/dist/javascript-calculator.css">
+            https://raw.github.com/thinkthroughmath/javascript-calculator/master/dist/javascript-calculator.css
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3 id="getting-started--bower-component">Bower Component</h3>
+  <p>
+    The javascript-calculator library is available as a
+    <a href="http://bower.io/">bower</a> component. Bower makes
+    wonderfully
+    easy to include external components in your project.
+  </p>
+
+
+
+  <h3 id="getting-started--using-coffeescript-and-sass">
+    Using Coffeescript and Sass
+  </h3>
+  <p>
+    The calculator is written in Coffeescript and styled with
+    Sass. If, for some reason, you wish to either customize the
+    calculator code or compile it in your own build pipeline, it
+    should be straightforward to compile both the Coffeescript and the
+    Sass using your preferred methods. The build task defined in
+    Gruntfile.js defines the calculator is build process.
+  </p>
+
+  <h3 id="getting-started--including-in-web-page">Including in your Website</h3>
+  <p>
+    Once downloaded, include the javascript-calculator dependencies and the
+    javascript-calculator library itself in your site. The javascript-calculator library
+    exports all of its functionality to a global thinkthroughmath
+    object.
+  </p>
+
+  <h2 id="calculator">Calculator Usage</h2>
+
+  <p>The calculator widget is meant to emulate a real-world
+  calculator, like so:</p>
+
+  <div class="location-to-render-calculator ttm-calculator-themed"></div>
+
+  <p>
+    To render the calculator within a dom element, use the build_widget
+    method:
+  </p>
+  <pre><code>
+    &lt;div class="location-to-render-calculator ttm-calculator-themed"&gt;&lt;/div&gt;
+
+    &lt;script&gt;
+      $(function(){
+        $(".location-to-render-calculator").each(function(){
+          thinkthroughmath.widgets.Calculator.build_widget($(this));
+        });
+      });
+    &lt;/script&gt;
+  </code></pre>
+  <p>
+    In the example above, the class "ttm-calculator-themed" is added
+    to a parent element of the rendered calculator. This enables the
+    specific css styling we use. Its likely you will want to use your
+    own styling, so if you do not add that class to a parent element,
+    the calculator will look "themeless" like below:
+  </p>
+
   <div class="location-to-render-calculator"></div>
 
-  <h2>Calculator</h2>
-  <div class="location-to-render-calculator ttm-calculator-themed"></div>
+
+  <h2>Contributing</h2>
+  File an issue so we can talk about the changes you want to make,
+  make changes, add tests, and submit a pull request. Easy!
 
   <script src="jquery/jquery.min.js"></script>
   <script src="underscore/underscore-min.js"></script>
-  <script src="math-widgets.min.js"></script>
-
+  <script src="ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.min.js"></script>
+  <script src="ttm-coffeescript-math/dist/ttm-coffeescript-math.min.js"></script>
+  <script src="javascript-calculator.min.js"></script>
   <script>
     $(function(){
     var ttm = thinkthroughmath;
 
-    $(".location-to-render-calculator").each(function(i,element){
-      ttm.widgets.Calculator.build_widget($(element));
+    $(".location-to-render-calculator").each(function(){
+      ttm.widgets.Calculator.build_widget($(this));
     });
 
     });
-
   </script>
 
 </body>
