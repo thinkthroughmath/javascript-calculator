@@ -69,14 +69,6 @@ class ButtonBuilder
       class: 'math-button operation'
     }, opts)
 
-
-  subtraction: (opts)->
-    @button({
-      value: '-'
-      label: '&ndash;'
-      class: 'math-button operation'
-    }, opts)
-
   equals: (opts)->
     @button({
       value: '='

@@ -1,10 +1,3 @@
-#= require lib
-#= require lib/math
-#= require widgets/math_buttons
-#= require widgets/ui_elements
-#= require lib/math/expression_to_string
-#= require lib/math/expression_components
-
 ttm = thinkthroughmath
 class_mixer = ttm.class_mixer
 expression_to_string = ttm.lib.math.ExpressionToString
