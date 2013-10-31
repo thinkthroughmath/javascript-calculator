@@ -458,14 +458,6 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       }, opts);
     };
 
-    ButtonBuilder.prototype.subtraction = function(opts) {
-      return this.button({
-        value: '-',
-        label: '&ndash;',
-        "class": 'math-button operation'
-      }, opts);
-    };
-
     ButtonBuilder.prototype.equals = function(opts) {
       return this.button({
         value: '=',

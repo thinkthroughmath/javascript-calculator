@@ -1,8 +1,8 @@
 {
-  "name": "math-widgets",
+  "name": "javascript-calculator",
   "version": "0.0.1",
   "description": "Think Through Math Mathematics Widgets",
-  "homepage": "https://github.com/thinkthroughmath/math-widgets",
+  "homepage": "https://github.com/thinkthroughmath/javascript-calculator",
   "dependencies": {
     "underscore": "~1.5.2",
     "jquery": "~1.8.3"
@@ -10,7 +10,7 @@
   "author": {
     "name": "Think Through Math, Joel McCracken",
     "email": "mccracken.joel@gmail.com",
-    "url": "https://github.com/thinkthroughmath/math-widgets"
+    "url": "https://github.com/thinkthroughmath/javascript-calculator"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -49,6 +49,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/thinkthroughmath/math-widgets.git"
+    "url": "https://github.com/thinkthroughmath/javascript-calculator.git"
   }
 }

@@ -51,7 +51,7 @@ module.exports = function (grunt) {
     sass: {
       dist: {
         files: {
-          '<%= yeoman.dist %>/math-widgets.css': 'src/stylesheets/browser.scss'
+          '<%= yeoman.dist %>/<%= pkg.name %>.css': 'src/stylesheets/browser.scss'
         }
       }
     },
@@ -148,6 +148,7 @@ module.exports = function (grunt) {
         options: {
           open: true,
           base: [
+            '<%= yeoman.site %>',
             '<%= yeoman.dist %>'
           ]
         }
