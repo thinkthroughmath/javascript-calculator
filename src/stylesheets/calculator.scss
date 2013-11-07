@@ -18,7 +18,7 @@ $background_color: #444;
 
 $scalar: 1.0;
 
-div.ttm-calculator { // was calculator-wrapper
+div.javascript-calculator { // was calculator-wrapper
     font-family: arial;
     padding: 0px;
     width: 239px;
@@ -87,10 +87,10 @@ div.ttm-calculator { // was calculator-wrapper
 }
 
 
-.ttm-calculator-themed {
+.javascript-calculator-themed {
     @include math-button-shadow;
 
-    .ttm-calculator {
+    .javascript-calculator {
         background-color: $background_color;
     }
 

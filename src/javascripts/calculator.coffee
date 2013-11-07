@@ -8,7 +8,7 @@ math_buttons_lib = ttm.widgets.ButtonBuilder
 components = ttm.lib.math.ExpressionComponentSource.build()
 
 
-calculator_wrapper_class = 'ttm-calculator'
+calculator_wrapper_class = 'javascript-calculator'
 
 
 open_widget_dialog = (element)->
