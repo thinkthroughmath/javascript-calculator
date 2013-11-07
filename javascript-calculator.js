@@ -34,7 +34,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
   components = ttm.lib.math.ExpressionComponentSource.build();
 
-  calculator_wrapper_class = 'ttm-calculator';
+  calculator_wrapper_class = 'javascript-calculator';
 
   open_widget_dialog = function(element) {
     if (element.empty()) {
