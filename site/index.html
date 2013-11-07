@@ -35,7 +35,7 @@
             Installing as a Bower Component
         </a></li>
         <li><a href="#getting-started--using-coffeescript-and-sass">
-            Using Coffeescript and Sass
+            Using CoffeeScript and Sass
         </a></li>
         <li><a href="#getting-started--including-in-web-page">
             Including in your Website
@@ -47,19 +47,21 @@
 
 
   <h2 id="getting-started">Getting Started</h2>
-  <p>The math widgets library has a few dependencies:</p>
+  <p>The math widget library has a few dependencies:</p>
   <ul>
-    <li>jQuery</li>
-    <li>underscore.js</li>
-    <li>ttm-coffeescript-utilities</li>
-    <li>ttm-coffeescript-math</li>
+    <li><a href="http://jquery.com/">jQuery</a></li>
+    <li><a href="http://underscorejs.org/">Underscore.js</a></li>
+    <li><a href="https://github.com/thinkthroughmath/ttm-coffeescript-utilities">ttm-coffeescript-utilities</a></li>
+    <li><a href="https://github.com/thinkthroughmath/ttm-coffeescript-math">ttm-coffeescript-math</a></li>
   </ul>
 
   <h3 id="getting-started--downloading-manually">Downloading Manually</h3>
   <p>
+    Acquire each dependency mentioned above.
+  </p>
+  <p>
     The latest version of the math widget library can be downloaded
     via the links below:
-    Each dependency mentioned above
   </p>
   <ul>
     <li>Minified
@@ -95,7 +97,7 @@
   <h3 id="getting-started--bower-component">Bower Component</h3>
   <p>
     The javascript-calculator library is available as a
-    <a href="http://bower.io/">bower</a> component. Bower makes
+    <a href="http://bower.io/">Bower</a> component. Bower makes
     wonderfully
     easy to include external components in your project.
   </p>
@@ -103,15 +105,15 @@
 
 
   <h3 id="getting-started--using-coffeescript-and-sass">
-    Using Coffeescript and Sass
+    Using CoffeeScript and Sass
   </h3>
   <p>
-    The calculator is written in Coffeescript and styled with
+    The calculator is written in CoffeeScript and styled with
     Sass. If, for some reason, you wish to either customize the
     calculator code or compile it in your own build pipeline, it
-    should be straightforward to compile both the Coffeescript and the
+    should be straightforward to compile both the CoffeeScript and the
     Sass using your preferred methods. The build task defined in
-    Gruntfile.js defines the calculator is build process.
+    Gruntfile.js defines the calculator's build process.
   </p>
 
   <h3 id="getting-started--including-in-web-page">Including in your Website</h3>
@@ -130,7 +132,7 @@
   <div class="location-to-render-calculator javascript-calculator-themed"></div>
 
   <p>
-    To render the calculator within a dom element, use the build_widget
+    To render the calculator within a DOM element, use the build_widget
     method:
   </p>
   <pre><code>
@@ -147,16 +149,15 @@
   <p>
     In the example above, the class "javascript-calculator-themed" is added
     to a parent element of the rendered calculator. This enables the
-    specific css styling we use. Its likely you will want to use your
+    specific CSS styling we use. It's likely you will want to use your
     own styling, so if you do not add that class to a parent element,
     the calculator will look "themeless" like below:
   </p>
 
   <div class="location-to-render-calculator"></div>
 
-
   If the default button ordering doesn't work for you, you can
-  specifiy the ordering like so:
+  specify the ordering like so:
   <pre><code>
     &lt;div class="location-to-render-calculator javascript-calculator-themed"&gt;&lt;/div&gt;
 
@@ -170,7 +171,7 @@
   <div class="location-to-render-calculator-with-fewer-buttons"></div>
 
   The default rendering includes all available options, and is
-  quivalent to the Javascript array:
+  equivalent to the JavaScript array:
 
   <pre><code>
     defaultButtons = [
@@ -183,7 +184,7 @@
       ]
   </code></pre>
 
-  These may be reordered or removed.
+  All of these buttons may be reordered or removed.
 
   <h2>Contributing</h2>
   File an issue so we can talk about the changes you want to make,
