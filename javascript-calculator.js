@@ -57,17 +57,21 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
   Calculator = (function() {
     function Calculator() {}
 
-    Calculator.build_widget = function(element) {
+    Calculator.build_widget = function(element, buttonsToRender) {
       var math;
+      if (buttonsToRender == null) {
+        buttonsToRender = null;
+      }
       math = ttm.lib.math.math_lib.build();
-      return Calculator.build(element, math, ttm.logger);
+      return Calculator.build(element, math, ttm.logger, buttonsToRender);
     };
 
-    Calculator.prototype.initialize = function(element, math, logger) {
+    Calculator.prototype.initialize = function(element, math, logger, buttonsToRender) {
       this.element = element;
       this.math = math;
       this.logger = logger;
-      this.view = CalculatorView.build(this, this.element, this.math);
+      this.buttonsToRender = buttonsToRender;
+      this.view = CalculatorView.build(this, this.element, this.math, this.buttonsToRender);
       this.expression_position = historic_value.build();
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_reset());
     };
@@ -188,34 +192,16 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
   ButtonLayout = (function() {
     function ButtonLayout() {}
 
-    ButtonLayout.prototype.initialize = (function(components) {
+    ButtonLayout.prototype.initialize = (function(components, buttonsToRender) {
       this.components = components;
+      this.buttonsToRender = buttonsToRender != null ? buttonsToRender : false;
     });
 
     ButtonLayout.prototype.render = function(element) {
+      var defaultButtons;
       this.element = element;
-      this.render_components(["square", "square_root", "exponent", "clear"]);
-      this.render_components(["pi", "lparen", "rparen", "division"]);
-      this.render_numbers([7, 8, 9]);
-      this.render_component("multiplication");
-      this.render_numbers([4, 5, 6]);
-      this.render_component("subtraction");
-      this.render_numbers([1, 2, 3]);
-      this.render_component("addition");
-      this.render_numbers([0]);
-      return this.render_components(["decimal", "negative", "equals"]);
-    };
-
-    ButtonLayout.prototype.render_numbers = function(nums) {
-      var num, _i, _len, _results;
-      _results = [];
-      for (_i = 0, _len = nums.length; _i < _len; _i++) {
-        num = nums[_i];
-        _results.push(this.components.numbers[num].render({
-          element: this.element
-        }));
-      }
-      return _results;
+      defaultButtons = ["square", "square_root", "exponent", "clear", "pi", "lparen", "rparen", "division", '7', '8', '9', "multiplication", '4', '5', '6', "subtraction", '1', '2', '3', "addition", '0', "decimal", "negative", "equals"];
+      return this.renderComponents(this.buttonsToRender || defaultButtons);
     };
 
     ButtonLayout.prototype.render_component = function(comp) {
@@ -224,7 +210,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       });
     };
 
-    ButtonLayout.prototype.render_components = function(components) {
+    ButtonLayout.prototype.renderComponents = function(components) {
       var comp, _i, _len, _results;
       _results = [];
       for (_i = 0, _len = components.length; _i < _len; _i++) {
@@ -243,22 +229,26 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
   CalculatorView = (function() {
     function CalculatorView() {}
 
-    CalculatorView.prototype.initialize = function(calc, element, math) {
-      var buttons, math_button_builder,
+    CalculatorView.prototype.initialize = function(calc, element, math, buttonsToRender) {
+      var buttons, math_button_builder, num, numbers, _i,
         _this = this;
       this.calc = calc;
       this.element = element;
       this.math = math;
+      this.buttonsToRender = buttonsToRender;
       math_button_builder = math_buttons_lib.build({
         element: this.element,
         ui_elements: ui_elements
       });
       buttons = {};
-      buttons.numbers = math_button_builder.base10Digits({
+      numbers = math_button_builder.base10Digits({
         click: function(val) {
           return _this.calc.numberClick(val);
         }
       });
+      for (num = _i = 0; _i <= 9; num = ++_i) {
+        buttons["" + num] = numbers[num];
+      }
       buttons.negative = math_button_builder.negative({
         click: function() {
           return _this.calc.negativeClick();
@@ -329,7 +319,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           return _this.calc.piClick();
         }
       });
-      this.layout = ButtonLayout.build(buttons);
+      this.layout = ButtonLayout.build(buttons, this.buttonsToRender);
       return this.render();
     };
 
