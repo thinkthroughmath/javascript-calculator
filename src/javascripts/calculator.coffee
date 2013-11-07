@@ -19,15 +19,14 @@ open_widget_dialog = (element)->
   element.dialog({ position: { my: 'right center', at: 'right center', of: window}})
 
 class Calculator
-  @build_widget: (element)->
+  @build_widget: (element, buttonsToRender=null)->
     math = ttm.lib.math.math_lib.build()
-    Calculator.build(element, math, ttm.logger)
+    Calculator.build(element, math, ttm.logger, buttonsToRender)
 
-  initialize: (@element, @math, @logger)->
-    @view = CalculatorView.build(@, @element, @math)
+  initialize: (@element, @math, @logger, @buttonsToRender)->
+    @view = CalculatorView.build(@, @element, @math, @buttonsToRender)
     @expression_position = historic_value.build()
     @updateCurrentExpressionWithCommand @math.commands.build_reset()
-
 
   displayValue: ->
     exp_pos = @expression_position.current()
@@ -115,32 +114,22 @@ class Calculator
 class_mixer(Calculator)
 
 class ButtonLayout
-  initialize: ((@components)->)
+  initialize: ((@components, @buttonsToRender=false)->)
   render: (@element)->
-    @render_components ["square", "square_root", "exponent", "clear"]
-
-    @render_components ["pi", "lparen", "rparen", "division"]
-
-    @render_numbers [7..9]
-    @render_component "multiplication"
-
-    @render_numbers [4..6]
-    @render_component "subtraction"
-
-    @render_numbers [1..3]
-    @render_component "addition"
-
-    @render_numbers [0]
-    @render_components ["decimal", "negative", "equals"]
-
-  render_numbers: (nums)->
-    for num in nums
-      @components.numbers[num].render(element: @element)
+    defaultButtons = [
+        "square", "square_root", "exponent", "clear",
+        "pi", "lparen", "rparen", "division",
+        '7', '8', '9', "multiplication",
+        '4', '5', '6', "subtraction",
+        '1', '2', '3', "addition",
+        '0', "decimal", "negative", "equals"
+      ]
+    @renderComponents(@buttonsToRender || defaultButtons)
 
   render_component: (comp)->
     @components[comp].render element: @element
 
-  render_components: (components)->
+  renderComponents: (components)->
     for comp in components
       @render_component comp
 
@@ -148,7 +137,7 @@ class_mixer(ButtonLayout)
 
 
 class CalculatorView
-  initialize: (@calc, @element, @math)->
+  initialize: (@calc, @element, @math, @buttonsToRender)->
 
     math_button_builder = math_buttons_lib.build
       element: @element
@@ -156,7 +145,12 @@ class CalculatorView
 
     # for button layout
     buttons = {}
-    buttons.numbers = math_button_builder.base10Digits click: (val)=>@calc.numberClick(val)
+
+
+    numbers = math_button_builder.base10Digits click: (val)=>@calc.numberClick(val)
+    for num in [0..9]
+      buttons["#{num}"] = numbers[num]
+
     buttons.negative = math_button_builder.negative click: => @calc.negativeClick()
     buttons.decimal = math_button_builder.decimal click: => @calc.decimalClick()
     buttons.addition = math_button_builder.addition click: => @calc.additionClick()
@@ -174,7 +168,7 @@ class CalculatorView
     buttons.rparen = math_button_builder.rparen click: => @calc.rparenClick()
     buttons.pi = math_button_builder.pi click: => @calc.piClick()
 
-    @layout = ButtonLayout.build buttons
+    @layout = ButtonLayout.build(buttons, @buttonsToRender)
 
     @render()
 

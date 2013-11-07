@@ -8,7 +8,7 @@ calculator = ttm.widgets.Calculator
 describe "Calculator Widget features", ->
   beforeEach ->
     math = ttm.lib.math.math_lib.build()
-    @calc = calculator.build_widget(f(), math.expression)
+    @calc = calculator.build_widget(f())
     @handle = JSCalculatorHandle.build(f(), calculator)
 
   it "displays what is entered", ->
@@ -27,6 +27,11 @@ describe "Calculator Widget features", ->
      @handle.press_buttons("2 ^ 5 + 1 ) 4")
      expect(@handle.output_content()).toEqual(parseEntities "2 &circ; ( 5 + 1 ) &times; 4")
 
+  it "supports button ordering and specification via initialization options", ->
+    f().html("")
+    @calc = calculator.build_widget(f(), ['0', 'clear'])
+    @handle = JSCalculatorHandle.build(f(), calculator)
+    expect(@handle.button('0').siblings().length).toEqual 2
 
   describe "multiple sequential operator button presses", ->
     it "automatically uses the last entered operator", ->
