@@ -28,7 +28,6 @@ module.exports = function (grunt) {
       bower: 'bower_components',
       src: 'src',
       test: 'spec',
-      out: '.tmp',
       dist: 'dist',
       site: 'site'
     },
@@ -38,14 +37,14 @@ module.exports = function (grunt) {
         expand: true,
         cwd: '<%= yeoman.src %>/javascripts/',
         src: ['**/*.coffee'],
-        dest: '<%= yeoman.out %>/javascripts/',
+        dest: '.tmp/javascripts/',
         ext: '.js'
       },
       test: {
         expand: true,
         cwd: 'spec',
         src: ['**/*.coffee'],
-        dest: '<%= yeoman.out %>/spec/',
+        dest: '.tmp/spec/',
         ext: '.js'
       }
     },
@@ -68,7 +67,7 @@ module.exports = function (grunt) {
       },
       dist: {
         src: [
-          '<%= yeoman.out %>/**/*.js'
+          '.tmp/**/*.js'
         ],
         dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
       }
@@ -80,7 +79,7 @@ module.exports = function (grunt) {
           expand: true,
           dot: true,
           cwd: '<%= yeoman.test %>',
-          dest: '<%= yeoman.out %>/spec/',
+          dest: '.tmp/spec/',
           src: [
             '**/*.js',
           ]
@@ -112,7 +111,7 @@ module.exports = function (grunt) {
 
     browserify: {
       dist: {
-        src: '<%= yeoman.out %>/javascripts/browser.js',
+        src: '.tmp/javascripts/browser.js',
         dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
       }
     },
@@ -125,7 +124,7 @@ module.exports = function (grunt) {
         files: [{
           dot: true,
           src: [
-            '<%= yeoman.out %>',
+            '.tmp',
             '<%= yeoman.dist %>'
           ]
         }]
@@ -138,10 +137,10 @@ module.exports = function (grunt) {
         '<%= yeoman.bower %>/underscore/underscore.js',
         '<%= yeoman.bower %>/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
         '<%= yeoman.bower %>/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
-        '<%= yeoman.out %>/spec/support/jasmine-jquery.js',
+        '.tmp/spec/support/jasmine-jquery.js',
         '<%= yeoman.dist %>/<%= pkg.name %>.js',
-        '<%= yeoman.out %>/spec/support/spec_helpers.js',
-        '<%= yeoman.out %>/spec/**/*.js'
+        '.tmp/spec/support/spec_helpers.js',
+        '.tmp/spec/**/*.js'
       ]
     },
 
