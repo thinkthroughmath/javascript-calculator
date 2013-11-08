@@ -22,7 +22,8 @@ module.exports = function (grunt) {
       '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
       '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
       ' Licensed MIT */\n',
-    // configurable paths
+
+    // Configurable paths
     yeoman: {
       bower: 'bower_components',
       src: 'src',
@@ -31,6 +32,7 @@ module.exports = function (grunt) {
       dist: 'dist',
       site: 'site'
     },
+
     coffee: {
       lib: {
         expand: true,
@@ -71,7 +73,6 @@ module.exports = function (grunt) {
         dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
       }
     },
-
 
     copy: {
       spec: {
@@ -115,6 +116,7 @@ module.exports = function (grunt) {
         dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
       }
     },
+
     clean: {
       options: {
         // "no-write": true
@@ -129,6 +131,7 @@ module.exports = function (grunt) {
         }]
       }
     },
+
     jasmine: {
       specs: [
         '<%= yeoman.bower %>/jquery/jquery.js',
@@ -141,6 +144,7 @@ module.exports = function (grunt) {
         '<%= yeoman.out %>/spec/**/*.js'
       ]
     },
+
     connect: {
       options: {
         port: 9000,
@@ -195,10 +199,12 @@ module.exports = function (grunt) {
     }
   });
 
+  // Tasks
+  grunt.registerTask('serve', ['build', 'connect:serve:keepalive']);
+
   grunt.registerTask('watch-serve', [
     'connect:serve', 'watch'
   ]);
-
 
   grunt.registerTask('build', [
     'clean',
@@ -212,16 +218,10 @@ module.exports = function (grunt) {
     'copy:site'
   ]);
 
-
-
   grunt.registerTask('test', [
     'build',
     'jasmine'
   ]);
 
-  grunt.registerTask('serve', ['build', 'connect:serve:keepalive']);
-
   grunt.registerTask('default', ['build']);
-
-
 };
