@@ -82,11 +82,20 @@ module.exports = function (grunt) {
     sass: {
       dist: {
         options: {
-          style: 'compressed'
+          style: 'expanded'
         },
-        files: {
-          '<%= yeoman.dist %>/<%= pkg.name %>.css': 'src/stylesheets/browser.scss'
-        }
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.src %>/stylesheets/',
+          src: [
+            '**/*.scss',
+            // contrib-sass doesn't currently ignore partials so we have to
+            // manually. https://github.com/gruntjs/grunt-contrib-sass/issues/72
+            '!**/_*.scss'
+            ],
+          dest: '.tmp/stylesheets/',
+          ext: '.css'
+        }]
       }
     },
 
@@ -96,10 +105,16 @@ module.exports = function (grunt) {
         stripBanners: true,
       },
       dist: {
-        src: [
-          '.tmp/**/*.js'
-        ],
-        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
+        files: {
+          '<%= yeoman.dist %>/<%= pkg.name %>.js': ['.tmp/**/*.js'],
+          '<%= yeoman.dist %>/<%= pkg.name %>.css': ['.tmp/**/*.css']
+        }
+      },
+      serve: {
+        files: {
+          '.tmp/<%= pkg.name %>.js': ['.tmp/**/*.js'],
+          '.tmp/<%= pkg.name %>.css': ['.tmp/**/*.css']
+        }
       }
     },
 
