@@ -33,7 +33,7 @@ module.exports = function (grunt) {
     },
 
     coffee: {
-      lib: {
+      dist: {
         expand: true,
         cwd: '<%= yeoman.src %>/javascripts/',
         src: ['**/*.coffee'],
@@ -74,7 +74,7 @@ module.exports = function (grunt) {
     },
 
     copy: {
-      spec: {
+      test: {
         files: [{
           expand: true,
           dot: true,
@@ -120,14 +120,11 @@ module.exports = function (grunt) {
       options: {
         // "no-write": true
       },
-      all: {
-        files: [{
-          dot: true,
-          src: [
-            '.tmp',
-            '<%= yeoman.dist %>'
-          ]
-        }]
+      server: {
+        src: '.tmp'
+      },
+      dist: {
+        src: '<%= yeoman.dist %>'
       }
     },
 
@@ -183,7 +180,7 @@ module.exports = function (grunt) {
     },
 
     cssmin: {
-      combine: {
+      dist: {
         files: {
           '<%= yeoman.dist %>/<%= pkg.name %>.min.css': '<%= yeoman.dist %>/<%= pkg.name %>.css'
         }
