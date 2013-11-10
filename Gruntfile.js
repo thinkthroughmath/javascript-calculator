@@ -32,6 +32,36 @@ module.exports = function (grunt) {
       site: 'site'
     },
 
+    watch: {
+      coffee: {
+        files: [
+          '<%= yeoman.src %>/**/*.{coffee,scss}',
+          '<%= yeoman.test %>/**/*.coffee',
+        ],
+        tasks: ['build'],
+        options: {
+          interrupt: false
+        }
+      }
+    },
+
+    connect: {
+      options: {
+        port: 9000,
+        // change this to '0.0.0.0' to access the server from outside
+        hostname: 'localhost'
+      },
+      serve: {
+        options: {
+          open: true,
+          base: [
+            '<%= yeoman.site %>',
+            '<%= yeoman.dist %>'
+          ]
+        }
+      }
+    },
+
     coffee: {
       dist: {
         expand: true,
@@ -139,36 +169,6 @@ module.exports = function (grunt) {
         '.tmp/spec/support/spec_helpers.js',
         '.tmp/spec/**/*.js'
       ]
-    },
-
-    connect: {
-      options: {
-        port: 9000,
-        // change this to '0.0.0.0' to access the server from outside
-        hostname: 'localhost'
-      },
-      serve: {
-        options: {
-          open: true,
-          base: [
-            '<%= yeoman.site %>',
-            '<%= yeoman.dist %>'
-          ]
-        }
-      }
-    },
-
-    watch: {
-      coffee: {
-        files: [
-          '<%= yeoman.src %>/**/*.{coffee,scss}',
-          '<%= yeoman.test %>/**/*.coffee',
-        ],
-        tasks: ['build'],
-        options: {
-          interrupt: false
-        }
-      }
     },
 
     uglify: {
