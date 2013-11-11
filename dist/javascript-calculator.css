@@ -1,7 +1,16 @@
+@font-face {
+  font-family: 'javascript-calculator-icons';
+  src: url("/fonts/javascript-calculator-icons.eot");
+  src: url("/fonts/javascript-calculator-icons.eot?#iefix") format("embedded-opentype"), url("/fonts/javascript-calculator-icons.ttf") format("truetype"), url("/fonts/javascript-calculator-icons.woff") format("woff"), url("/fonts/javascript-calculator-icons.svg#javascript-calculator-icons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .math-button {
   border: 1px solid;
   text-align: middle;
   vertical-align: top;
+  font-family: javascript-calculator-icons, sans-serif;
 }
 
 button.math-button.clear {
@@ -15,22 +24,6 @@ button.math-button:focus {
 button.math-button .math-variable {
   font-family: "Times New Roman", serif;
   font-style: italic;
-}
-
-button.math-button.exponent {
-  font-family: "Times New Roman", serif;
-  font-style: italic;
-}
-button.math-button.exponent sup {
-  font-family: arial;
-  font-style: normal;
-  top: -10px;
-  left: 2px;
-}
-
-button.math-button.pi {
-  font-style: italic;
-  font-family: "Times New Roman", serif;
 }
 
 .ie div.calculator figure.calculator-display {
@@ -65,66 +58,6 @@ div.javascript-calculator button.math-button {
 }
 div.javascript-calculator button.math-button.clear {
   font-size: 8px;
-}
-div.javascript-calculator button.math-button.exponent {
-  font-size: 30px;
-}
-div.javascript-calculator button.math-button.exponent sup {
-  font-size: 15px;
-  margin-left: 1px;
-}
-div.javascript-calculator button.math-button.pi {
-  font-size: 35px;
-  padding: 0;
-}
-div.javascript-calculator button.math-button.root {
-  line-height: 30px;
-  font-style: normal;
-  position: relative;
-}
-div.javascript-calculator button.math-button.root > * {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-div.javascript-calculator button.math-button.root div.degree {
-  font-size: 15px;
-  left: -11px;
-  top: -3px;
-}
-.ie8 div.javascript-calculator button.math-button.root div.degree {
-  top: -20px;
-}
-div.javascript-calculator button.math-button.root div.radix {
-  text-shadow: none;
-  z-index: 5;
-  left: -9px;
-  top: 10px;
-}
-.ie8 div.javascript-calculator button.math-button.root div.radix {
-  top: -7px;
-}
-div.javascript-calculator button.math-button.root div.vinculum {
-  text-shadow: none;
-  z-index: 4;
-  left: 10px;
-  top: -5px;
-}
-.ie8 div.javascript-calculator button.math-button.root div.vinculum {
-  top: -22px;
-}
-div.javascript-calculator button.math-button.root div.radicand {
-  left: 6px;
-  top: 6px;
-}
-.ie8 div.javascript-calculator button.math-button.root div.radicand {
-  top: -11px;
-}
-div.javascript-calculator button.math-button.negative-slash-positive {
-  width: 50px;
-}
-.ie div.javascript-calculator button.math-button.negative-slash-positive {
-  font-size: 15px;
 }
 div.javascript-calculator button.math-button.fraction {
   position: relative;

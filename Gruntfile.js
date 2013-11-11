@@ -63,6 +63,7 @@ module.exports = function (grunt) {
           base: [
             '.tmp',
             '<%= yeoman.bower %>',
+            '<%= yeoman.src %>',
             '<%= yeoman.site_src %>',
           ]
         }
@@ -134,6 +135,15 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.test %>',
           dest: '.tmp/spec/',
           src: ['**/*.js']
+        }]
+      },
+      dist: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.src %>',
+          dest: '<%= yeoman.dist %>',
+          src: ['fonts/**/*']
         }]
       },
       site: {
@@ -238,7 +248,8 @@ module.exports = function (grunt) {
     'sass:dist',
     'browserify:dist',
     'uglify',
-    'cssmin'
+    'cssmin',
+    'copy:dist'
   ]);
 
   grunt.registerTask('test', [

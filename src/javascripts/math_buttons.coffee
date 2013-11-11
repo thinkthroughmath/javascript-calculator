@@ -7,6 +7,7 @@ class ButtonBuilder
   initialize: (@opts={})->
     @ui_elements = @opts.ui_elements
 
+  # Number specifiers
   base10Digits: (opts={})->
     for num in [0..9]
       do (num)=>
@@ -15,25 +16,11 @@ class ButtonBuilder
           class: 'math-button number-specifier number'
         }, opts)
 
-  caret: (opts)->
-    @button({
-      value: '^'
-      label: '&circ;'
-      class: 'math-button other caret'
-    }, opts)
-
   negative: (opts)->
     @button({
       value: 'negative'
-      label: '(&ndash;)'
+      label: '&#x2013;'
       class: 'math-button number-specifier negative'
-    }, opts)
-
-  negative_slash_positive: (opts)->
-    @button({
-      value: '-/+'
-      label: "&ndash;/+"
-      class: 'math-button number-specifier negative-slash-positive'
     }, opts)
 
   decimal: (opts)->
@@ -42,30 +29,31 @@ class ButtonBuilder
       class: 'math-button number-specifier decimal'
     }, opts)
 
+  # Operations
   addition: (opts)->
     @button({
       value: '+'
       class: 'math-button operation'
     }, opts)
 
+  subtraction: (opts)->
+    @button({
+      value: '-'
+      label: '&#x2212;'
+      class: 'math-button operation'
+    }, opts)
+
   multiplication: (opts)->
     @button({
       value: '*'
-      label: '&times;'
+      label: '&#xd7;'
       class: 'math-button operation'
     }, opts)
 
   division: (opts)->
     @button({
       value: '/'
-      label: '&divide;'
-      class: 'math-button operation'
-    }, opts)
-
-  subtraction: (opts)->
-    @button({
-      value: '-'
-      label: '&ndash;'
+      label: '&#xf7;'
       class: 'math-button operation'
     }, opts)
 
@@ -75,23 +63,69 @@ class ButtonBuilder
       class: 'math-button operation equal'
     }, opts)
 
+  # Other functions
+  lparen: (opts)->
+    @button({
+      value: '('
+      class: 'math-button other parentheses'
+    }, opts)
+
+  rparen: (opts)->
+    @button({
+      value: ')'
+      class: 'math-button other parentheses'
+    }, opts)
+
+  pi: (opts)->
+    @button({
+      value: 'pi'
+      label: '&#x3c0;'
+      class: 'math-button other pi'
+    }, opts)
+
+  root: (opts)->
+    # TODO: This probably has some important functionality in the
+    # equation builder. @Joel, let me know what's up.
+    # degree = if opts.degree
+    #   "<div class='degree'>#{opts.degree}</div>"
+    # else
+    #   ""
+    # radicand = if opts.radicand
+    #   "<div class='radicand'>#{opts.radicand}</div>"
+    # else
+    #   "<div class='radicand'>#{math_var('x')}</div>"
+
+    @button({
+      value: 'root'
+      label: '&#x221a;'
+      # label: """
+      #   #{degree}
+      #   #{radicand}
+      #   <div class='radix'>&radic;</div>
+      #   <div class='vinculum'>&#8212;</div>
+      # """
+      class: 'math-button other root'
+    }, opts)
+
   clear: (opts)->
     @button({
       value: 'clear'
       class: 'math-button other clear'
     }, opts)
 
-  del: (opts)->
-    @button({
-      value: 'del'
-      class: 'math-button other del'
-    }, opts)
-
   square: (opts)->
     @button({
       value: 'square'
-      label: "#{math_var('x')}<sup>2</sup>"
+      label: '&#xb2;'
       class: 'math-button other square'
+    }, opts)
+
+  # Buttons for the Equation Builder component
+  negative_slash_positive: (opts)->
+    @button({
+      value: '-/+'
+      label: '&#xb1;'
+      class: 'math-button number-specifier negative-slash-positive'
     }, opts)
 
   exponent: (opts)->
@@ -103,27 +137,11 @@ class ButtonBuilder
       class: 'math-button other exponent'
     }, opts)
 
-  root: (opts)->
-    degree = if opts.degree
-      "<div class='degree'>#{opts.degree}</div>"
-    else
-      ""
-    radicand = if opts.radicand
-      "<div class='radicand'>#{opts.radicand}</div>"
-    else
-      "<div class='radicand'>#{math_var('x')}</div>"
-
+  del: (opts)->
     @button({
-      value: 'root'
-      label: """
-        #{degree}
-        #{radicand}
-        <div class='radix'>&radic;</div>
-        <div class='vinculum'>&#8212;</div>
-      """
-      class: 'math-button other root'
+      value: 'del'
+      class: 'math-button other del'
     }, opts)
-
 
   fraction: (opts)->
     @button({
@@ -136,23 +154,10 @@ class ButtonBuilder
       class: 'math-button other fraction'
     }, opts)
 
-  lparen: (opts)->
+  caret: (opts)->
     @button({
-      value: '('
-      class: 'math-button parentheses other'
-    }, opts)
-
-  rparen: (opts)->
-    @button({
-      value: ')'
-      class: 'math-button parentheses other'
-    }, opts)
-
-  pi: (opts)->
-    @button({
-      value: 'pi'
-      label: '&pi;'
-      class: 'math-button pi other'
+      value: '^'
+      class: 'math-button other caret'
     }, opts)
 
   variables: (opts)->
@@ -161,7 +166,7 @@ class ButtonBuilder
         do (v)=>
           @button({
             value: "#{v.name}"
-            class: 'math-button variable other'
+            class: 'math-button other variable'
             variable: v
           }, opts)
     variables
