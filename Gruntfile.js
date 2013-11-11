@@ -243,5 +243,11 @@ module.exports = function (grunt) {
     'jasmine'
   ]);
 
+  grunt.registerTask('pages', [
+    'build',
+    'copy:site',
+    'gh-pages'
+  ]);
+
   grunt.registerTask('default', ['build']);
 };
