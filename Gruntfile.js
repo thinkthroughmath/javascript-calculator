@@ -132,9 +132,7 @@ module.exports = function (grunt) {
           dot: true,
           cwd: '<%= yeoman.test %>',
           dest: '.tmp/spec/',
-          src: [
-            '**/*.js',
-          ]
+          src: ['**/*.js']
         }]
       },
       site: {
@@ -179,19 +177,6 @@ module.exports = function (grunt) {
       }
     },
 
-    jasmine: {
-      specs: [
-        '<%= yeoman.bower %>/jquery/jquery.js',
-        '<%= yeoman.bower %>/underscore/underscore.js',
-        '<%= yeoman.bower %>/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
-        '<%= yeoman.bower %>/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
-        '.tmp/spec/support/jasmine-jquery.js',
-        '<%= yeoman.dist %>/<%= pkg.name %>.js',
-        '.tmp/spec/support/spec_helpers.js',
-        '.tmp/spec/**/*.js'
-      ]
-    },
-
     uglify: {
       dist: {
         files: {
@@ -206,6 +191,17 @@ module.exports = function (grunt) {
           '<%= yeoman.dist %>/<%= pkg.name %>.min.css': '<%= yeoman.dist %>/<%= pkg.name %>.css'
         }
       }
+    },
+
+    jasmine: {
+      specs: [
+        '<%= yeoman.bower %>/jquery/jquery.js',
+        '<%= yeoman.bower %>/underscore/underscore.js',
+        '<%= yeoman.bower %>/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
+        '<%= yeoman.bower %>/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
+        '<%= yeoman.dist %>/<%= pkg.name %>.js',
+        '.tmp/spec/**/*.js'
+      ]
     },
 
     'gh-pages': {
@@ -241,11 +237,11 @@ module.exports = function (grunt) {
     'cssmin'
   ]);
 
-  // WIP: Test is broken until next commit
-  // grunt.registerTask('test', [
-  //   'build',
-  //   'jasmine'
-  // ]);
+  grunt.registerTask('test', [
+    'coffee',
+    'copy:test',
+    'jasmine'
+  ]);
 
   grunt.registerTask('default', ['build']);
 };
