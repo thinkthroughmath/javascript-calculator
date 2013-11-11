@@ -66,9 +66,6 @@ module.exports = function (grunt) {
           ]
         }
       },
-      // @Joel, Would you rather have this show the compiled component files in
-      // dist or the site_dist files for the github pages branch? If everything
-      // works they should be identical.
       dist: {
         options: {
           open: true,
