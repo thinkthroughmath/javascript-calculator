@@ -5,7 +5,7 @@
   <meta charset="utf-8">
 
   <title>Think Through Math Calculator</title>
-  <link href="javascript-calculator.min.css"
+  <link href="javascript-calculator.css"
         media="all"
         rel="stylesheet"
         type="text/css">
@@ -35,7 +35,7 @@
             Installing as a Bower Component
         </a></li>
         <li><a href="#getting-started--using-coffeescript-and-sass">
-            Using CoffeeScript and Sass
+            Using Coffeescript and Sass
         </a></li>
         <li><a href="#getting-started--including-in-web-page">
             Including in your Website
@@ -47,21 +47,19 @@
 
 
   <h2 id="getting-started">Getting Started</h2>
-  <p>The math widget library has a few dependencies:</p>
+  <p>The math widgets library has a few dependencies:</p>
   <ul>
-    <li><a href="http://jquery.com/">jQuery</a></li>
-    <li><a href="http://underscorejs.org/">Underscore.js</a></li>
-    <li><a href="https://github.com/thinkthroughmath/ttm-coffeescript-utilities">ttm-coffeescript-utilities</a></li>
-    <li><a href="https://github.com/thinkthroughmath/ttm-coffeescript-math">ttm-coffeescript-math</a></li>
+    <li>jQuery</li>
+    <li>underscore.js</li>
+    <li>ttm-coffeescript-utilities</li>
+    <li>ttm-coffeescript-math</li>
   </ul>
 
   <h3 id="getting-started--downloading-manually">Downloading Manually</h3>
   <p>
-    Acquire each dependency mentioned above.
-  </p>
-  <p>
     The latest version of the math widget library can be downloaded
     via the links below:
+    Each dependency mentioned above
   </p>
   <ul>
     <li>Minified
@@ -97,7 +95,7 @@
   <h3 id="getting-started--bower-component">Bower Component</h3>
   <p>
     The javascript-calculator library is available as a
-    <a href="http://bower.io/">Bower</a> component. Bower makes
+    <a href="http://bower.io/">bower</a> component. Bower makes
     wonderfully
     easy to include external components in your project.
   </p>
@@ -105,15 +103,15 @@
 
 
   <h3 id="getting-started--using-coffeescript-and-sass">
-    Using CoffeeScript and Sass
+    Using Coffeescript and Sass
   </h3>
   <p>
-    The calculator is written in CoffeeScript and styled with
+    The calculator is written in Coffeescript and styled with
     Sass. If, for some reason, you wish to either customize the
     calculator code or compile it in your own build pipeline, it
-    should be straightforward to compile both the CoffeeScript and the
+    should be straightforward to compile both the Coffeescript and the
     Sass using your preferred methods. The build task defined in
-    Gruntfile.js defines the calculator's build process.
+    Gruntfile.js defines the calculator is build process.
   </p>
 
   <h3 id="getting-started--including-in-web-page">Including in your Website</h3>
@@ -129,14 +127,14 @@
   <p>The calculator widget is meant to emulate a real-world
   calculator, like so:</p>
 
-  <div class="location-to-render-calculator javascript-calculator-themed"></div>
+  <div class="location-to-render-calculator ttm-calculator-themed"></div>
 
   <p>
-    To render the calculator within a DOM element, use the build_widget
+    To render the calculator within a dom element, use the build_widget
     method:
   </p>
   <pre><code>
-    &lt;div class="location-to-render-calculator javascript-calculator-themed"&gt;&lt;/div&gt;
+    &lt;div class="location-to-render-calculator ttm-calculator-themed"&gt;&lt;/div&gt;
 
     &lt;script&gt;
       $(function(){
@@ -147,44 +145,15 @@
     &lt;/script&gt;
   </code></pre>
   <p>
-    In the example above, the class "javascript-calculator-themed" is added
+    In the example above, the class "ttm-calculator-themed" is added
     to a parent element of the rendered calculator. This enables the
-    specific CSS styling we use. It's likely you will want to use your
+    specific css styling we use. Its likely you will want to use your
     own styling, so if you do not add that class to a parent element,
     the calculator will look "themeless" like below:
   </p>
 
   <div class="location-to-render-calculator"></div>
 
-  If the default button ordering doesn't work for you, you can
-  specify the ordering like so:
-  <pre><code>
-    &lt;div class="location-to-render-calculator javascript-calculator-themed"&gt;&lt;/div&gt;
-
-    &lt;script&gt;
-      $(".location-to-render-calculator-with-fewer-buttons").each(function(){
-        ttm.widgets.Calculator.build_widget($(this), ['0','1','2']);
-      });
-    &lt;/script&gt;
-  </code></pre>
-  The results look like this:
-  <div class="location-to-render-calculator-with-fewer-buttons"></div>
-
-  The default rendering includes all available options, and is
-  equivalent to the JavaScript array:
-
-  <pre><code>
-    defaultButtons = [
-        "square", "square_root", "exponent", "clear",
-        "pi", "lparen", "rparen", "division",
-        "7", "8", "9", "multiplication",
-        "4", "5", "6", "subtraction",
-        "1", "2", "3", "addition",
-        "0", "decimal", "negative", "equals"
-      ]
-  </code></pre>
-
-  All of these buttons may be reordered or removed.
 
   <h2>Contributing</h2>
   File an issue so we can talk about the changes you want to make,
@@ -194,7 +163,7 @@
   <script src="underscore/underscore-min.js"></script>
   <script src="ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.min.js"></script>
   <script src="ttm-coffeescript-math/dist/ttm-coffeescript-math.min.js"></script>
-  <script src="javascript-calculator.min.js"></script>
+  <script src="javascript-calculator.js"></script>
   <script>
     $(function(){
     var ttm = thinkthroughmath;
@@ -202,11 +171,6 @@
     $(".location-to-render-calculator").each(function(){
       ttm.widgets.Calculator.build_widget($(this));
     });
-
-    $(".location-to-render-calculator-with-fewer-buttons").each(function(){
-      ttm.widgets.Calculator.build_widget($(this), ['0','1','2']);
-    });
-
 
     });
   </script>
