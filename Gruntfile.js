@@ -75,6 +75,7 @@ module.exports = function (grunt) {
           open: true,
           base: [
             '<%= yeoman.dist %>',
+            '<%= yeoman.bower %>',
             '<%= yeoman.site_src %>',
           ]
         }
