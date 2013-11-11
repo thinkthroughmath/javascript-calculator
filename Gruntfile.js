@@ -25,8 +25,6 @@ module.exports = function (grunt) {
 
     // Configurable paths
     yeoman: {
-      // @Joel We probably won't be moving the bower dir around too much; maybe
-      // we should hardcode this like .tmp.
       bower: 'bower_components',
       src: 'src',
       test: 'spec',
@@ -62,7 +60,7 @@ module.exports = function (grunt) {
           open: true,
           base: [
             '.tmp',
-            '<%= yeoman.bower %>',
+            'bower_components',
             '<%= yeoman.src %>',
             '<%= yeoman.site_src %>',
           ]
@@ -76,7 +74,7 @@ module.exports = function (grunt) {
           open: true,
           base: [
             '<%= yeoman.dist %>',
-            '<%= yeoman.bower %>',
+            'bower_components',
             '<%= yeoman.site_src %>',
           ]
         }
@@ -158,7 +156,7 @@ module.exports = function (grunt) {
           {
             expand: true,
             dot: true,
-            cwd: '<%= yeoman.bower %>',
+            cwd: 'bower_components',
             dest: '<%= yeoman.site_dist %>',
             src: ['**/*']
           },
@@ -207,10 +205,10 @@ module.exports = function (grunt) {
 
     jasmine: {
       specs: [
-        '<%= yeoman.bower %>/jquery/jquery.js',
-        '<%= yeoman.bower %>/underscore/underscore.js',
-        '<%= yeoman.bower %>/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
-        '<%= yeoman.bower %>/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
+        'bower_components/jquery/jquery.js',
+        'bower_components/underscore/underscore.js',
+        'bower_components/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
+        'bower_components/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
         '<%= yeoman.dist %>/<%= pkg.name %>.js',
         '.tmp/spec/support/jasmine-jquery.js',
         '.tmp/spec/support/spec_helpers.js',
