@@ -1,66 +1,48 @@
 .math-button {
   border: 1px solid;
   text-align: middle;
-  vertical-align: top; }
+  vertical-align: top;
+}
 
 button.math-button.clear {
-  text-transform: uppercase; }
+  text-transform: uppercase;
+}
 
 button.math-button:focus {
-  outline: none; }
+  outline: none;
+}
 
 button.math-button .math-variable {
   font-family: "Times New Roman", serif;
-  font-style: italic; }
+  font-style: italic;
+}
 
 button.math-button.exponent {
   font-family: "Times New Roman", serif;
-  font-style: italic; }
-  button.math-button.exponent sup {
-    font-family: arial;
-    font-style: normal;
-    top: -10px;
-    left: 2px; }
+  font-style: italic;
+}
+button.math-button.exponent sup {
+  font-family: arial;
+  font-style: normal;
+  top: -10px;
+  left: 2px;
+}
 
 button.math-button.pi {
   font-style: italic;
-  font-family: "Times New Roman", serif; }
-
-.math-button {
-  border: 1px solid;
-  text-align: middle;
-  vertical-align: top; }
-
-button.math-button.clear {
-  text-transform: uppercase; }
-
-button.math-button:focus {
-  outline: none; }
-
-button.math-button .math-variable {
   font-family: "Times New Roman", serif;
-  font-style: italic; }
-
-button.math-button.exponent {
-  font-family: "Times New Roman", serif;
-  font-style: italic; }
-  button.math-button.exponent sup {
-    font-family: arial;
-    font-style: normal;
-    top: -10px;
-    left: 2px; }
-
-button.math-button.pi {
-  font-style: italic;
-  font-family: "Times New Roman", serif; }
+}
 
 .ie div.calculator figure.calculator-display {
-  height: 45px; }
+  height: 45px;
+}
 
 .ie div.calculator {
-  height: 354px; }
-  .ie div.calculator button {
-    filter: none; }
+  height: 354px;
+}
+.ie div.calculator button {
+  filter: none;
+}
 
 div.javascript-calculator {
   font-family: arial;
@@ -73,135 +55,172 @@ div.javascript-calculator {
   /* // overrriding things from jquery ui */
   /* & > * { */
   /*     border: 0px !important; */
-  /* } */ }
-  div.javascript-calculator button.math-button {
-    font-size: 25px;
-    width: 50px;
-    height: 40px;
-    margin: 3px; }
-  div.javascript-calculator button.math-button.clear {
-    font-size: 8px; }
-  div.javascript-calculator button.math-button.exponent {
-    font-size: 30px; }
-    div.javascript-calculator button.math-button.exponent sup {
-      font-size: 15px;
-      margin-left: 1px; }
-  div.javascript-calculator button.math-button.pi {
-    font-size: 35px;
-    padding: 0; }
-  div.javascript-calculator button.math-button.root {
-    line-height: 30px;
-    font-style: normal;
-    position: relative; }
-    div.javascript-calculator button.math-button.root > * {
-      position: absolute;
-      width: 100%;
-      height: 100%; }
-    div.javascript-calculator button.math-button.root div.degree {
-      font-size: 15px;
-      left: -11px;
-      top: -3px; }
-      .ie8 div.javascript-calculator button.math-button.root div.degree {
-        top: -20px; }
-    div.javascript-calculator button.math-button.root div.radix {
-      text-shadow: none;
-      z-index: 5;
-      left: -9px;
-      top: 10px; }
-      .ie8 div.javascript-calculator button.math-button.root div.radix {
-        top: -7px; }
-    div.javascript-calculator button.math-button.root div.vinculum {
-      text-shadow: none;
-      z-index: 4;
-      left: 10px;
-      top: -5px; }
-      .ie8 div.javascript-calculator button.math-button.root div.vinculum {
-        top: -22px; }
-    div.javascript-calculator button.math-button.root div.radicand {
-      left: 6px;
-      top: 6px; }
-      .ie8 div.javascript-calculator button.math-button.root div.radicand {
-        top: -11px; }
-  div.javascript-calculator button.math-button.negative-slash-positive {
-    width: 50px; }
-    .ie div.javascript-calculator button.math-button.negative-slash-positive {
-      font-size: 15px; }
-  div.javascript-calculator button.math-button.fraction {
-    position: relative;
-    padding: 0px; }
-    div.javascript-calculator button.math-button.fraction .numerator, div.javascript-calculator button.math-button.fraction .denominator, div.javascript-calculator button.math-button.fraction .vinculum {
-      margin: 0px;
-      position: absolute;
-      font-size: 15px;
-      width: 100%; }
-    div.javascript-calculator button.math-button.fraction .numerator {
-      top: -1px; }
-      .ie8 div.javascript-calculator button.math-button.fraction .numerator {
-        top: -17px; }
-    div.javascript-calculator button.math-button.fraction .vinculum {
-      font-size: 28px;
-      top: 1.5px; }
-      .ie8 div.javascript-calculator button.math-button.fraction .vinculum {
-        top: -18px; }
-      .ie9 div.javascript-calculator button.math-button.fraction .vinculum {
-        top: 2px; }
-    div.javascript-calculator button.math-button.fraction .denominator {
-      top: 18.5px; }
-      .ie8 div.javascript-calculator button.math-button.fraction .denominator {
-        top: 0; }
-  div.javascript-calculator figure.calculator-display {
-    font-size: 2.3em;
-    height: 45px;
-    margin: auto;
-    margin-bottom: 14px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 1px 8px 8px 1px;
-    text-align: right;
-    white-space: nowrap;
-    width: 210px;
-    border: 1px solid black; }
-    div.javascript-calculator figure.calculator-display .expression-to-string-pi {
-      font-style: italic;
-      font-family: "Times New Roman", serif; }
-  div.javascript-calculator .ui-dialog-title {
-    color: white;
-    display: inherit;
-    text-align: center;
-    width: 100%;
-    font-weight: normal;
-    margin-top: 5px;
-    text-transform: uppercase; }
-  div.javascript-calculator .ui-dialog-titlebar {
-    background: transparent !important;
-    border-radius: 2px; }
-  div.javascript-calculator .ui-dialog-content {
-    background: transparent !important;
-    padding: 0px !important; }
-  div.javascript-calculator .ui-dialog-titlebar-close {
-    background: url("/widgets/calculator_close.png") no-repeat !important;
-    border: 0px !important;
-    padding: 0px;
-    right: -4px;
-    top: 14px; }
-    div.javascript-calculator .ui-dialog-titlebar-close .ui-icon {
-      background: transparent !important; }
+  /* } */
+}
+div.javascript-calculator button.math-button {
+  font-size: 25px;
+  width: 50px;
+  height: 40px;
+  margin: 3px;
+}
+div.javascript-calculator button.math-button.clear {
+  font-size: 8px;
+}
+div.javascript-calculator button.math-button.exponent {
+  font-size: 30px;
+}
+div.javascript-calculator button.math-button.exponent sup {
+  font-size: 15px;
+  margin-left: 1px;
+}
+div.javascript-calculator button.math-button.pi {
+  font-size: 35px;
+  padding: 0;
+}
+div.javascript-calculator button.math-button.root {
+  line-height: 30px;
+  font-style: normal;
+  position: relative;
+}
+div.javascript-calculator button.math-button.root > * {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+div.javascript-calculator button.math-button.root div.degree {
+  font-size: 15px;
+  left: -11px;
+  top: -3px;
+}
+.ie8 div.javascript-calculator button.math-button.root div.degree {
+  top: -20px;
+}
+div.javascript-calculator button.math-button.root div.radix {
+  text-shadow: none;
+  z-index: 5;
+  left: -9px;
+  top: 10px;
+}
+.ie8 div.javascript-calculator button.math-button.root div.radix {
+  top: -7px;
+}
+div.javascript-calculator button.math-button.root div.vinculum {
+  text-shadow: none;
+  z-index: 4;
+  left: 10px;
+  top: -5px;
+}
+.ie8 div.javascript-calculator button.math-button.root div.vinculum {
+  top: -22px;
+}
+div.javascript-calculator button.math-button.root div.radicand {
+  left: 6px;
+  top: 6px;
+}
+.ie8 div.javascript-calculator button.math-button.root div.radicand {
+  top: -11px;
+}
+div.javascript-calculator button.math-button.negative-slash-positive {
+  width: 50px;
+}
+.ie div.javascript-calculator button.math-button.negative-slash-positive {
+  font-size: 15px;
+}
+div.javascript-calculator button.math-button.fraction {
+  position: relative;
+  padding: 0px;
+}
+div.javascript-calculator button.math-button.fraction .numerator, div.javascript-calculator button.math-button.fraction .denominator, div.javascript-calculator button.math-button.fraction .vinculum {
+  margin: 0px;
+  position: absolute;
+  font-size: 15px;
+  width: 100%;
+}
+div.javascript-calculator button.math-button.fraction .numerator {
+  top: -1px;
+}
+.ie8 div.javascript-calculator button.math-button.fraction .numerator {
+  top: -17px;
+}
+div.javascript-calculator button.math-button.fraction .vinculum {
+  font-size: 28px;
+  top: 1.5px;
+}
+.ie8 div.javascript-calculator button.math-button.fraction .vinculum {
+  top: -18px;
+}
+.ie9 div.javascript-calculator button.math-button.fraction .vinculum {
+  top: 2px;
+}
+div.javascript-calculator button.math-button.fraction .denominator {
+  top: 18.5px;
+}
+.ie8 div.javascript-calculator button.math-button.fraction .denominator {
+  top: 0;
+}
+div.javascript-calculator figure.calculator-display {
+  font-size: 2.3em;
+  height: 45px;
+  margin: auto;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1px 8px 8px 1px;
+  text-align: right;
+  white-space: nowrap;
+  width: 210px;
+  border: 1px solid black;
+}
+div.javascript-calculator figure.calculator-display .expression-to-string-pi {
+  font-style: italic;
+  font-family: "Times New Roman", serif;
+}
+div.javascript-calculator .ui-dialog-title {
+  color: white;
+  display: inherit;
+  text-align: center;
+  width: 100%;
+  font-weight: normal;
+  margin-top: 5px;
+  text-transform: uppercase;
+}
+div.javascript-calculator .ui-dialog-titlebar {
+  background: transparent !important;
+  border-radius: 2px;
+}
+div.javascript-calculator .ui-dialog-content {
+  background: transparent !important;
+  padding: 0px !important;
+}
+div.javascript-calculator .ui-dialog-titlebar-close {
+  background: image-url("widgets/calculator_close.png") no-repeat !important;
+  border: 0px !important;
+  padding: 0px;
+  right: -4px;
+  top: 14px;
+}
+div.javascript-calculator .ui-dialog-titlebar-close .ui-icon {
+  background: transparent !important;
+}
 
 .javascript-calculator-themed .math-button {
   color: white;
-  text-shadow: 1px 1px 1px #222222;
+  text-shadow: 1px 1px 1px #222;
   border-radius: 2px;
   -webkit-box-shadow: 0 0 5px black;
   -moz-box-shadow: 0 0 5px black;
-  box-shadow: 0 0 5px black; }
+  box-shadow: 0 0 5px black;
+}
 .javascript-calculator-themed .javascript-calculator {
-  background-color: #444444; }
+  background-color: #444444;
+}
 .javascript-calculator-themed figure.calculator-display {
   background-color: white;
   border-radius: 2px;
   -webkit-box-shadow: inset 0 0 5px black;
   -moz-box-shadow: inset 0 0 5px black;
-  box-shadow: inner 0 0 5px black; }
+  box-shadow: inner 0 0 5px black;
+}
 .javascript-calculator-themed .number, .javascript-calculator-themed .negative, .javascript-calculator-themed .decimal {
   color: white;
   border-color: #869da7;
@@ -219,33 +238,37 @@ div.javascript-calculator {
   /* IE10+ */
   background: linear-gradient(to bottom, #3e6372 0%, #1e2f36 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start', endColorstr='$end',GradientType=0 );
-  /* IE6-9 */ }
-  .javascript-calculator-themed .number:hover, .javascript-calculator-themed .negative:hover, .javascript-calculator-themed .decimal:hover {
-    box-shadow: inset 0 0 10px #869da7; }
-  .javascript-calculator-themed .number:active, .javascript-calculator-themed .negative:active, .javascript-calculator-themed .decimal:active {
-    background: #1e2f36;
-    /* Old browsers */
-    background: -moz-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #1e2f36), color-stop(100%, #3e6372));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
-    /* IE10+ */
-    background: linear-gradient(to bottom, #1e2f36 0%, #3e6372 100%);
-    /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start', endColorstr='$end',GradientType=0 );
-    /* IE6-9 */ }
-  .ie .javascript-calculator-themed .number, .ie .javascript-calculator-themed .negative, .ie .javascript-calculator-themed .decimal {
-    color: white;
-    border: 1px solid;
-    border-color: #869da7;
-    background-color: #3e6372 !important;
-    filter: none !important; }
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$end',GradientType=0 );
+  /* IE6-9 */
+}
+.javascript-calculator-themed .number:hover, .javascript-calculator-themed .negative:hover, .javascript-calculator-themed .decimal:hover {
+  box-shadow: inset 0 0 10px #869da7;
+}
+.javascript-calculator-themed .number:active, .javascript-calculator-themed .negative:active, .javascript-calculator-themed .decimal:active {
+  background: #1e2f36;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #1e2f36), color-stop(100%, #3e6372));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #1e2f36 0%, #3e6372 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$end',GradientType=0 );
+  /* IE6-9 */
+}
+.ie .javascript-calculator-themed .number, .ie .javascript-calculator-themed .negative, .ie .javascript-calculator-themed .decimal {
+  color: white;
+  border: 1px solid;
+  border-color: #869da7;
+  background-color: #3e6372 !important;
+  filter: none !important;
+}
 .javascript-calculator-themed button.number, .javascript-calculator-themed button.number-specifier {
   color: white;
   border-color: #869da7;
@@ -263,33 +286,37 @@ div.javascript-calculator {
   /* IE10+ */
   background: linear-gradient(to bottom, #3e6372 0%, #1e2f36 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start', endColorstr='$end',GradientType=0 );
-  /* IE6-9 */ }
-  .javascript-calculator-themed button.number:hover, .javascript-calculator-themed button.number-specifier:hover {
-    box-shadow: inset 0 0 10px #869da7; }
-  .javascript-calculator-themed button.number:active, .javascript-calculator-themed button.number-specifier:active {
-    background: #1e2f36;
-    /* Old browsers */
-    background: -moz-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #1e2f36), color-stop(100%, #3e6372));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
-    /* IE10+ */
-    background: linear-gradient(to bottom, #1e2f36 0%, #3e6372 100%);
-    /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start', endColorstr='$end',GradientType=0 );
-    /* IE6-9 */ }
-  .ie .javascript-calculator-themed button.number, .ie .javascript-calculator-themed button.number-specifier {
-    color: white;
-    border: 1px solid;
-    border-color: #869da7;
-    background-color: #3e6372 !important;
-    filter: none !important; }
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$end',GradientType=0 );
+  /* IE6-9 */
+}
+.javascript-calculator-themed button.number:hover, .javascript-calculator-themed button.number-specifier:hover {
+  box-shadow: inset 0 0 10px #869da7;
+}
+.javascript-calculator-themed button.number:active, .javascript-calculator-themed button.number-specifier:active {
+  background: #1e2f36;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #1e2f36), color-stop(100%, #3e6372));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #1e2f36 0%, #3e6372 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$end',GradientType=0 );
+  /* IE6-9 */
+}
+.ie .javascript-calculator-themed button.number, .ie .javascript-calculator-themed button.number-specifier {
+  color: white;
+  border: 1px solid;
+  border-color: #869da7;
+  background-color: #3e6372 !important;
+  filter: none !important;
+}
 .javascript-calculator-themed button.operation {
   color: white;
   border-color: #deb09e;
@@ -307,32 +334,36 @@ div.javascript-calculator {
   /* IE10+ */
   background: linear-gradient(to bottom, #cb8164 0%, #ae5430 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start', endColorstr='$end',GradientType=0 );
-  /* IE6-9 */ }
-  .javascript-calculator-themed button.operation:hover {
-    box-shadow: inset 0 0 10px #deb09e; }
-  .javascript-calculator-themed button.operation:active {
-    background: #ae5430;
-    /* Old browsers */
-    background: -moz-linear-gradient(top, #ae5430 0%, #cb8164 100%);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ae5430), color-stop(100%, #cb8164));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #ae5430 0%, #cb8164 100%);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #ae5430 0%, #cb8164 100%);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #ae5430 0%, #cb8164 100%);
-    /* IE10+ */
-    background: linear-gradient(to bottom, #ae5430 0%, #cb8164 100%);
-    /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start', endColorstr='$end',GradientType=0 );
-    /* IE6-9 */ }
-  .ie .javascript-calculator-themed button.operation {
-    color: white;
-    border: 1px solid #deb09e;
-    background: #cb8164;
-    filter: none !important; }
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$end',GradientType=0 );
+  /* IE6-9 */
+}
+.javascript-calculator-themed button.operation:hover {
+  box-shadow: inset 0 0 10px #deb09e;
+}
+.javascript-calculator-themed button.operation:active {
+  background: #ae5430;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ae5430 0%, #cb8164 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ae5430), color-stop(100%, #cb8164));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ae5430 0%, #cb8164 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ae5430 0%, #cb8164 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ae5430 0%, #cb8164 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ae5430 0%, #cb8164 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$end',GradientType=0 );
+  /* IE6-9 */
+}
+.ie .javascript-calculator-themed button.operation {
+  color: white;
+  border: 1px solid #deb09e;
+  background: #cb8164;
+  filter: none !important;
+}
 .javascript-calculator-themed button.other {
   color: white;
   border-color: #adadad;
@@ -350,48 +381,54 @@ div.javascript-calculator {
   /* IE10+ */
   background: linear-gradient(to bottom, #7c7c7c 0%, #454545 100%);
   /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start', endColorstr='$end',GradientType=0 );
-  /* IE6-9 */ }
-  .javascript-calculator-themed button.other button.math-button.other:hover {
-    box-shadow: inset 0 0 10px #adadad; }
-  .javascript-calculator-themed button.other button.math-button.other:active {
-    background: #454545;
-    /* Old browsers */
-    background: -moz-linear-gradient(top, #454545 0%, #7c7c7c 100%);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #454545), color-stop(100%, #7c7c7c));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #454545 0%, #7c7c7c 100%);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #454545 0%, #7c7c7c 100%);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #454545 0%, #7c7c7c 100%);
-    /* IE10+ */
-    background: linear-gradient(to bottom, #454545 0%, #7c7c7c 100%);
-    /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start', endColorstr='$end',GradientType=0 );
-    /* IE6-9 */ }
-  .javascript-calculator-themed button.other:hover {
-    box-shadow: inset 0 0 10px #adadad; }
-  .javascript-calculator-themed button.other:active {
-    background: #454545;
-    /* Old browsers */
-    background: -moz-linear-gradient(top, #454545 0%, #7c7c7c 100%);
-    /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #454545), color-stop(100%, #7c7c7c));
-    /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #454545 0%, #7c7c7c 100%);
-    /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #454545 0%, #7c7c7c 100%);
-    /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #454545 0%, #7c7c7c 100%);
-    /* IE10+ */
-    background: linear-gradient(to bottom, #454545 0%, #7c7c7c 100%);
-    /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start', endColorstr='$end',GradientType=0 );
-    /* IE6-9 */ }
-  .ie .javascript-calculator-themed button.other {
-    border: 1px solid;
-    border-color: #adadad;
-    background: #7c7c7c;
-    filter: none !important; }
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$end',GradientType=0 );
+  /* IE6-9 */
+}
+.javascript-calculator-themed button.other button.math-button.other:hover {
+  box-shadow: inset 0 0 10px #adadad;
+}
+.javascript-calculator-themed button.other button.math-button.other:active {
+  background: #454545;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #454545 0%, #7c7c7c 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #454545), color-stop(100%, #7c7c7c));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #454545 0%, #7c7c7c 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #454545 0%, #7c7c7c 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #454545 0%, #7c7c7c 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #454545 0%, #7c7c7c 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$end',GradientType=0 );
+  /* IE6-9 */
+}
+.javascript-calculator-themed button.other:hover {
+  box-shadow: inset 0 0 10px #adadad;
+}
+.javascript-calculator-themed button.other:active {
+  background: #454545;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #454545 0%, #7c7c7c 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #454545), color-stop(100%, #7c7c7c));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #454545 0%, #7c7c7c 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #454545 0%, #7c7c7c 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #454545 0%, #7c7c7c 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #454545 0%, #7c7c7c 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$end',GradientType=0 );
+  /* IE6-9 */
+}
+.ie .javascript-calculator-themed button.other {
+  border: 1px solid;
+  border-color: #adadad;
+  background: #7c7c7c;
+  filter: none !important;
+}
