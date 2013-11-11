@@ -22,122 +22,35 @@ module.exports = function (grunt) {
       '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
       '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
       ' Licensed MIT */\n',
-    // configurable paths
+
+    // Configurable paths
     yeoman: {
+      // @Joel We probably won't be moving the bower dir around too much; maybe
+      // we should hardcode this like .tmp.
       bower: 'bower_components',
       src: 'src',
       test: 'spec',
-      out: '.tmp',
       dist: 'dist',
-      site: 'site'
-    },
-    coffee: {
-      lib: {
-        expand: true,
-        cwd: '<%= yeoman.src %>/javascripts/',
-        src: ['**/*.coffee'],
-        dest: '<%= yeoman.out %>/javascripts/',
-        ext: '.js'
-      },
-      test: {
-        expand: true,
-        cwd: 'spec',
-        src: ['**/*.coffee'],
-        dest: '<%= yeoman.out %>/spec/',
-        ext: '.js'
-      }
+      site_src: 'site_src',
+      site_dist: 'site_dist'
     },
 
-    sass: {
-      dist: {
-        files: {
-          '<%= yeoman.dist %>/<%= pkg.name %>.css': 'src/stylesheets/browser.scss'
-        }
-      }
-    },
-
-    concat: {
+    watch: {
       options: {
-        banner: '<%= banner %>',
-        stripBanners: true,
+        interrupt: false
       },
-      dist: {
-        src: [
-          '<%= yeoman.out %>/**/*.js'
-        ],
-        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
-      }
-    },
-
-
-    copy: {
-      spec: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.test %>',
-          dest: '<%= yeoman.out %>/spec/',
-          src: [
-            '**/*.js',
-          ]
-        }]
-      },
-      site: {
+      serve: {
         files: [
-          {
-            expand: true,
-            dot: true,
-            cwd: '<%= yeoman.site %>',
-            dest: '<%= yeoman.dist %>',
-            src: [
-              '**/*',
-            ]
-          },
-          {
-            expand: true,
-            dot: true,
-            cwd: '<%= yeoman.bower %>',
-            dest: '<%= yeoman.dist %>',
-            src: [
-              '**/*',
-            ]
-          },
+          '<%= yeoman.src %>/**/*.{coffee,scss}',
+          '<%= yeoman.test %>/**/*.coffee',
+        ],
+        tasks: [
+          'coffee:dist',
+          'sass:dist',
         ]
       }
     },
 
-    browserify: {
-      dist: {
-        src: '<%= yeoman.out %>/javascripts/browser.js',
-        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
-      }
-    },
-    clean: {
-      options: {
-        // "no-write": true
-      },
-      all: {
-        files: [{
-          dot: true,
-          src: [
-            '<%= yeoman.out %>',
-            '<%= yeoman.dist %>'
-          ]
-        }]
-      }
-    },
-    jasmine: {
-      specs: [
-        '<%= yeoman.bower %>/jquery/jquery.js',
-        '<%= yeoman.bower %>/underscore/underscore.js',
-        '<%= yeoman.bower %>/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
-        '<%= yeoman.bower %>/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
-        '<%= yeoman.out %>/spec/support/jasmine-jquery.js',
-        '<%= yeoman.dist %>/<%= pkg.name %>.js',
-        '<%= yeoman.out %>/spec/support/spec_helpers.js',
-        '<%= yeoman.out %>/spec/**/*.js'
-      ]
-    },
     connect: {
       options: {
         port: 9000,
@@ -148,23 +61,119 @@ module.exports = function (grunt) {
         options: {
           open: true,
           base: [
-            '<%= yeoman.site %>',
-            '<%= yeoman.dist %>'
+            '.tmp',
+            '<%= yeoman.bower %>',
+            '<%= yeoman.site_src %>',
+          ]
+        }
+      },
+      // @Joel, Would you rather have this show the compiled component files in
+      // dist or the site_dist files for the github pages branch? If everything
+      // works they should be identical.
+      dist: {
+        options: {
+          open: true,
+          base: [
+            '<%= yeoman.dist %>',
+            '<%= yeoman.site_src %>',
           ]
         }
       }
     },
 
-    watch: {
-      coffee: {
+    coffee: {
+      dist: {
+        expand: true,
+        cwd: '<%= yeoman.src %>/javascripts/',
+        src: ['**/*.coffee'],
+        dest: '.tmp/javascripts/',
+        ext: '.js'
+      },
+      test: {
+        expand: true,
+        cwd: 'spec',
+        src: ['**/*.coffee'],
+        dest: '.tmp/spec/',
+        ext: '.js'
+      }
+    },
+
+    sass: {
+      options: {
+        style: 'expanded'
+      },
+      dist: {
+        files: [{
+          '<%= yeoman.dist %>/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/browser.scss'
+        }]
+      },
+      serve: {
+        files: [{
+          '.tmp/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/browser.scss'
+        }]
+      }
+    },
+
+    browserify: {
+      dist: {
+        src: ['.tmp/javascripts/**/*.js'],
+        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
+      },
+      serve: {
+        src: ['.tmp/javascripts/**/*.js'],
+        dest: '.tmp/<%= pkg.name %>.js'
+      }
+    },
+
+    copy: {
+      test: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.test %>',
+          dest: '.tmp/spec/',
+          src: ['**/*.js']
+        }]
+      },
+      site: {
         files: [
-          '<%= yeoman.src %>/**/*.{coffee,scss}',
-          '<%= yeoman.test %>/**/*.coffee',
-        ],
-        tasks: ['build'],
-        options: {
-          interrupt: false
-        }
+          {
+            expand: true,
+            dot: true,
+            cwd: '<%= yeoman.site_src %>',
+            dest: '<%= yeoman.site_dist %>',
+            src: ['**/*']
+          },
+          {
+            expand: true,
+            dot: true,
+            cwd: '<%= yeoman.bower %>',
+            dest: '<%= yeoman.site_dist %>',
+            src: ['**/*']
+          },
+          {
+            expand: true,
+            dot: true,
+            cwd: '<%= yeoman.dist %>',
+            dest: '<%= yeoman.site_dist %>',
+            src: ['**/*']
+          }
+        ]
+      }
+    },
+
+    clean: {
+      options: {
+        // "no-write": true
+      },
+      serve: {
+        src: '.tmp'
+      },
+      dist: {
+        src: [
+          '<%= yeoman.dist %>',
+          '<%= yeoman.site_dist %>'
+        ]
       }
     },
 
@@ -177,61 +186,70 @@ module.exports = function (grunt) {
     },
 
     cssmin: {
-      combine: {
+      dist: {
         files: {
           '<%= yeoman.dist %>/<%= pkg.name %>.min.css': '<%= yeoman.dist %>/<%= pkg.name %>.css'
         }
       }
     },
 
+    jasmine: {
+      specs: [
+        '<%= yeoman.bower %>/jquery/jquery.js',
+        '<%= yeoman.bower %>/underscore/underscore.js',
+        '<%= yeoman.bower %>/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
+        '<%= yeoman.bower %>/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
+        '<%= yeoman.dist %>/<%= pkg.name %>.js',
+        '.tmp/spec/support/jasmine-jquery.js',
+        '.tmp/spec/support/spec_helpers.js',
+        '.tmp/spec/**/*.js'
+      ]
+    },
+
     'gh-pages': {
       options: {
-        base: '<%= yeoman.dist %>'
+        base: '<%= yeoman.site_dist %>'
       },
       src: ['**']
     }
   });
 
+  // Tasks
+  grunt.registerTask('serve', function (target) {
+    if (target === 'dist') {
+      return grunt.task.run(['build', 'connect:dist:keepalive']);
+    }
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-jasmine');
-  grunt.loadNpmTasks('grunt-browserify');
-  grunt.loadNpmTasks('grunt-sass');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
-  grunt.loadNpmTasks('grunt-gh-pages');
-
-
-  grunt.registerTask('watch-serve', [
-    'connect:serve', 'watch'
-  ]);
-
+    grunt.task.run([
+      'clean:serve',
+      'coffee:dist',
+      'sass:serve',
+      'browserify:serve',
+      'connect:serve',
+      'watch'
+    ]);
+  });
 
   grunt.registerTask('build', [
     'clean',
-    'coffee',
-    'sass',
-    'concat',
-    'copy:spec',
-    'browserify',
+    'coffee:dist',
+    'sass:dist',
+    'browserify:dist',
     'uglify',
-    'cssmin',
-    'copy:site'
+    'cssmin'
   ]);
 
-
-
   grunt.registerTask('test', [
-    'build',
+    'coffee',
+    'copy:test',
     'jasmine'
   ]);
 
-  grunt.registerTask('serve', ['build', 'connect:serve:keepalive']);
+  grunt.registerTask('pages', [
+    'build',
+    'copy:site',
+    'gh-pages'
+  ]);
 
   grunt.registerTask('default', ['build']);
-
-
 };
