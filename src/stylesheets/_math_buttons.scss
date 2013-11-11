@@ -1,6 +1,16 @@
+@font-face {
+  font-family: 'javascript-calculator-icons';
+  src:url('/fonts/javascript-calculator-icons.eot');
+  src:url('/fonts/javascript-calculator-icons.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/javascript-calculator-icons.ttf') format('truetype'),
+    url('/fonts/javascript-calculator-icons.woff') format('woff'),
+    url('/fonts/javascript-calculator-icons.svg#javascript-calculator-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 $calculator_border_radius: 2px;
 $box_shadow_color: #000;
-
 
 // TODO rename all of these e.g. $math_button_blue_lighter
 // these are all variations on a blueish-teal
@@ -113,80 +123,6 @@ $other_border: #adadad;
         font-size: 8px * $scalar;
     }
 
-    button.math-button.exponent {
-        font-size: 30px * $scalar;
-        sup {
-            font-size: 15px * $scalar;
-            margin-left: 1px * $scalar;
-        }
-    }
-    button.math-button.pi {
-        font-size: 35px * $scalar;
-        padding: 0;
-    }
-
-    button.math-button.root
-    {
-        line-height: 30px * $scalar;
-        font-style: normal;
-        position: relative;
-        & > * {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-        div.degree {
-            font-size: 15px * $scalar;
-            left: -11px * $scalar;
-            top: -3px * $scalar;
-            .ie8 & {
-                top: -20px * $scalar;
-            }
-        }
-
-        div.radix
-        {
-            text-shadow: none;
-            z-index: 5;
-            left: -9px * $scalar;
-            top: 10px * $scalar;
-            .ie8 & {
-                top: -7px * $scalar;
-            }
-        }
-
-        div.vinculum
-        {
-            text-shadow: none;
-            z-index: 4;
-            left: 10px * $scalar;
-            top: -5px * $scalar;
-            .ie8 & {
-                top: -22px * $scalar;
-            }
-
-
-        }
-
-        div.radicand
-        {
-            left: 6px * $scalar;
-            top: 6px * $scalar;
-            .ie8 & {
-                top: -11px * $scalar;
-            }
-        }
-    }
-
-
-    button.math-button.negative-slash-positive {
-        width: 50px * $scalar;
-        .ie & {
-            font-size: 15px * $scalar;
-        }
-    }
-
-
     button.math-button.fraction {
         position: relative;
         $size: 15px * $scalar;
@@ -230,9 +166,8 @@ $other_border: #adadad;
     border: 1px solid;
     text-align: middle;
     vertical-align: top;
+    font-family: javascript-calculator-icons, sans-serif;
 }
-
-
 
 @mixin math-button-shadow {
     .math-button {
@@ -246,8 +181,6 @@ $other_border: #adadad;
     }
 }
 
-
-
 button.math-button.clear {
     text-transform: uppercase;
 }
@@ -256,29 +189,9 @@ button.math-button:focus{
     outline: none;
 }
 
-
 button.math-button {
     .math-variable {
         font-family: "Times New Roman", serif;
         font-style: italic;
     }
 }
-
-
-button.math-button.exponent {
-    font-family: "Times New Roman", serif;
-    font-style: italic;
-    sup {
-        font-family: arial;
-        font-style: normal;
-        top: -10px;
-        left: 2px;
-    }
-}
-
-button.math-button.pi {
-    font-style: italic;
-    font-family: "Times New Roman", serif;
-}
-
-

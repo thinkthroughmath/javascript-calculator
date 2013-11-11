@@ -63,6 +63,7 @@ module.exports = function (grunt) {
           base: [
             '.tmp',
             '<%= yeoman.bower %>',
+            '<%= yeoman.src %>',
             '<%= yeoman.site_src %>',
           ]
         }
