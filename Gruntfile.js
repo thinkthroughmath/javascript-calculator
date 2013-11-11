@@ -25,23 +25,29 @@ module.exports = function (grunt) {
 
     // Configurable paths
     yeoman: {
+      // @Joel We probably won't be moving the bower dir around too much; maybe
+      // we should hardcode this like .tmp.
       bower: 'bower_components',
       src: 'src',
       test: 'spec',
       dist: 'dist',
-      site: 'site'
+      site_src: 'site_src',
+      site_dist: 'site_dist'
     },
 
     watch: {
-      coffee: {
+      options: {
+        interrupt: false
+      },
+      serve: {
         files: [
           '<%= yeoman.src %>/**/*.{coffee,scss}',
           '<%= yeoman.test %>/**/*.coffee',
         ],
-        tasks: ['build'],
-        options: {
-          interrupt: false
-        }
+        tasks: [
+          'coffee:dist',
+          'sass:dist',
+        ]
       }
     },
 
@@ -55,8 +61,21 @@ module.exports = function (grunt) {
         options: {
           open: true,
           base: [
-            '<%= yeoman.site %>',
-            '<%= yeoman.dist %>'
+            '.tmp',
+            '<%= yeoman.bower %>',
+            '<%= yeoman.site_src %>',
+          ]
+        }
+      },
+      // @Joel, Would you rather have this show the compiled component files in
+      // dist or the site_dist files for the github pages branch? If everything
+      // works they should be identical.
+      dist: {
+        options: {
+          open: true,
+          base: [
+            '<%= yeoman.dist %>',
+            '<%= yeoman.site_src %>',
           ]
         }
       }
@@ -80,41 +99,29 @@ module.exports = function (grunt) {
     },
 
     sass: {
+      options: {
+        style: 'expanded'
+      },
       dist: {
-        options: {
-          style: 'expanded'
-        },
         files: [{
-          expand: true,
-          cwd: '<%= yeoman.src %>/stylesheets/',
-          src: [
-            '**/*.scss',
-            // contrib-sass doesn't currently ignore partials so we have to
-            // manually. https://github.com/gruntjs/grunt-contrib-sass/issues/72
-            '!**/_*.scss'
-            ],
-          dest: '.tmp/stylesheets/',
-          ext: '.css'
+          '<%= yeoman.dist %>/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/browser.scss'
+        }]
+      },
+      serve: {
+        files: [{
+          '.tmp/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/browser.scss'
         }]
       }
     },
 
-    concat: {
-      options: {
-        banner: '<%= banner %>',
-        stripBanners: true,
-      },
+    browserify: {
       dist: {
-        files: {
-          '<%= yeoman.dist %>/<%= pkg.name %>.js': ['.tmp/**/*.js'],
-          '<%= yeoman.dist %>/<%= pkg.name %>.css': ['.tmp/**/*.css']
-        }
+        src: ['.tmp/javascripts/**/*.js'],
+        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
       },
       serve: {
-        files: {
-          '.tmp/<%= pkg.name %>.js': ['.tmp/**/*.js'],
-          '.tmp/<%= pkg.name %>.css': ['.tmp/**/*.css']
-        }
+        src: ['.tmp/javascripts/**/*.js'],
+        dest: '.tmp/<%= pkg.name %>.js'
       }
     },
 
@@ -135,29 +142,25 @@ module.exports = function (grunt) {
           {
             expand: true,
             dot: true,
-            cwd: '<%= yeoman.site %>',
-            dest: '<%= yeoman.dist %>',
-            src: [
-              '**/*',
-            ]
+            cwd: '<%= yeoman.site_src %>',
+            dest: '<%= yeoman.site_dist %>',
+            src: ['**/*']
           },
           {
             expand: true,
             dot: true,
             cwd: '<%= yeoman.bower %>',
-            dest: '<%= yeoman.dist %>',
-            src: [
-              '**/*',
-            ]
+            dest: '<%= yeoman.site_dist %>',
+            src: ['**/*']
           },
+          {
+            expand: true,
+            dot: true,
+            cwd: '<%= yeoman.dist %>',
+            dest: '<%= yeoman.site_dist %>',
+            src: ['**/*']
+          }
         ]
-      }
-    },
-
-    browserify: {
-      dist: {
-        src: '.tmp/javascripts/browser.js',
-        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
       }
     },
 
@@ -165,11 +168,14 @@ module.exports = function (grunt) {
       options: {
         // "no-write": true
       },
-      server: {
+      serve: {
         src: '.tmp'
       },
       dist: {
-        src: '<%= yeoman.dist %>'
+        src: [
+          '<%= yeoman.dist %>',
+          '<%= yeoman.site_dist %>'
+        ]
       }
     },
 
@@ -204,35 +210,42 @@ module.exports = function (grunt) {
 
     'gh-pages': {
       options: {
-        base: '<%= yeoman.dist %>'
+        base: '<%= yeoman.site_dist %>'
       },
       src: ['**']
     }
   });
 
   // Tasks
-  grunt.registerTask('serve', ['build', 'connect:serve:keepalive']);
+  grunt.registerTask('serve', function (target) {
+    if (target === 'dist') {
+      return grunt.task.run(['build', 'connect:dist:keepalive']);
+    }
 
-  grunt.registerTask('watch-serve', [
-    'connect:serve', 'watch'
-  ]);
+    grunt.task.run([
+      'clean:serve',
+      'coffee:dist',
+      'sass:serve',
+      'browserify:serve',
+      'connect:serve',
+      'watch'
+    ]);
+  });
 
   grunt.registerTask('build', [
     'clean',
-    'coffee',
-    'sass',
-    'concat',
-    'copy:spec',
-    'browserify',
+    'coffee:dist',
+    'sass:dist',
+    'browserify:dist',
     'uglify',
-    'cssmin',
-    'copy:site'
+    'cssmin'
   ]);
 
-  grunt.registerTask('test', [
-    'build',
-    'jasmine'
-  ]);
+  // WIP: Test is broken until next commit
+  // grunt.registerTask('test', [
+  //   'build',
+  //   'jasmine'
+  // ]);
 
   grunt.registerTask('default', ['build']);
 };
