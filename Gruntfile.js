@@ -200,6 +200,8 @@ module.exports = function (grunt) {
         '<%= yeoman.bower %>/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
         '<%= yeoman.bower %>/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
         '<%= yeoman.dist %>/<%= pkg.name %>.js',
+        '.tmp/spec/support/jasmine-jquery.js',
+        '.tmp/spec/support/spec_helpers.js',
         '.tmp/spec/**/*.js'
       ]
     },
