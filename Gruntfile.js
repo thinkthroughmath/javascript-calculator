@@ -46,7 +46,7 @@ module.exports = function (grunt) {
         ],
         tasks: [
           'coffee:dist',
-          'sass:dist',
+          'sass:serve',
         ]
       }
     },
@@ -171,6 +171,7 @@ module.exports = function (grunt) {
       },
       dist: {
         src: [
+          '.tmp',
           '<%= yeoman.dist %>',
           '<%= yeoman.site_dist %>'
         ]
