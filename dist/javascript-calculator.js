@@ -386,27 +386,11 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return _results;
     };
 
-    ButtonBuilder.prototype.caret = function(opts) {
-      return this.button({
-        value: '^',
-        label: '&circ;',
-        "class": 'math-button other caret'
-      }, opts);
-    };
-
     ButtonBuilder.prototype.negative = function(opts) {
       return this.button({
         value: 'negative',
-        label: '(&ndash;)',
+        label: '&#x2013;',
         "class": 'math-button number-specifier negative'
-      }, opts);
-    };
-
-    ButtonBuilder.prototype.negative_slash_positive = function(opts) {
-      return this.button({
-        value: '-/+',
-        label: "&ndash;/+",
-        "class": 'math-button number-specifier negative-slash-positive'
       }, opts);
     };
 
@@ -424,10 +408,18 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       }, opts);
     };
 
+    ButtonBuilder.prototype.subtraction = function(opts) {
+      return this.button({
+        value: '-',
+        label: '&#x2212;',
+        "class": 'math-button operation'
+      }, opts);
+    };
+
     ButtonBuilder.prototype.multiplication = function(opts) {
       return this.button({
         value: '*',
-        label: '&times;',
+        label: '&#xd7;',
         "class": 'math-button operation'
       }, opts);
     };
@@ -435,15 +427,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     ButtonBuilder.prototype.division = function(opts) {
       return this.button({
         value: '/',
-        label: '&divide;',
-        "class": 'math-button operation'
-      }, opts);
-    };
-
-    ButtonBuilder.prototype.subtraction = function(opts) {
-      return this.button({
-        value: '-',
-        label: '&ndash;',
+        label: '&#xf7;',
         "class": 'math-button operation'
       }, opts);
     };
@@ -455,6 +439,36 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       }, opts);
     };
 
+    ButtonBuilder.prototype.lparen = function(opts) {
+      return this.button({
+        value: '(',
+        "class": 'math-button other parentheses'
+      }, opts);
+    };
+
+    ButtonBuilder.prototype.rparen = function(opts) {
+      return this.button({
+        value: ')',
+        "class": 'math-button other parentheses'
+      }, opts);
+    };
+
+    ButtonBuilder.prototype.pi = function(opts) {
+      return this.button({
+        value: 'pi',
+        label: '&#x3c0;',
+        "class": 'math-button other pi'
+      }, opts);
+    };
+
+    ButtonBuilder.prototype.root = function(opts) {
+      return this.button({
+        value: 'root',
+        label: '&#x221a;',
+        "class": 'math-button other root'
+      }, opts);
+    };
+
     ButtonBuilder.prototype.clear = function(opts) {
       return this.button({
         value: 'clear',
@@ -462,18 +476,19 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       }, opts);
     };
 
-    ButtonBuilder.prototype.del = function(opts) {
-      return this.button({
-        value: 'del',
-        "class": 'math-button other del'
-      }, opts);
-    };
-
     ButtonBuilder.prototype.square = function(opts) {
       return this.button({
         value: 'square',
-        label: "" + (math_var('x')) + "<sup>2</sup>",
+        label: '&#xb2;',
         "class": 'math-button other square'
+      }, opts);
+    };
+
+    ButtonBuilder.prototype.negative_slash_positive = function(opts) {
+      return this.button({
+        value: '-/+',
+        label: '&#xb1;',
+        "class": 'math-button number-specifier negative-slash-positive'
       }, opts);
     };
 
@@ -488,14 +503,10 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       }, opts);
     };
 
-    ButtonBuilder.prototype.root = function(opts) {
-      var degree, radicand;
-      degree = opts.degree ? "<div class='degree'>" + opts.degree + "</div>" : "";
-      radicand = opts.radicand ? "<div class='radicand'>" + opts.radicand + "</div>" : "<div class='radicand'>" + (math_var('x')) + "</div>";
+    ButtonBuilder.prototype.del = function(opts) {
       return this.button({
-        value: 'root',
-        label: "" + degree + "\n" + radicand + "\n<div class='radix'>&radic;</div>\n<div class='vinculum'>&#8212;</div>",
-        "class": 'math-button other root'
+        value: 'del',
+        "class": 'math-button other del'
       }, opts);
     };
 
@@ -507,25 +518,10 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       }, opts);
     };
 
-    ButtonBuilder.prototype.lparen = function(opts) {
+    ButtonBuilder.prototype.caret = function(opts) {
       return this.button({
-        value: '(',
-        "class": 'math-button parentheses other'
-      }, opts);
-    };
-
-    ButtonBuilder.prototype.rparen = function(opts) {
-      return this.button({
-        value: ')',
-        "class": 'math-button parentheses other'
-      }, opts);
-    };
-
-    ButtonBuilder.prototype.pi = function(opts) {
-      return this.button({
-        value: 'pi',
-        label: '&pi;',
-        "class": 'math-button pi other'
+        value: '^',
+        "class": 'math-button other caret'
       }, opts);
     };
 
@@ -541,7 +537,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           _results.push((function(v) {
             return _this.button({
               value: "" + v.name,
-              "class": 'math-button variable other',
+              "class": 'math-button other variable',
               variable: v
             }, opts);
           })(v));
