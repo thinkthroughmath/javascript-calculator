@@ -137,6 +137,15 @@ module.exports = function (grunt) {
           src: ['**/*.js']
         }]
       },
+      dist: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.src %>',
+          dest: '<%= yeoman.dist %>',
+          src: ['fonts/**/*']
+        }]
+      },
       site: {
         files: [
           {
@@ -239,7 +248,8 @@ module.exports = function (grunt) {
     'sass:dist',
     'browserify:dist',
     'uglify',
-    'cssmin'
+    'cssmin',
+    'copy:dist'
   ]);
 
   grunt.registerTask('test', [
