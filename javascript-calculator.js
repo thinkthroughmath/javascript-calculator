@@ -18,7 +18,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 },{"./calculator":2,"./math_buttons":3,"./ui_elements":4}],2:[function(require,module,exports){
 (function() {
-  var ButtonLayout, Calculator, CalculatorView, calculator_wrapper_class, class_mixer, components, expression_to_string, historic_value, math_buttons_lib, open_widget_dialog, ttm, ui_elements;
+  var ButtonLayout, Calculator, CalculatorView, calculator_wrapper_class, class_mixer, components, expression_to_string, historic_value, math_buttons_lib, ttm, ui_elements;
 
   ttm = thinkthroughmath;
 
@@ -34,40 +34,26 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
   components = ttm.lib.math.ExpressionComponentSource.build();
 
-  calculator_wrapper_class = 'ttm-calculator';
-
-  open_widget_dialog = function(element) {
-    if (element.empty()) {
-      Calculator.build_widget(element);
-    }
-    element.dialog({
-      dialogClass: "calculator-dialog",
-      title: "Calculator"
-    });
-    element.dialog("open");
-    return element.dialog({
-      position: {
-        my: 'right center',
-        at: 'right center',
-        of: window
-      }
-    });
-  };
+  calculator_wrapper_class = 'jc';
 
   Calculator = (function() {
     function Calculator() {}
 
-    Calculator.build_widget = function(element) {
+    Calculator.build_widget = function(element, buttonsToRender) {
       var math;
+      if (buttonsToRender == null) {
+        buttonsToRender = null;
+      }
       math = ttm.lib.math.math_lib.build();
-      return Calculator.build(element, math, ttm.logger);
+      return Calculator.build(element, math, ttm.logger, buttonsToRender);
     };
 
-    Calculator.prototype.initialize = function(element, math, logger) {
+    Calculator.prototype.initialize = function(element, math, logger, buttonsToRender) {
       this.element = element;
       this.math = math;
       this.logger = logger;
-      this.view = CalculatorView.build(this, this.element, this.math);
+      this.buttonsToRender = buttonsToRender;
+      this.view = CalculatorView.build(this, this.element, this.math, this.buttonsToRender);
       this.expression_position = historic_value.build();
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_reset());
     };
@@ -188,34 +174,16 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
   ButtonLayout = (function() {
     function ButtonLayout() {}
 
-    ButtonLayout.prototype.initialize = (function(components) {
+    ButtonLayout.prototype.initialize = (function(components, buttonsToRender) {
       this.components = components;
+      this.buttonsToRender = buttonsToRender != null ? buttonsToRender : false;
     });
 
     ButtonLayout.prototype.render = function(element) {
+      var defaultButtons;
       this.element = element;
-      this.render_components(["square", "square_root", "exponent", "clear"]);
-      this.render_components(["pi", "lparen", "rparen", "division"]);
-      this.render_numbers([7, 8, 9]);
-      this.render_component("multiplication");
-      this.render_numbers([4, 5, 6]);
-      this.render_component("subtraction");
-      this.render_numbers([1, 2, 3]);
-      this.render_component("addition");
-      this.render_numbers([0]);
-      return this.render_components(["decimal", "negative", "equals"]);
-    };
-
-    ButtonLayout.prototype.render_numbers = function(nums) {
-      var num, _i, _len, _results;
-      _results = [];
-      for (_i = 0, _len = nums.length; _i < _len; _i++) {
-        num = nums[_i];
-        _results.push(this.components.numbers[num].render({
-          element: this.element
-        }));
-      }
-      return _results;
+      defaultButtons = ["square", "square_root", "exponent", "clear", "pi", "lparen", "rparen", "division", '7', '8', '9', "multiplication", '4', '5', '6', "subtraction", '1', '2', '3', "addition", '0', "decimal", "negative", "equals"];
+      return this.renderComponents(this.buttonsToRender || defaultButtons);
     };
 
     ButtonLayout.prototype.render_component = function(comp) {
@@ -224,7 +192,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       });
     };
 
-    ButtonLayout.prototype.render_components = function(components) {
+    ButtonLayout.prototype.renderComponents = function(components) {
       var comp, _i, _len, _results;
       _results = [];
       for (_i = 0, _len = components.length; _i < _len; _i++) {
@@ -243,22 +211,26 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
   CalculatorView = (function() {
     function CalculatorView() {}
 
-    CalculatorView.prototype.initialize = function(calc, element, math) {
-      var buttons, math_button_builder,
+    CalculatorView.prototype.initialize = function(calc, element, math, buttonsToRender) {
+      var buttons, math_button_builder, num, numbers, _i,
         _this = this;
       this.calc = calc;
       this.element = element;
       this.math = math;
+      this.buttonsToRender = buttonsToRender;
       math_button_builder = math_buttons_lib.build({
         element: this.element,
         ui_elements: ui_elements
       });
       buttons = {};
-      buttons.numbers = math_button_builder.base10Digits({
+      numbers = math_button_builder.base10Digits({
         click: function(val) {
           return _this.calc.numberClick(val);
         }
       });
+      for (num = _i = 0; _i <= 9; num = ++_i) {
+        buttons["" + num] = numbers[num];
+      }
       buttons.negative = math_button_builder.negative({
         click: function() {
           return _this.calc.negativeClick();
@@ -329,13 +301,13 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           return _this.calc.piClick();
         }
       });
-      this.layout = ButtonLayout.build(buttons);
+      this.layout = ButtonLayout.build(buttons, this.buttonsToRender);
       return this.render();
     };
 
     CalculatorView.prototype.display = function(content) {
       var disp;
-      disp = this.element.find("figure.calculator-display");
+      disp = this.element.find("figure.jc--display");
       disp.html(content);
       return disp.scrollLeft(9999999);
     };
@@ -344,7 +316,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       var calc_div;
       this.element.append("<div class='" + calculator_wrapper_class + "'></div>");
       calc_div = this.element.find("div." + calculator_wrapper_class);
-      calc_div.append("<figure class='calculator-display'>0</figure>");
+      calc_div.append("<figure class='jc--display'>0</figure>");
       return this.layout.render(calc_div);
     };
 
@@ -353,8 +325,6 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
   })();
 
   class_mixer(CalculatorView);
-
-  Calculator.openWidgetDialog = open_widget_dialog;
 
   ttm.widgets.Calculator = Calculator;
 
@@ -367,7 +337,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
   ttm = thinkthroughmath;
 
   math_var = function(name) {
-    return "<span class='math-variable'>" + name + "</span>";
+    return "<span class='jc--mathvariable'>" + name + "</span>";
   };
 
   ButtonBuilder = (function() {
@@ -389,101 +359,116 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
         _results.push((function(num) {
           return _this.button({
             value: "" + num,
-            "class": 'math-button number-specifier number'
+            "class": 'jc--button jc--button-numberspecifier jc--button-number'
           }, opts);
         })(num));
       }
       return _results;
     };
 
-    ButtonBuilder.prototype.caret = function(opts) {
-      return this.button({
-        value: '^',
-        label: '&circ;',
-        "class": 'math-button other caret'
-      }, opts);
-    };
-
     ButtonBuilder.prototype.negative = function(opts) {
       return this.button({
         value: 'negative',
-        label: '(&ndash;)',
-        "class": 'math-button number-specifier negative'
-      }, opts);
-    };
-
-    ButtonBuilder.prototype.negative_slash_positive = function(opts) {
-      return this.button({
-        value: '-/+',
-        label: "&ndash;/+",
-        "class": 'math-button number-specifier negative-slash-positive'
+        label: '&#x2013;',
+        "class": 'jc--button jc--button-numberspecifier jc--button-negative'
       }, opts);
     };
 
     ButtonBuilder.prototype.decimal = function(opts) {
       return this.button({
         value: '.',
-        "class": 'math-button number-specifier decimal'
+        "class": 'jc--button jc--button-numberspecifier jc--button-decimal'
       }, opts);
     };
 
     ButtonBuilder.prototype.addition = function(opts) {
       return this.button({
         value: '+',
-        "class": 'math-button operation'
-      }, opts);
-    };
-
-    ButtonBuilder.prototype.multiplication = function(opts) {
-      return this.button({
-        value: '*',
-        label: '&times;',
-        "class": 'math-button operation'
-      }, opts);
-    };
-
-    ButtonBuilder.prototype.division = function(opts) {
-      return this.button({
-        value: '/',
-        label: '&divide;',
-        "class": 'math-button operation'
+        "class": 'jc--button jc--button-operation'
       }, opts);
     };
 
     ButtonBuilder.prototype.subtraction = function(opts) {
       return this.button({
         value: '-',
-        label: '&ndash;',
-        "class": 'math-button operation'
+        label: '&#x2212;',
+        "class": 'jc--button jc--button-operation'
+      }, opts);
+    };
+
+    ButtonBuilder.prototype.multiplication = function(opts) {
+      return this.button({
+        value: '*',
+        label: '&#xd7;',
+        "class": 'jc--button jc--button-operation'
+      }, opts);
+    };
+
+    ButtonBuilder.prototype.division = function(opts) {
+      return this.button({
+        value: '/',
+        label: '&#xf7;',
+        "class": 'jc--button jc--button-operation'
       }, opts);
     };
 
     ButtonBuilder.prototype.equals = function(opts) {
       return this.button({
         value: '=',
-        "class": 'math-button operation equal'
+        "class": 'jc--button jc--button-operation jc--button-equal'
+      }, opts);
+    };
+
+    ButtonBuilder.prototype.lparen = function(opts) {
+      return this.button({
+        value: '(',
+        "class": 'jc--button jc--button-other jc--button-parentheses'
+      }, opts);
+    };
+
+    ButtonBuilder.prototype.rparen = function(opts) {
+      return this.button({
+        value: ')',
+        "class": 'jc--button jc--button-other jc--button-parentheses'
+      }, opts);
+    };
+
+    ButtonBuilder.prototype.pi = function(opts) {
+      return this.button({
+        value: 'pi',
+        label: '&#x3c0;',
+        "class": 'jc--button jc--button-other jc--button-pi'
+      }, opts);
+    };
+
+    ButtonBuilder.prototype.root = function(opts) {
+      return this.button({
+        value: 'root',
+        label: '&#x221a;',
+        "class": 'jc--button jc--button-other jc--button-root'
       }, opts);
     };
 
     ButtonBuilder.prototype.clear = function(opts) {
       return this.button({
         value: 'clear',
-        "class": 'math-button other clear'
-      }, opts);
-    };
-
-    ButtonBuilder.prototype.del = function(opts) {
-      return this.button({
-        value: 'del',
-        "class": 'math-button other del'
+        "class": 'jc--button jc--button-other jc--button-clear'
       }, opts);
     };
 
     ButtonBuilder.prototype.square = function(opts) {
       return this.button({
         value: 'square',
-        label: "" + (math_var('x')) + "<sup>2</sup>",
-        "class": 'math-button other square'
+        label: '&#xb2;',
+        "class": 'jc--button jc--button-other jc--button-square'
+      }, opts);
+    };
+
+    ButtonBuilder.prototype.negative_slash_positive = function(opts) {
+      return this.button({
+        value: '-/+',
+        label: '&#xb1;',
+        "class": 'jc--button jc--button-numberspecifier jc--button-negativepositive'
       }, opts);
     };
 
@@ -494,48 +479,29 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: 'exponent',
         label: "" + base + "<sup>" + power + "</sup>",
-        "class": 'math-button other exponent'
+        "class": 'jc--button jc--button-other jc--button-exponent'
       }, opts);
     };
 
-    ButtonBuilder.prototype.root = function(opts) {
-      var degree, radicand;
-      degree = opts.degree ? "<div class='degree'>" + opts.degree + "</div>" : "";
-      radicand = opts.radicand ? "<div class='radicand'>" + opts.radicand + "</div>" : "<div class='radicand'>" + (math_var('x')) + "</div>";
+    ButtonBuilder.prototype.del = function(opts) {
       return this.button({
-        value: 'root',
-        label: "" + degree + "\n" + radicand + "\n<div class='radix'>&radic;</div>\n<div class='vinculum'>&#8212;</div>",
-        "class": 'math-button other root'
+        value: 'del',
+        "class": 'jc--button jc--button-other jc--button-del'
       }, opts);
     };
 
     ButtonBuilder.prototype.fraction = function(opts) {
       return this.button({
         value: 'fraction',
-        label: "<div class='numerator'>a</div>\n<div class='vinculum'>&#8212;</div>\n<div class='denominator'>b</div>",
-        "class": 'math-button other fraction'
+        label: "<div class='jc--numerator'>a</div>\n<div class='jc--vinculum'>&#8212;</div>\n<div class='jc--denominator'>b</div>",
+        "class": 'jc--button jc--button-other jc--button-fraction'
       }, opts);
     };
 
-    ButtonBuilder.prototype.lparen = function(opts) {
+    ButtonBuilder.prototype.caret = function(opts) {
       return this.button({
-        value: '(',
-        "class": 'math-button parentheses other'
-      }, opts);
-    };
-
-    ButtonBuilder.prototype.rparen = function(opts) {
-      return this.button({
-        value: ')',
-        "class": 'math-button parentheses other'
-      }, opts);
-    };
-
-    ButtonBuilder.prototype.pi = function(opts) {
-      return this.button({
-        value: 'pi',
-        label: '&pi;',
-        "class": 'math-button pi other'
+        value: '^',
+        "class": 'jc--button jc--button-other jc--button-caret'
       }, opts);
     };
 
@@ -551,7 +517,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           _results.push((function(v) {
             return _this.button({
               value: "" + v.name,
-              "class": 'math-button variable other',
+              "class": 'jc--button jc--button-other jc--button-variable',
               variable: v
             }, opts);
           })(v));
@@ -567,7 +533,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: value,
         label: '&fnof;',
-        "class": 'math-button other function'
+        "class": 'jc--button jc--button-other jc--button-function'
       }, opts);
     };
 
