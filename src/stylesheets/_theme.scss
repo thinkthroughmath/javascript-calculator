@@ -1,61 +1,60 @@
-.javascript-calculator {
+.jc {
     border-radius: $calculator_border_radius;
-    text-shadow: 1px 1px 1px #222;
     background-color: $background_color;
     -webkit-box-shadow: 0 0 5px $box_shadow_color;
     -moz-box-shadow: 0 0 5px $box_shadow_color;
     box-shadow: 0 0 5px $box_shadow_color;
+}
 
-    .calculator-display {
-        border: 1px solid black;
-        border-radius: $calculator_border_radius;
-        background-color: white;
-        -webkit-box-shadow: inset 0 0 5px $box_shadow_color;
-        -moz-box-shadow: inset 0 0 5px $box_shadow_color;
-        box-shadow: inner 0 0 5px $box_shadow_color;
+.jc--display {
+    border: 1px solid black;
+    border-radius: $calculator_border_radius;
+    background-color: white;
+    -webkit-box-shadow: inset 0 0 5px $box_shadow_color;
+    -moz-box-shadow: inset 0 0 5px $box_shadow_color;
+    box-shadow: inner 0 0 5px $box_shadow_color;
+}
+
+.jc--button {
+    border: 1px solid;
+    color: white;
+}
+
+.jc--button-number,
+.jc--button-numberspecifier,
+.jc--button-negative,
+.jc--button-decimal {
+    @include simple-gradient($math_button_lighter, $math_button_darker);
+    border-color: $math_button_border;
+
+    &:hover {
+        box-shadow: inset 0 0 10px $math_button_border;
     }
-
-    .math-button {
-        border: 1px solid;
-        color: white;
+    &:active {
+        @include simple-gradient($math_button_darker, $math_button_lighter);
     }
+}
 
-    .number,
-    .number-specifier,
-    .negative,
-    .decimal {
-        @include simple-gradient($math_button_lighter, $math_button_darker);
-        border-color: $math_button_border;
+.jc--button-operation {
+    @include simple-gradient($operation_lighter, $operation_darker);
+    border-color: $operation_border;
 
-        &:hover {
-            box-shadow: inset 0 0 10px $math_button_border;
-        }
-        &:active {
-            @include simple-gradient($math_button_darker, $math_button_lighter);
-        }
+    &:hover {
+        box-shadow: inset 0 0 10px $operation_border;
     }
-
-    .operation {
-        @include simple-gradient($operation_lighter, $operation_darker);
-        border-color: $operation_border;
-
-        &:hover {
-            box-shadow: inset 0 0 10px $operation_border;
-        }
-        &:active {
-            @include simple-gradient($operation_darker, $operation_lighter);
-        }
+    &:active {
+        @include simple-gradient($operation_darker, $operation_lighter);
     }
+}
 
-    .other {
-        @include simple-gradient($other_lighter, $other_darker);
-        border-color: $other_border;
+.jc--button-other {
+    @include simple-gradient($other_lighter, $other_darker);
+    border-color: $other_border;
 
-        &:hover {
-            box-shadow: inset 0 0 10px $other_border;
-        }
-        &:active {
-            @include simple-gradient($other_darker, $other_lighter);
-        }
+    &:hover {
+        box-shadow: inset 0 0 10px $other_border;
+    }
+    &:active {
+        @include simple-gradient($other_darker, $other_lighter);
     }
 }

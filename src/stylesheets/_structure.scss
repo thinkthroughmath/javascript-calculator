@@ -9,94 +9,93 @@
     url('/fonts/javascript-calculator-icons.svg#javascript-calculator-icons') format('svg');
 }
 
-.javascript-calculator {
+.jc {
     @include clearfix;
     width: 224px;
     padding: 7px;
     border: 1px solid black;
     font-family: arial;
+}
 
-    .calculator-display {
-        display: block;
-        margin: 0 0 14px;
-        padding: 1px 8px 8px 1px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        font-size: 37px;
-        text-align: right;
-        white-space: nowrap;
+.jc--display {
+    display: block;
+    margin: 0 0 14px;
+    padding: 1px 8px 8px 1px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    font-size: 37px;
+    text-align: right;
+    white-space: nowrap;
 
-        .expression-to-string-pi {
-            font-style: italic;
-            font-family: "Times New Roman", serif;
-        }
+    // Equation Builder
+    // .expression-to-string-pi {
+    //     font-style: italic;
+    //     font-family: "Times New Roman", serif;
+    // }
+}
+
+.jc--button {
+    width: 50px * $scalar;
+    height: 40px * $scalar;
+    margin: 3px * $scalar;
+    padding: 0px;
+    font-size: 25px * $scalar;
+    font-family: "javascript-calculator-icons", sans-serif;
+    vertical-align: top;
+
+    &:focus {
+        outline: none;
     }
+}
 
-    .math-button {
-        width: 50px * $scalar;
-        height: 40px * $scalar;
-        margin: 3px * $scalar;
-        padding: 0px;
-        font-size: 25px * $scalar;
-        font-family: "javascript-calculator-icons", sans-serif;
-        text-align: middle;
-        vertical-align: top;
+// Button Modifiers
+.jc--button-clear {
+    font-size: 8px * $scalar;
+    text-transform: uppercase;
+}
 
-        &.clear {
-            font-size: 8px * $scalar;
-            text-transform: uppercase;
-        }
-        &.fraction {
-            position: relative;
+.jc--button-fraction {
+    position: relative;
+}
 
-            .numerator,
-            .denominator,
-            .vinculum {
-                position: absolute;
-                width: 100%;
-                margin: 0px;
-                font-size: 15px * $scalar;
-            }
+.jc--numerator,
+.jc--denominator,
+.jc--vinculum {
+    position: absolute;
+    width: 100%;
+    margin: 0px;
+    font-size: 15px * $scalar;
+}
 
-            .numerator {
-                top: -1px;
+.jc--numerator {
+    top: -1px;
 
-                .ie8 & {
-                    top: -17px;
-                }
-            }
-
-            .denominator {
-                top: 18.5px * $scalar;
-
-                .ie8 & {
-                    top: 0;
-                }
-            }
-
-            .vinculum {
-                top: 1.5px * $scalar;
-                font-size: 28px * $scalar;
-
-                .ie8 & {
-                    top: -18px * $scalar;
-                }
-                .ie9 & {
-                    top: 2px * $scalar;
-                }
-            }
-        }
-        &:focus {
-            outline: none;
-        }
-        .math-variable {
-            font-style: italic;
-            font-family: "Times New Roman", serif;
-        }
+    .ie8 & {
+        top: -17px;
     }
+}
 
-    /* // overrriding things from jquery ui */
-    /* & > * { */
-    /*     border: 0px !important; */
-    /* } */
+.jc--denominator {
+    top: 18.5px * $scalar;
+
+    .ie8 & {
+        top: 0;
+    }
+}
+
+.jc--vinculum {
+    top: 1.5px * $scalar;
+    font-size: 28px * $scalar;
+
+    .ie8 & {
+        top: -18px * $scalar;
+    }
+    .ie9 & {
+        top: 2px * $scalar;
+    }
+}
+
+.jc--mathvariable {
+    font-style: italic;
+    font-family: "Times New Roman", serif;
 }
