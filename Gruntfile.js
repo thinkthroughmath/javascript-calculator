@@ -197,7 +197,8 @@ module.exports = function (grunt) {
     cssmin: {
       dist: {
         files: {
-          '<%= yeoman.dist %>/<%= pkg.name %>.min.css': '<%= yeoman.dist %>/<%= pkg.name %>.css'
+          '<%= yeoman.dist %>/javascript-calculator.min.css': '<%= yeoman.dist %>/javascript-calculator.css',
+          '<%= yeoman.dist %>/javascript-calculator-theme.min.css': '<%= yeoman.dist %>/javascript-calculator-theme.css'
         }
       }
     },

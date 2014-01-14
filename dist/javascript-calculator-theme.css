@@ -1,0 +1,129 @@
+.jc {
+  border-radius: 2px;
+  background-color: #444444;
+  -webkit-box-shadow: 0 0 5px black;
+  -moz-box-shadow: 0 0 5px black;
+  box-shadow: 0 0 5px black;
+}
+
+.jc--display {
+  border: 1px solid black;
+  border-radius: 2px;
+  background-color: white;
+  -webkit-box-shadow: inset 0 0 5px black;
+  -moz-box-shadow: inset 0 0 5px black;
+  box-shadow: inner 0 0 5px black;
+}
+
+.jc--button {
+  border: 1px solid;
+  color: white;
+}
+
+.jc--button-number,
+.jc--button-numberspecifier,
+.jc--button-negative,
+.jc--button-decimal {
+  background: #3e6372;
+  /* Old browsers */
+  background: -o-linear-gradient(top, #3e6372 0%, #1e2f36 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #3e6372 0%, #1e2f36 100%);
+  /* IE10+ */
+  background: -moz-linear-gradient(top, #3e6372 0%, #1e2f36 100%);
+  /* FF3.6+ */
+  background: -webkit-linear-gradient(top, #3e6372 0%, #1e2f36 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: linear-gradient(to bottom, #3e6372 0%, #1e2f36 100%);
+  /* W3C */
+  border-color: #869da7;
+}
+.jc--button-number:hover,
+.jc--button-numberspecifier:hover,
+.jc--button-negative:hover,
+.jc--button-decimal:hover {
+  box-shadow: inset 0 0 10px #869da7;
+}
+.jc--button-number:active,
+.jc--button-numberspecifier:active,
+.jc--button-negative:active,
+.jc--button-decimal:active {
+  background: #1e2f36;
+  /* Old browsers */
+  background: -o-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
+  /* IE10+ */
+  background: -moz-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
+  /* FF3.6+ */
+  background: -webkit-linear-gradient(top, #1e2f36 0%, #3e6372 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: linear-gradient(to bottom, #1e2f36 0%, #3e6372 100%);
+  /* W3C */
+}
+
+.jc--button-operation {
+  background: #cb8164;
+  /* Old browsers */
+  background: -o-linear-gradient(top, #cb8164 0%, #ae5430 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #cb8164 0%, #ae5430 100%);
+  /* IE10+ */
+  background: -moz-linear-gradient(top, #cb8164 0%, #ae5430 100%);
+  /* FF3.6+ */
+  background: -webkit-linear-gradient(top, #cb8164 0%, #ae5430 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: linear-gradient(to bottom, #cb8164 0%, #ae5430 100%);
+  /* W3C */
+  border-color: #deb09e;
+}
+.jc--button-operation:hover {
+  box-shadow: inset 0 0 10px #deb09e;
+}
+.jc--button-operation:active {
+  background: #ae5430;
+  /* Old browsers */
+  background: -o-linear-gradient(top, #ae5430 0%, #cb8164 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ae5430 0%, #cb8164 100%);
+  /* IE10+ */
+  background: -moz-linear-gradient(top, #ae5430 0%, #cb8164 100%);
+  /* FF3.6+ */
+  background: -webkit-linear-gradient(top, #ae5430 0%, #cb8164 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: linear-gradient(to bottom, #ae5430 0%, #cb8164 100%);
+  /* W3C */
+}
+
+.jc--button-other {
+  background: #7c7c7c;
+  /* Old browsers */
+  background: -o-linear-gradient(top, #7c7c7c 0%, #454545 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #7c7c7c 0%, #454545 100%);
+  /* IE10+ */
+  background: -moz-linear-gradient(top, #7c7c7c 0%, #454545 100%);
+  /* FF3.6+ */
+  background: -webkit-linear-gradient(top, #7c7c7c 0%, #454545 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: linear-gradient(to bottom, #7c7c7c 0%, #454545 100%);
+  /* W3C */
+  border-color: #adadad;
+}
+.jc--button-other:hover {
+  box-shadow: inset 0 0 10px #adadad;
+}
+.jc--button-other:active {
+  background: #454545;
+  /* Old browsers */
+  background: -o-linear-gradient(top, #454545 0%, #7c7c7c 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #454545 0%, #7c7c7c 100%);
+  /* IE10+ */
+  background: -moz-linear-gradient(top, #454545 0%, #7c7c7c 100%);
+  /* FF3.6+ */
+  background: -webkit-linear-gradient(top, #454545 0%, #7c7c7c 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: linear-gradient(to bottom, #454545 0%, #7c7c7c 100%);
+  /* W3C */
+}
