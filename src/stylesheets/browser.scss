@@ -1,2 +1,25 @@
+
+// Variables
+$scalar: 1.0;
+$calculator_border_radius: 2px;
+
+$box_shadow_color: #000;
+$background_color: #444;
+
+// Blue!
+$math_button_lighter: #3e6372;
+$math_button_darker:  #1e2f36;
+$math_button_border:  #869da7;
+
+// Orange!
+$operation_lighter: #cb8164;
+$operation_darker:  #ae5430;
+$operation_border:  #deb09e;
+
+// Gray!
+$other_lighter: #7c7c7c;
+$other_darker: #454545;
+$other_border: #adadad;
+
 @import "math_buttons";
 @import "calculator";
