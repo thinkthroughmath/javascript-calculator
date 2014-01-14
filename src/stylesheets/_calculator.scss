@@ -16,10 +16,8 @@
     border: 1px solid black;
     font-family: arial;
 
-    .calculator {
-      .ie & {
-        height: 354px;
-      }
+    .ie & {
+      height: 354px;
     }
 
     .calculator-display {
