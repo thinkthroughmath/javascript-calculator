@@ -1,22 +1,20 @@
 @font-face {
+  font-style: normal;
+  font-weight: normal;
   font-family: 'javascript-calculator-icons';
   src:url('/fonts/javascript-calculator-icons.eot');
   src:url('/fonts/javascript-calculator-icons.eot?#iefix') format('embedded-opentype'),
     url('/fonts/javascript-calculator-icons.ttf') format('truetype'),
     url('/fonts/javascript-calculator-icons.woff') format('woff'),
     url('/fonts/javascript-calculator-icons.svg#javascript-calculator-icons') format('svg');
-  font-weight: normal;
-  font-style: normal;
 }
 
 .javascript-calculator {
-    font-family: arial;
-    padding: 0px;
-    width: 239px;
     width: 224px;
     height: 344px;
     padding: 7px;
     border: 1px solid black;
+    font-family: arial;
 
     .calculator {
       .ie & {
@@ -25,51 +23,48 @@
     }
 
     .calculator-display {
-        font-size: 2.3em;
+        width: 210px;
         height: 45px;
-        margin: auto;
-        margin-bottom: 14px;
+        margin: auto auto 14px;
+        padding: 1px 8px 8px 1px;
+        border: 1px solid black;
         overflow-x: auto;
         overflow-y: hidden;
-        padding: 1px 8px 8px 1px;
+        font-size: 2.3em;
         text-align: right;
         white-space: nowrap;
-        width: 210px;
-        border: 1px solid black;
 
         .expression-to-string-pi {
             font-style: italic;
             font-family: "Times New Roman", serif;
         }
-        .ie & {
-            height: 45px;
-        }
     }
 
     .math-button {
-        font-size: 25px * $scalar;
         width: 50px * $scalar;
         height: 40px * $scalar;
         margin: 3px * $scalar;
+        padding: 0px;
         border: 1px solid;
+        font-size: 25px * $scalar;
+        font-family: "javascript-calculator-icons", sans-serif;
         text-align: middle;
         vertical-align: top;
-        font-family: "javascript-calculator-icons", sans-serif;
 
         &.clear {
             font-size: 8px * $scalar;
             text-transform: uppercase;
         }
-
         &.fraction {
             position: relative;
-            padding: 0px;
 
-            .numerator, .denominator, .vinculum {
-                margin: 0px;
+            .numerator,
+            .denominator,
+            .vinculum {
                 position: absolute;
-                font-size: 15px * $scalar;
                 width: 100%;
+                margin: 0px;
+                font-size: 15px * $scalar;
             }
 
             .numerator {
@@ -84,13 +79,13 @@
                 top: 18.5px * $scalar;
 
                 .ie8 & {
-                    top: 0 * $scalar;
+                    top: 0;
                 }
             }
 
             .vinculum {
-                font-size: 28px * $scalar;
                 top: 1.5px * $scalar;
+                font-size: 28px * $scalar;
 
                 .ie8 & {
                     top: -18px * $scalar;
@@ -100,43 +95,41 @@
                 }
             }
         }
-
         &:focus{
             outline: none;
         }
-
         .math-variable {
-            font-family: "Times New Roman", serif;
             font-style: italic;
+            font-family: "Times New Roman", serif;
         }
     }
 
     .ui-dialog-title {
-        color: white;
         display: inherit;
-        text-align: center;
         width: 100%;
-        font-weight: normal;
         margin-top: 5px;
+        color: white;
+        font-weight: normal;
+        text-align: center;
         text-transform: uppercase;
     }
 
     .ui-dialog-titlebar {
-        background: transparent !important;
         border-radius: $calculator_border_radius;
+        background: transparent !important;
     }
 
     .ui-dialog-content {
-        background: transparent !important;
         padding: 0px !important;
+        background: transparent !important;
     }
 
     .ui-dialog-titlebar-close {
-        background: image-url('widgets/calculator_close.png') no-repeat !important;
-        border: 0px !important;
-        padding: 0px;
-        right: -4px;
         top: 14px;
+        right: -4px;
+        padding: 0px;
+        border: 0px !important;
+        background: image-url('widgets/calculator_close.png') no-repeat !important;
 
         .ui-icon {
             background: transparent !important;
