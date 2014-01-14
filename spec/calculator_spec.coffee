@@ -1,8 +1,5 @@
 ttm = thinkthroughmath
-
-
 calculator = ttm.widgets.Calculator
-
 
 # TODO move most of these to the evaluation class
 describe "Calculator Widget features", ->

@@ -2,4 +2,5 @@
 .sass-cache
 .grunt/grunt-gh-pages
 node_modules
+site_dist
 bower_components

@@ -1,0 +1,19 @@
+@mixin simple-gradient($start, $end) {
+    background: $start; /* Old browsers */
+    background: -o-linear-gradient(top,  $start 0%,$end 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  $start 0%,$end 100%); /* IE10+ */
+    background: -moz-linear-gradient(top,  $start 0%, $end 100%); /* FF3.6+ */
+    background: -webkit-linear-gradient(top,  $start 0%,$end 100%); /* Chrome10+,Safari5.1+ */
+    background: linear-gradient(to bottom,  $start 0%,$end 100%); /* W3C */
+}
+
+@mixin clearfix() {
+  *zoom: 1;
+
+  &:before,
+  &:after {
+      display: table;
+      content: " ";
+      clear: both;
+  }
+}

@@ -1,7 +1,7 @@
 ttm = thinkthroughmath
 
 math_var = (name)->
-  "<span class='math-variable'>#{name}</span>"
+  "<span class='jc--mathvariable'>#{name}</span>"
 
 class ButtonBuilder
   initialize: (@opts={})->
@@ -13,74 +13,74 @@ class ButtonBuilder
       do (num)=>
         @button({
           value: "#{num}"
-          class: 'math-button number-specifier number'
+          class: 'jc--button jc--button-numberspecifier jc--button-number'
         }, opts)
 
   negative: (opts)->
     @button({
       value: 'negative'
       label: '&#x2013;'
-      class: 'math-button number-specifier negative'
+      class: 'jc--button jc--button-numberspecifier jc--button-negative'
     }, opts)
 
   decimal: (opts)->
     @button({
       value: '.'
-      class: 'math-button number-specifier decimal'
+      class: 'jc--button jc--button-numberspecifier jc--button-decimal'
     }, opts)
 
   # Operations
   addition: (opts)->
     @button({
       value: '+'
-      class: 'math-button operation'
+      class: 'jc--button jc--button-operation'
     }, opts)
 
   subtraction: (opts)->
     @button({
       value: '-'
       label: '&#x2212;'
-      class: 'math-button operation'
+      class: 'jc--button jc--button-operation'
     }, opts)
 
   multiplication: (opts)->
     @button({
       value: '*'
       label: '&#xd7;'
-      class: 'math-button operation'
+      class: 'jc--button jc--button-operation'
     }, opts)
 
   division: (opts)->
     @button({
       value: '/'
       label: '&#xf7;'
-      class: 'math-button operation'
+      class: 'jc--button jc--button-operation'
     }, opts)
 
   equals: (opts)->
     @button({
       value: '='
-      class: 'math-button operation equal'
+      class: 'jc--button jc--button-operation jc--button-equal'
     }, opts)
 
   # Other functions
   lparen: (opts)->
     @button({
       value: '('
-      class: 'math-button other parentheses'
+      class: 'jc--button jc--button-other jc--button-parentheses'
     }, opts)
 
   rparen: (opts)->
     @button({
       value: ')'
-      class: 'math-button other parentheses'
+      class: 'jc--button jc--button-other jc--button-parentheses'
     }, opts)
 
   pi: (opts)->
     @button({
       value: 'pi'
       label: '&#x3c0;'
-      class: 'math-button other pi'
+      class: 'jc--button jc--button-other jc--button-pi'
     }, opts)
 
   root: (opts)->
@@ -104,20 +104,20 @@ class ButtonBuilder
       #   <div class='radix'>&radic;</div>
       #   <div class='vinculum'>&#8212;</div>
       # """
-      class: 'math-button other root'
+      class: 'jc--button jc--button-other jc--button-root'
     }, opts)
 
   clear: (opts)->
     @button({
       value: 'clear'
-      class: 'math-button other clear'
+      class: 'jc--button jc--button-other jc--button-clear'
     }, opts)
 
   square: (opts)->
     @button({
       value: 'square'
       label: '&#xb2;'
-      class: 'math-button other square'
+      class: 'jc--button jc--button-other jc--button-square'
     }, opts)
 
   # Buttons for the Equation Builder component
@@ -125,7 +125,7 @@ class ButtonBuilder
     @button({
       value: '-/+'
       label: '&#xb1;'
-      class: 'math-button number-specifier negative-slash-positive'
+      class: 'jc--button jc--button-numberspecifier jc--button-negativepositive'
     }, opts)
 
   exponent: (opts)->
@@ -134,30 +134,30 @@ class ButtonBuilder
     @button({
       value: 'exponent'
       label: "#{base}<sup>#{power}</sup>"
-      class: 'math-button other exponent'
+      class: 'jc--button jc--button-other jc--button-exponent'
     }, opts)
 
   del: (opts)->
     @button({
       value: 'del'
-      class: 'math-button other del'
+      class: 'jc--button jc--button-other jc--button-del'
     }, opts)
 
   fraction: (opts)->
     @button({
       value: 'fraction'
       label: """
-        <div class='numerator'>a</div>
-        <div class='vinculum'>&#8212;</div>
-        <div class='denominator'>b</div>
+        <div class='jc--numerator'>a</div>
+        <div class='jc--vinculum'>&#8212;</div>
+        <div class='jc--denominator'>b</div>
         """
-      class: 'math-button other fraction'
+      class: 'jc--button jc--button-other jc--button-fraction'
     }, opts)
 
   caret: (opts)->
     @button({
       value: '^'
-      class: 'math-button other caret'
+      class: 'jc--button jc--button-other jc--button-caret'
     }, opts)
 
   variables: (opts)->
@@ -166,7 +166,7 @@ class ButtonBuilder
         do (v)=>
           @button({
             value: "#{v.name}"
-            class: 'math-button other variable'
+            class: 'jc--button jc--button-other jc--button-variable'
             variable: v
           }, opts)
     variables
@@ -179,7 +179,7 @@ class ButtonBuilder
     @button({
       value: value
       label: '&fnof;'
-      class: 'math-button other function'
+      class: 'jc--button jc--button-other jc--button-function'
     }, opts)
 
   button: (type_opts, opts)->

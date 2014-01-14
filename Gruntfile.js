@@ -101,12 +101,14 @@ module.exports = function (grunt) {
       },
       dist: {
         files: [{
-          '<%= yeoman.dist %>/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/browser.scss'
+          '<%= yeoman.dist %>/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/javascript-calculator.scss',
+          '<%= yeoman.dist %>/javascript-calculator-theme.css': '<%= yeoman.src %>/stylesheets/javascript-calculator-theme.scss',
         }]
       },
       serve: {
         files: [{
-          '.tmp/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/browser.scss'
+          '.tmp/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/javascript-calculator.scss',
+          '.tmp/javascript-calculator-theme.css': '<%= yeoman.src %>/stylesheets/javascript-calculator-theme.scss'
         }]
       }
     },
@@ -195,7 +197,8 @@ module.exports = function (grunt) {
     cssmin: {
       dist: {
         files: {
-          '<%= yeoman.dist %>/<%= pkg.name %>.min.css': '<%= yeoman.dist %>/<%= pkg.name %>.css'
+          '<%= yeoman.dist %>/javascript-calculator.min.css': '<%= yeoman.dist %>/javascript-calculator.css',
+          '<%= yeoman.dist %>/javascript-calculator-theme.min.css': '<%= yeoman.dist %>/javascript-calculator-theme.css'
         }
       }
     },

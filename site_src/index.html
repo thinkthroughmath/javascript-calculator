@@ -5,10 +5,8 @@
   <meta charset="utf-8">
 
   <title>Think Through Math Calculator</title>
-  <link href="javascript-calculator.css"
-        media="all"
-        rel="stylesheet"
-        type="text/css">
+  <link href="javascript-calculator.css" media="all" rel="stylesheet" type="text/css">
+  <link href="javascript-calculator-theme.css" media="all" rel="stylesheet" type="text/css">
 
   <style>
     * {
@@ -102,8 +100,6 @@
     easy to include external components in your project.
   </p>
 
-
-
   <h3 id="getting-started--using-coffeescript-and-sass">
     Using CoffeeScript and Sass
   </h3>
@@ -129,14 +125,22 @@
   <p>The calculator widget is meant to emulate a real-world
   calculator, like so:</p>
 
-  <div class="location-to-render-calculator javascript-calculator-themed"></div>
+  <div class="location-to-render-calculator"></div>
+
+  <p>
+    There are three options to style the calculator:
+
+    1. Don't include any of the stylesheets provided, and write your own
+    2. Include javascript-calculator.css for the structure without any styling
+    3. Include javascript-calculator.css and javascript-calculator-theme.css for the styling you see in the examples on this page.
+  </p>
 
   <p>
     To render the calculator within a DOM element, use the build_widget
     method:
   </p>
   <pre><code>
-    &lt;div class="location-to-render-calculator javascript-calculator-themed"&gt;&lt;/div&gt;
+    &lt;div class="location-to-render-calculator"&gt;&lt;/div&gt;
 
     &lt;script&gt;
       $(function(){
@@ -146,20 +150,14 @@
       });
     &lt;/script&gt;
   </code></pre>
+
   <p>
-    In the example above, the class "javascript-calculator-themed" is added
-    to a parent element of the rendered calculator. This enables the
-    specific CSS styling we use. It's likely you will want to use your
-    own styling, so if you do not add that class to a parent element,
-    the calculator will look "themeless" like below:
+    If the default button ordering doesn't work for you, you can
+    specify the ordering like so:
   </p>
 
-  <div class="location-to-render-calculator"></div>
-
-  If the default button ordering doesn't work for you, you can
-  specify the ordering like so:
   <pre><code>
-    &lt;div class="location-to-render-calculator javascript-calculator-themed"&gt;&lt;/div&gt;
+    &lt;div class="location-to-render-calculator-with-fewer-buttons"&gt;&lt;/div&gt;
 
     &lt;script&gt;
       $(".location-to-render-calculator-with-fewer-buttons").each(function(){
@@ -167,7 +165,11 @@
       });
     &lt;/script&gt;
   </code></pre>
-  The results look like this:
+
+  <p>
+    The results look like this:
+  </p>
+
   <div class="location-to-render-calculator-with-fewer-buttons"></div>
 
   The default rendering includes all available options, and is
