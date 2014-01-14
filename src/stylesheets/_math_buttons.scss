@@ -125,13 +125,12 @@ $other_border: #adadad;
 
     .math-button.fraction {
         position: relative;
-        $size: 15px * $scalar;
         padding: 0px;
 
         .numerator, .denominator, .vinculum {
             margin: 0px;
             position: absolute;
-            font-size: $size;
+            font-size: 15px * $scalar;
             width: 100%;
         }
         .numerator, .denominator {
