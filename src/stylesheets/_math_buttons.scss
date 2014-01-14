@@ -33,10 +33,10 @@ $other_border: #adadad;
     color: white;
     border-color: $other_border;
     @include simple-gradient($other_lighter, $other_darker);
-    button.math-button.other:hover {
+    .math-button.other:hover {
         box-shadow:inset 0 0 10px $other_border;
     }
-    button.math-button.other:active {
+    .math-button.other:active {
         @include simple-gradient($other_darker, $other_lighter);
     }
 
@@ -112,18 +112,18 @@ $other_border: #adadad;
 
 @mixin math-button-sizing($scalar)
 {
-    button.math-button {
+    .math-button {
         font-size: 25px * $scalar;
         width: 50px * $scalar;
         height: 40px * $scalar;
         margin: 3px * $scalar;
     }
 
-    button.math-button.clear {
+    .math-button.clear {
         font-size: 8px * $scalar;
     }
 
-    button.math-button.fraction {
+    .math-button.fraction {
         position: relative;
         $size: 15px * $scalar;
         padding: 0px;
@@ -181,15 +181,15 @@ $other_border: #adadad;
     }
 }
 
-button.math-button.clear {
-    text-transform: uppercase;
-}
+.math-button {
+    &.clear {
+      text-transform: uppercase;
+    }
 
-button.math-button:focus{
-    outline: none;
-}
+    &:focus{
+      outline: none;
+    }
 
-button.math-button {
     .math-variable {
         font-family: "Times New Roman", serif;
         font-style: italic;

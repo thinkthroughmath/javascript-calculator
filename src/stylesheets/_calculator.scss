@@ -2,11 +2,11 @@ $calculator_border_radius: 2px;
 $box_shadow_color: #000;
 $background_color: #444;
 
-.ie div.calculator figure.calculator-display {
+.ie .calculator .calculator-display {
     height: 45px;
 }
 
-.ie div.calculator {
+.ie .calculator {
     height: 354px;
 
     button {
@@ -17,7 +17,7 @@ $background_color: #444;
 
 $scalar: 1.0;
 
-div.javascript-calculator { // was calculator-wrapper
+.javascript-calculator { // was calculator-wrapper
     font-family: arial;
     padding: 0px;
     width: 239px;
@@ -28,7 +28,7 @@ div.javascript-calculator { // was calculator-wrapper
 
     @include math-button-sizing($scalar);
 
-    figure.calculator-display {
+    .calculator-display {
         font-size: 2.3em;
         height: 45px;
         margin: auto;
@@ -93,7 +93,7 @@ div.javascript-calculator { // was calculator-wrapper
         background-color: $background_color;
     }
 
-    figure.calculator-display {
+    .calculator-display {
         background-color: white;
         border-radius: $calculator_border_radius;
         -webkit-box-shadow: inset 0 0 5px $box_shadow_color;
@@ -105,20 +105,16 @@ div.javascript-calculator { // was calculator-wrapper
         @include math-button-blue;
     }
 
-    button.number, button.number-specifier {
+    .number, .number-specifier {
         @include math-button-blue;
     }
 
-    button.operation {
+    .operation {
         @include math-button-orange;
     }
 
-    button.other {
+    .other {
         @include math-button-gray;
     }
 
 }
-
-
-
-
