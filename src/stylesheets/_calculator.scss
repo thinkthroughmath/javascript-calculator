@@ -1,12 +1,3 @@
-
-.ie .calculator .calculator-display {
-    height: 45px;
-}
-
-.ie .calculator {
-    height: 354px;
-}
-
 .javascript-calculator {
     font-family: arial;
     padding: 0px;
@@ -15,6 +6,12 @@
     height: 344px;
     padding: 7px;
     border: 1px solid black;
+
+    .calculator {
+      .ie & {
+        height: 354px;
+      }
+    }
 
     .calculator-display {
         font-size: 2.3em;
@@ -32,6 +29,9 @@
         .expression-to-string-pi {
             font-style: italic;
             font-family: "Times New Roman", serif;
+        }
+        .ie & {
+            height: 45px;
         }
     }
 
@@ -112,6 +112,7 @@
         padding: 0px;
         right: -4px;
         top: 14px;
+
         .ui-icon {
             background: transparent !important;
         }
