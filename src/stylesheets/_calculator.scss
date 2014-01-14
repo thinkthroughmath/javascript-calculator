@@ -10,25 +10,20 @@
 }
 
 .javascript-calculator {
+    @include clearfix;
     width: 224px;
-    height: 344px;
     padding: 7px;
     border: 1px solid black;
     font-family: arial;
 
-    .ie & {
-      height: 354px;
-    }
-
     .calculator-display {
-        width: 210px;
-        height: 45px;
-        margin: auto auto 14px;
+        display: block;
+        margin-bottom: 14px;
         padding: 1px 8px 8px 1px;
         border: 1px solid black;
         overflow-x: auto;
         overflow-y: hidden;
-        font-size: 2.3em;
+        font-size: 37px;
         text-align: right;
         white-space: nowrap;
 
@@ -93,7 +88,7 @@
                 }
             }
         }
-        &:focus{
+        &:focus {
             outline: none;
         }
         .math-variable {
