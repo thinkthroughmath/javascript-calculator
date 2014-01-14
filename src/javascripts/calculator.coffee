@@ -7,16 +7,7 @@ ui_elements = ttm.widgets.UIElements.build()
 math_buttons_lib = ttm.widgets.ButtonBuilder
 components = ttm.lib.math.ExpressionComponentSource.build()
 
-
 calculator_wrapper_class = 'javascript-calculator'
-
-
-open_widget_dialog = (element)->
-  if element.empty()
-    Calculator.build_widget(element)
-  element.dialog(dialogClass: "calculator-dialog", title: "Calculator")
-  element.dialog("open")
-  element.dialog({ position: { my: 'right center', at: 'right center', of: window}})
 
 class Calculator
   @build_widget: (element, buttonsToRender=null)->
@@ -185,8 +176,5 @@ class CalculatorView
     @layout.render calc_div
 
 class_mixer(CalculatorView)
-
-
-Calculator.openWidgetDialog = open_widget_dialog
 
 ttm.widgets.Calculator = Calculator
