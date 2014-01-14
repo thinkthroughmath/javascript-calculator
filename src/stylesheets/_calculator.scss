@@ -1,3 +1,14 @@
+@font-face {
+  font-family: 'javascript-calculator-icons';
+  src:url('/fonts/javascript-calculator-icons.eot');
+  src:url('/fonts/javascript-calculator-icons.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/javascript-calculator-icons.ttf') format('truetype'),
+    url('/fonts/javascript-calculator-icons.woff') format('woff'),
+    url('/fonts/javascript-calculator-icons.svg#javascript-calculator-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .javascript-calculator {
     font-family: arial;
     padding: 0px;
@@ -40,9 +51,14 @@
         width: 50px * $scalar;
         height: 40px * $scalar;
         margin: 3px * $scalar;
+        border: 1px solid;
+        text-align: middle;
+        vertical-align: top;
+        font-family: "javascript-calculator-icons", sans-serif;
 
         &.clear {
             font-size: 8px * $scalar;
+            text-transform: uppercase;
         }
 
         &.fraction {
@@ -83,6 +99,15 @@
                     top: 2px * $scalar;
                 }
             }
+        }
+
+        &:focus{
+            outline: none;
+        }
+
+        .math-variable {
+            font-family: "Times New Roman", serif;
+            font-style: italic;
         }
     }
 
