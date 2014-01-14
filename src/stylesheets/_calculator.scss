@@ -97,38 +97,6 @@
         }
     }
 
-    .ui-dialog-title {
-        display: inherit;
-        width: 100%;
-        margin-top: 5px;
-        color: white;
-        font-weight: normal;
-        text-align: center;
-        text-transform: uppercase;
-    }
-
-    .ui-dialog-titlebar {
-        border-radius: $calculator_border_radius;
-        background: transparent !important;
-    }
-
-    .ui-dialog-content {
-        padding: 0px !important;
-        background: transparent !important;
-    }
-
-    .ui-dialog-titlebar-close {
-        top: 14px;
-        right: -4px;
-        padding: 0px;
-        border: 0px !important;
-        background: image-url('widgets/calculator_close.png') no-repeat !important;
-
-        .ui-icon {
-            background: transparent !important;
-        }
-    }
-
     /* // overrriding things from jquery ui */
     /* & > * { */
     /*     border: 0px !important; */
