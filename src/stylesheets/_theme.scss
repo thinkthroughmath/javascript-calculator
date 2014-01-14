@@ -1,12 +1,10 @@
-.javascript-calculator-themed {
-    .javascript-calculator {
-        border-radius: $calculator_border_radius;
-        text-shadow: 1px 1px 1px #222;
-        background-color: $background_color;
-        -webkit-box-shadow: 0 0 5px $box_shadow_color;
-        -moz-box-shadow: 0 0 5px $box_shadow_color;
-        box-shadow: 0 0 5px $box_shadow_color;
-    }
+.javascript-calculator {
+    border-radius: $calculator_border_radius;
+    text-shadow: 1px 1px 1px #222;
+    background-color: $background_color;
+    -webkit-box-shadow: 0 0 5px $box_shadow_color;
+    -moz-box-shadow: 0 0 5px $box_shadow_color;
+    box-shadow: 0 0 5px $box_shadow_color;
 
     .calculator-display {
         border-radius: $calculator_border_radius;
