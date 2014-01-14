@@ -9,78 +9,7 @@
   font-style: normal;
 }
 
-
-@mixin math-button-gray
-{
-    color: white;
-    border-color: $other_border;
-    @include simple-gradient($other_lighter, $other_darker);
-    .math-button.other:hover {
-        box-shadow:inset 0 0 10px $other_border;
-    }
-    .math-button.other:active {
-        @include simple-gradient($other_darker, $other_lighter);
-    }
-
-    &:hover {
-        box-shadow:inset 0 0 10px $other_border;
-    }
-    &:active {
-        @include simple-gradient($other_darker, $other_lighter);
-    }
-
-    .ie & {
-        border: 1px solid;
-        border-color: $other_border;
-        background: $other_lighter;
-        filter: none !important;
-    }
-}
-
-
-@mixin math-button-blue
-{
-    color: white;
-    border-color: $math_button_border;
-    @include simple-gradient($math_button_lighter, $math_button_darker);
-    &:hover {
-        box-shadow:inset 0 0 10px $math_button_border;
-    }
-    &:active {
-        @include simple-gradient($math_button_darker, $math_button_lighter);
-    }
-    .ie & {
-        color: white;
-        border: 1px solid;
-        border-color: $math_button_border;
-        background-color: $math_button_lighter !important;
-        filter: none !important;
-    }
-}
-
-@mixin math-button-orange
-{
-    color: white;
-    border-color: $operation_border;
-    @include simple-gradient($operation_lighter, $operation_darker);
-
-    &:hover {
-        box-shadow:inset 0 0 10px $operation_border;
-    }
-
-    &:active {
-        @include simple-gradient($operation_darker, $operation_lighter);
-    }
-    .ie & {
-        color: white;
-        border: 1px solid $operation_border;
-        background: $operation_lighter;
-        filter: none !important;
-    }
-}
-
-@mixin simple-gradient($start, $end)
-{
+@mixin simple-gradient($start, $end) {
     background: $start; /* Old browsers */
     background: -moz-linear-gradient(top,  $start 0%, $end 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$start), color-stop(100%,$end)); /* Chrome,Safari4+ */
@@ -89,58 +18,6 @@
     background: -ms-linear-gradient(top,  $start 0%,$end 100%); /* IE10+ */
     background: linear-gradient(to bottom,  $start 0%,$end 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$start', endColorstr='$end',GradientType=0 ); /* IE6-9 */
-
-}
-
-@mixin math-button-sizing($scalar)
-{
-    .math-button {
-        font-size: 25px * $scalar;
-        width: 50px * $scalar;
-        height: 40px * $scalar;
-        margin: 3px * $scalar;
-    }
-
-    .math-button.clear {
-        font-size: 8px * $scalar;
-    }
-
-    .math-button.fraction {
-        position: relative;
-        padding: 0px;
-
-        .numerator, .denominator, .vinculum {
-            margin: 0px;
-            position: absolute;
-            font-size: 15px * $scalar;
-            width: 100%;
-        }
-        .numerator, .denominator {
-        }
-        .numerator {
-            top: -1px;
-            .ie8 & {
-                top: -17px;
-            }
-        }
-        .vinculum {
-            font-size: 28px * $scalar;
-            top: 1.5px * $scalar;
-            .ie8 & {
-                top: -18px * $scalar;
-            }
-            .ie9 & {
-                top: 2px * $scalar;
-            }
-        }
-        .denominator {
-            top: 18.5px * $scalar;
-
-            .ie8 & {
-                top: 0 * $scalar;
-            }
-        }
-    }
 }
 
 .math-button {
@@ -150,25 +27,13 @@
     font-family: javascript-calculator-icons, sans-serif;
 }
 
-@mixin math-button-shadow {
-    .math-button {
-        color: white;
-        text-shadow: 1px 1px 1px #222;
-        border-radius: $calculator_border_radius;
-        -webkit-box-shadow: 0 0 5px $box_shadow_color;
-        -moz-box-shadow: 0 0 5px $box_shadow_color;
-        box-shadow: 0 0 5px $box_shadow_color;
-
-    }
-}
-
 .math-button {
     &.clear {
-      text-transform: uppercase;
+        text-transform: uppercase;
     }
 
     &:focus{
-      outline: none;
+        outline: none;
     }
 
     .math-variable {
