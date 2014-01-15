@@ -59,9 +59,9 @@ module.exports = function (grunt) {
           open: true,
           base: [
             '.tmp',
-            'bower_components',
             '<%= yeoman.src %>',
-            '<%= yeoman.site_src %>'
+            '<%= yeoman.site_src %>',
+            'bower_components'
           ]
         }
       },
@@ -70,8 +70,8 @@ module.exports = function (grunt) {
           open: true,
           base: [
             '<%= yeoman.dist %>',
-            'bower_components',
-            '<%= yeoman.site_src %>'
+            '<%= yeoman.site_src %>',
+            'bower_components'
           ]
         }
       }
@@ -91,6 +91,17 @@ module.exports = function (grunt) {
         src: ['**/*.coffee'],
         dest: '.tmp/spec/',
         ext: '.js'
+      }
+    },
+
+    browserify: {
+      dist: {
+        src: ['.tmp/javascripts/**/*.js'],
+        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
+      },
+      serve: {
+        src: ['.tmp/javascripts/**/*.js'],
+        dest: '.tmp/<%= pkg.name %>.js'
       }
     },
 
@@ -118,17 +129,7 @@ module.exports = function (grunt) {
       }
     },
 
-    browserify: {
-      dist: {
-        src: ['.tmp/javascripts/**/*.js'],
-        dest: '<%= yeoman.dist %>/<%= pkg.name %>.js'
-      },
-      serve: {
-        src: ['.tmp/javascripts/**/*.js'],
-        dest: '.tmp/<%= pkg.name %>.js'
-      }
-    },
-
+    // Put files not handled in other tasks here
     copy: {
       test: {
         files: [{
@@ -175,22 +176,6 @@ module.exports = function (grunt) {
       }
     },
 
-    clean: {
-      options: {
-        // "no-write": true
-      },
-      serve: {
-        src: '.tmp'
-      },
-      dist: {
-        src: [
-          '.tmp',
-          '<%= yeoman.dist %>',
-          '<%= yeoman.site_dist %>'
-        ]
-      }
-    },
-
     uglify: {
       dist: {
         files: [{
@@ -233,10 +218,23 @@ module.exports = function (grunt) {
         base: '<%= yeoman.site_dist %>'
       },
       src: ['**']
+    },
+
+    clean: {
+      serve: {
+        src: '.tmp'
+      },
+      dist: {
+        src: [
+          '.tmp',
+          '<%= yeoman.dist %>',
+          '<%= yeoman.site_dist %>'
+        ]
+      }
     }
   });
 
-  // Tasks
+  // Custom tasks
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
@@ -253,17 +251,18 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
-    'clean',
+    'clean:dist',
     'coffee:dist',
-    'sass:dist',
     'browserify:dist',
     'uglify',
+    'sass:dist',
     'cssmin',
     'copy:dist'
   ]);
 
   grunt.registerTask('test', [
-    'coffee',
+    'build',
+    'coffee:test',
     'copy:test',
     'jasmine'
   ]);
