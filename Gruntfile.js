@@ -100,14 +100,20 @@ module.exports = function (grunt) {
       },
       dist: {
         files: [{
-          '<%= yeoman.dist %>/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/javascript-calculator.scss',
-          '<%= yeoman.dist %>/javascript-calculator-theme.css': '<%= yeoman.src %>/stylesheets/javascript-calculator-theme.scss'
+          expand: true,
+          cwd: '<%= yeoman.src %>/stylesheets/',
+          src: ['**/*.scss', '!**/_*.scss'],
+          dest: '<%= yeoman.dist %>/',
+          ext: '.css'
         }]
       },
       serve: {
         files: [{
-          '.tmp/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/javascript-calculator.scss',
-          '.tmp/javascript-calculator-theme.css': '<%= yeoman.src %>/stylesheets/javascript-calculator-theme.scss'
+          expand: true,
+          cwd: '<%= yeoman.src %>/stylesheets/',
+          src: ['**/*.scss', '!**/_*.scss'],
+          dest: '.tmp/',
+          ext: '.css'
         }]
       }
     },
@@ -187,18 +193,25 @@ module.exports = function (grunt) {
 
     uglify: {
       dist: {
-        files: {
-          '<%= yeoman.dist %>/<%= pkg.name %>.min.js': '<%= yeoman.dist %>/<%= pkg.name %>.js'
-        }
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.dist %>',
+          src: ['**/*.js'],
+          dest: '<%= yeoman.dist %>',
+          ext: '.min.js'
+        }]
       }
     },
 
     cssmin: {
       dist: {
-        files: {
-          '<%= yeoman.dist %>/javascript-calculator.min.css': '<%= yeoman.dist %>/javascript-calculator.css',
-          '<%= yeoman.dist %>/javascript-calculator-theme.min.css': '<%= yeoman.dist %>/javascript-calculator-theme.css'
-        }
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.dist %>',
+          src: ['**/*.css'],
+          dest: '<%= yeoman.dist %>',
+          ext: '.min.css'
+        }]
       }
     },
 
