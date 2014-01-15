@@ -25,7 +25,6 @@ module.exports = function (grunt) {
 
     // Configurable paths
     yeoman: {
-      bower: 'bower_components',
       src: 'src',
       test: 'spec',
       dist: 'dist',
