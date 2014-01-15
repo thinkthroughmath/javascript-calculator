@@ -1,20 +1,8 @@
-@font-face {
-  font-style: normal;
-  font-weight: normal;
-  font-family: 'javascript-calculator-icons';
-  src:url('/fonts/javascript-calculator-icons.eot');
-  src:url('/fonts/javascript-calculator-icons.eot?#iefix') format('embedded-opentype'),
-    url('/fonts/javascript-calculator-icons.ttf') format('truetype'),
-    url('/fonts/javascript-calculator-icons.woff') format('woff'),
-    url('/fonts/javascript-calculator-icons.svg#javascript-calculator-icons') format('svg');
-}
-
 .jc {
     @include clearfix;
     width: 224px;
     padding: 7px;
     border: 1px solid black;
-    font-family: arial;
 }
 
 .jc--display {
@@ -26,6 +14,7 @@
     font-size: 37px;
     text-align: right;
     white-space: nowrap;
+    font-family: "javascript-calculator-icons";
 
     // Equation Builder
     // .expression-to-string-pi {
@@ -40,8 +29,8 @@
     margin: 3px * $scalar;
     padding: 0px;
     font-size: 25px * $scalar;
-    font-family: "javascript-calculator-icons", sans-serif;
     vertical-align: top;
+    font-family: "javascript-calculator-icons", sans-serif;
 
     &:focus {
         outline: none;
