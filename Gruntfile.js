@@ -39,11 +39,11 @@ module.exports = function (grunt) {
       serve: {
         files: [
           '<%= yeoman.src %>/**/*.{coffee,scss}',
-          '<%= yeoman.test %>/**/*.coffee',
+          '<%= yeoman.test %>/**/*.coffee'
         ],
         tasks: [
           'coffee:dist',
-          'sass:serve',
+          'sass:serve'
         ]
       }
     },
@@ -61,7 +61,7 @@ module.exports = function (grunt) {
             '.tmp',
             'bower_components',
             '<%= yeoman.src %>',
-            '<%= yeoman.site_src %>',
+            '<%= yeoman.site_src %>'
           ]
         }
       },
@@ -71,7 +71,7 @@ module.exports = function (grunt) {
           base: [
             '<%= yeoman.dist %>',
             'bower_components',
-            '<%= yeoman.site_src %>',
+            '<%= yeoman.site_src %>'
           ]
         }
       }
@@ -101,7 +101,7 @@ module.exports = function (grunt) {
       dist: {
         files: [{
           '<%= yeoman.dist %>/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/javascript-calculator.scss',
-          '<%= yeoman.dist %>/javascript-calculator-theme.css': '<%= yeoman.src %>/stylesheets/javascript-calculator-theme.scss',
+          '<%= yeoman.dist %>/javascript-calculator-theme.css': '<%= yeoman.src %>/stylesheets/javascript-calculator-theme.scss'
         }]
       },
       serve: {
