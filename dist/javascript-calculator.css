@@ -1,17 +1,8 @@
-@font-face {
-  font-style: normal;
-  font-weight: normal;
-  font-family: 'javascript-calculator-icons';
-  src: url("/fonts/javascript-calculator-icons.eot");
-  src: url("/fonts/javascript-calculator-icons.eot?#iefix") format("embedded-opentype"), url("/fonts/javascript-calculator-icons.ttf") format("truetype"), url("/fonts/javascript-calculator-icons.woff") format("woff"), url("/fonts/javascript-calculator-icons.svg#javascript-calculator-icons") format("svg");
-}
-
 .jc {
   *zoom: 1;
   width: 224px;
   padding: 7px;
   border: 1px solid black;
-  font-family: arial;
 }
 .jc:before, .jc:after {
   display: table;
@@ -28,6 +19,7 @@
   font-size: 37px;
   text-align: right;
   white-space: nowrap;
+  font-family: "javascript-calculator-icons";
 }
 
 .jc--button {
@@ -36,8 +28,8 @@
   margin: 3px;
   padding: 0px;
   font-size: 25px;
-  font-family: "javascript-calculator-icons", sans-serif;
   vertical-align: top;
+  font-family: "javascript-calculator-icons", sans-serif;
 }
 .jc--button:focus {
   outline: none;
@@ -46,47 +38,4 @@
 .jc--button-clear {
   font-size: 8px;
   text-transform: uppercase;
-}
-
-.jc--button-fraction {
-  position: relative;
-}
-
-.jc--numerator,
-.jc--denominator,
-.jc--vinculum {
-  position: absolute;
-  width: 100%;
-  margin: 0px;
-  font-size: 15px;
-}
-
-.jc--numerator {
-  top: -1px;
-}
-.ie8 .jc--numerator {
-  top: -17px;
-}
-
-.jc--denominator {
-  top: 18.5px;
-}
-.ie8 .jc--denominator {
-  top: 0;
-}
-
-.jc--vinculum {
-  top: 1.5px;
-  font-size: 28px;
-}
-.ie8 .jc--vinculum {
-  top: -18px;
-}
-.ie9 .jc--vinculum {
-  top: 2px;
-}
-
-.jc--mathvariable {
-  font-style: italic;
-  font-family: "Times New Roman", serif;
 }
