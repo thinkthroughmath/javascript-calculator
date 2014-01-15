@@ -1,7 +1,11 @@
 ttm = thinkthroughmath
 
+# math_var = (name)->
+#   "<span class='jc--mathvariable'>#{name}</span>"
+
+# Temp
 math_var = (name)->
-  "<span class='jc--mathvariable'>#{name}</span>"
+  "#{name}"
 
 class ButtonBuilder
   initialize: (@opts={})->
