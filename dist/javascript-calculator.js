@@ -337,7 +337,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
   ttm = thinkthroughmath;
 
   math_var = function(name) {
-    return "<span class='jc--mathvariable'>" + name + "</span>";
+    return "" + name;
   };
 
   ButtonBuilder = (function() {

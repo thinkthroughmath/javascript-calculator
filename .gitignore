@@ -1,6 +1,6 @@
 .tmp
 .sass-cache
-.grunt/grunt-gh-pages
+.grunt
 node_modules
 site_dist
 bower_components

@@ -209,7 +209,7 @@ class JSCalculatorHandle
         @press_button(button)
 
   output: ->
-    @element.find("figure.calculator-display")
+    @element.find("figure.jc--display")
 
   output_content: ->
     @output().text()

@@ -39,11 +39,11 @@ module.exports = function (grunt) {
       serve: {
         files: [
           '<%= yeoman.src %>/**/*.{coffee,scss}',
-          '<%= yeoman.test %>/**/*.coffee',
+          '<%= yeoman.test %>/**/*.coffee'
         ],
         tasks: [
           'coffee:dist',
-          'sass:serve',
+          'sass:serve'
         ]
       }
     },
@@ -59,9 +59,9 @@ module.exports = function (grunt) {
           open: true,
           base: [
             '.tmp',
-            'bower_components',
             '<%= yeoman.src %>',
             '<%= yeoman.site_src %>',
+            'bower_components'
           ]
         }
       },
@@ -70,8 +70,8 @@ module.exports = function (grunt) {
           open: true,
           base: [
             '<%= yeoman.dist %>',
-            'bower_components',
             '<%= yeoman.site_src %>',
+            'bower_components'
           ]
         }
       }
@@ -94,24 +94,6 @@ module.exports = function (grunt) {
       }
     },
 
-    sass: {
-      options: {
-        style: 'expanded'
-      },
-      dist: {
-        files: [{
-          '<%= yeoman.dist %>/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/javascript-calculator.scss',
-          '<%= yeoman.dist %>/javascript-calculator-theme.css': '<%= yeoman.src %>/stylesheets/javascript-calculator-theme.scss',
-        }]
-      },
-      serve: {
-        files: [{
-          '.tmp/javascript-calculator.css': '<%= yeoman.src %>/stylesheets/javascript-calculator.scss',
-          '.tmp/javascript-calculator-theme.css': '<%= yeoman.src %>/stylesheets/javascript-calculator-theme.scss'
-        }]
-      }
-    },
-
     browserify: {
       dist: {
         src: ['.tmp/javascripts/**/*.js'],
@@ -123,6 +105,31 @@ module.exports = function (grunt) {
       }
     },
 
+    sass: {
+      options: {
+        style: 'expanded'
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.src %>/stylesheets/',
+          src: ['**/*.scss', '!**/_*.scss'],
+          dest: '<%= yeoman.dist %>/',
+          ext: '.css'
+        }]
+      },
+      serve: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.src %>/stylesheets/',
+          src: ['**/*.scss', '!**/_*.scss'],
+          dest: '.tmp/',
+          ext: '.css'
+        }]
+      }
+    },
+
+    // Put files not handled in other tasks here
     copy: {
       test: {
         files: [{
@@ -169,36 +176,27 @@ module.exports = function (grunt) {
       }
     },
 
-    clean: {
-      options: {
-        // "no-write": true
-      },
-      serve: {
-        src: '.tmp'
-      },
-      dist: {
-        src: [
-          '.tmp',
-          '<%= yeoman.dist %>',
-          '<%= yeoman.site_dist %>'
-        ]
-      }
-    },
-
     uglify: {
       dist: {
-        files: {
-          '<%= yeoman.dist %>/<%= pkg.name %>.min.js': '<%= yeoman.dist %>/<%= pkg.name %>.js'
-        }
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.dist %>',
+          src: ['**/*.js'],
+          dest: '<%= yeoman.dist %>',
+          ext: '.min.js'
+        }]
       }
     },
 
     cssmin: {
       dist: {
-        files: {
-          '<%= yeoman.dist %>/javascript-calculator.min.css': '<%= yeoman.dist %>/javascript-calculator.css',
-          '<%= yeoman.dist %>/javascript-calculator-theme.min.css': '<%= yeoman.dist %>/javascript-calculator-theme.css'
-        }
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.dist %>',
+          src: ['**/*.css'],
+          dest: '<%= yeoman.dist %>',
+          ext: '.min.css'
+        }]
       }
     },
 
@@ -209,7 +207,7 @@ module.exports = function (grunt) {
         'bower_components/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
         'bower_components/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
         '<%= yeoman.dist %>/<%= pkg.name %>.js',
-        '.tmp/spec/support/jasmine-jquery.js',
+        'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
         '.tmp/spec/support/spec_helpers.js',
         '.tmp/spec/**/*.js'
       ]
@@ -220,10 +218,23 @@ module.exports = function (grunt) {
         base: '<%= yeoman.site_dist %>'
       },
       src: ['**']
+    },
+
+    clean: {
+      serve: {
+        src: '.tmp'
+      },
+      dist: {
+        src: [
+          '.tmp',
+          '<%= yeoman.dist %>',
+          '<%= yeoman.site_dist %>'
+        ]
+      }
     }
   });
 
-  // Tasks
+  // Custom tasks
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
@@ -240,17 +251,18 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
-    'clean',
+    'clean:dist',
     'coffee:dist',
-    'sass:dist',
     'browserify:dist',
     'uglify',
+    'sass:dist',
     'cssmin',
     'copy:dist'
   ]);
 
   grunt.registerTask('test', [
-    'coffee',
+    'build',
+    'coffee:test',
     'copy:test',
     'jasmine'
   ]);
