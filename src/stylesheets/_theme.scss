@@ -32,8 +32,8 @@
 }
 
 .jc--button-number,
-.jc--button-numberspecifier,
 .jc--button-negative,
+.jc--button-negativepositive,
 .jc--button-decimal {
     @include simple-gradient($math_button_lighter, $math_button_darker);
     border-color: $math_button_border;
@@ -58,7 +58,9 @@
     }
 }
 
-.jc--button-other {
+.jc--button-other,
+.jc--button-clear,
+.jc--button-del {
     @include simple-gradient($other_lighter, $other_darker);
     border-color: $other_border;
 

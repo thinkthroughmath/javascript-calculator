@@ -1,8 +1,5 @@
 ttm = thinkthroughmath
 
-# math_var = (name)->
-#   "<span class='jc--mathvariable'>#{name}</span>"
-
 # Temp
 math_var = (name)->
   "#{name}"
@@ -17,20 +14,27 @@ class ButtonBuilder
       do (num)=>
         @button({
           value: "#{num}"
-          class: 'jc--button jc--button-numberspecifier jc--button-number'
+          class: 'jc--button jc--button-number'
         }, opts)
+
+  decimal: (opts)->
+    @button({
+      value: '.'
+      class: 'jc--button jc--button-decimal'
+    }, opts)
 
   negative: (opts)->
     @button({
       value: 'negative'
       label: '&#x2013;'
-      class: 'jc--button jc--button-numberspecifier jc--button-negative'
+      class: 'jc--button jc--button-negative'
     }, opts)
 
-  decimal: (opts)->
+  negative_slash_positive: (opts)-> # EQ builder
     @button({
-      value: '.'
-      class: 'jc--button jc--button-numberspecifier jc--button-decimal'
+      value: '-/+'
+      label: '&#xb1;'
+      class: 'jc--button jc--button-negativepositive'
     }, opts)
 
   # Operations
@@ -87,75 +91,18 @@ class ButtonBuilder
       class: 'jc--button jc--button-other jc--button-pi'
     }, opts)
 
-  root: (opts)->
-    # TODO: This probably has some important functionality in the
-    # equation builder. @Joel, let me know what's up.
-    # degree = if opts.degree
-    #   "<div class='degree'>#{opts.degree}</div>"
-    # else
-    #   ""
-    # radicand = if opts.radicand
-    #   "<div class='radicand'>#{opts.radicand}</div>"
-    # else
-    #   "<div class='radicand'>#{math_var('x')}</div>"
-
+  fraction: (opts)->
     @button({
-      value: 'root'
-      label: '&#x221a;'
-      # label: """
-      #   #{degree}
-      #   #{radicand}
-      #   <div class='radix'>&radic;</div>
-      #   <div class='vinculum'>&#8212;</div>
-      # """
-      class: 'jc--button jc--button-other jc--button-root'
-    }, opts)
-
-  clear: (opts)->
-    @button({
-      value: 'clear'
-      class: 'jc--button jc--button-other jc--button-clear'
+      value: 'fraction'
+      label: "a/b"
+      class: 'jc--button jc--button-other jc--button-fraction'
     }, opts)
 
   square: (opts)->
     @button({
       value: 'square'
-      label: '&#xb2;'
+      label: 'x<sup>2</sup>'
       class: 'jc--button jc--button-other jc--button-square'
-    }, opts)
-
-  # Buttons for the Equation Builder component
-  negative_slash_positive: (opts)->
-    @button({
-      value: '-/+'
-      label: '&#xb1;'
-      class: 'jc--button jc--button-numberspecifier jc--button-negativepositive'
-    }, opts)
-
-  exponent: (opts)->
-    base = opts.base || math_var('x')
-    power = opts.power || math_var('y')
-    @button({
-      value: 'exponent'
-      label: "#{base}<sup>#{power}</sup>"
-      class: 'jc--button jc--button-other jc--button-exponent'
-    }, opts)
-
-  del: (opts)->
-    @button({
-      value: 'del'
-      class: 'jc--button jc--button-other jc--button-del'
-    }, opts)
-
-  fraction: (opts)->
-    @button({
-      value: 'fraction'
-      label: """
-        <div class='jc--numerator'>a</div>
-        <div class='jc--vinculum'>&#8212;</div>
-        <div class='jc--denominator'>b</div>
-        """
-      class: 'jc--button jc--button-other jc--button-fraction'
     }, opts)
 
   caret: (opts)->
@@ -164,6 +111,26 @@ class ButtonBuilder
       class: 'jc--button jc--button-other jc--button-caret'
     }, opts)
 
+  exponent: (opts)->
+    base = opts.base || 'x'
+    power = opts.power || 'y'
+    @button({
+      value: 'exponent'
+      label: "#{base}<sup>#{power}</sup>"
+      class: 'jc--button jc--button-other jc--button-exponent'
+    }, opts)
+
+  root: (opts)->
+    degree = if opts.degree then "<sup>#{opts.degree}</div>" else ""
+    radicand = opts.radicand || 'x'
+
+    @button({
+      value: 'root'
+      label: "#{degree}&#x221a;#{radicand}"
+      class: 'jc--button jc--button-other jc--button-root'
+    }, opts)
+
+  # EQ builder vars
   variables: (opts)->
     variables =
       for v in opts.variables
@@ -174,6 +141,19 @@ class ButtonBuilder
             variable: v
           }, opts)
     variables
+
+  # Operational
+  del: (opts)->
+    @button({
+      value: 'del'
+      class: 'jc--button jc--button-del'
+    }, opts)
+
+  clear: (opts)->
+    @button({
+      value: 'clear'
+      class: 'jc--button jc--button-clear'
+    }, opts)
 
   fn: (opts)->
     value = if opts.name
