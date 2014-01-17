@@ -136,14 +136,6 @@ class ButtonBuilder
       class: 'jc--button jc--button-clear'
     }, opts)
 
-  fn: (opts)->
-    value = if opts.name then "function[#{opts.name}]" else "function"
-    @button({
-      value: value
-      label: '&fnof;'
-      class: 'jc--button jc--button-other jc--button-function'
-    }, opts)
-
   button: (type_opts, opts)->
     @ui_elements.button_builder.build(
       _.extend({}, type_opts, @opts, opts || {}))
