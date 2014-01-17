@@ -1,7 +1,7 @@
 {
 	"metadata": {
-		"name": "TTM-math-icons",
-		"lastOpened": 1389818799692,
+		"name": "javascritp-calculator-icons",
+		"lastOpened": 1389988697502,
 		"created": 1383862787901
 	},
 	"iconSets": [
@@ -227,7 +227,7 @@
 					"order": 2,
 					"id": 15,
 					"prevSize": 32,
-					"code": 8722,
+					"code": 58881,
 					"name": "subtract",
 					"tempChar": "",
 					"ligatures": ""
@@ -236,7 +236,7 @@
 					"order": 7,
 					"id": 14,
 					"prevSize": 32,
-					"code": 178,
+					"code": 58886,
 					"name": "square",
 					"tempChar": "",
 					"ligatures": ""
@@ -245,7 +245,7 @@
 					"order": 8,
 					"id": 13,
 					"prevSize": 32,
-					"code": 41,
+					"code": 58887,
 					"name": "rparen",
 					"tempChar": "",
 					"ligatures": ""
@@ -254,7 +254,7 @@
 					"order": 9,
 					"id": 12,
 					"prevSize": 32,
-					"code": 8730,
+					"code": 58888,
 					"name": "root",
 					"tempChar": "",
 					"ligatures": ""
@@ -263,7 +263,7 @@
 					"order": 10,
 					"id": 11,
 					"prevSize": 32,
-					"code": 960,
+					"code": 58889,
 					"name": "pi",
 					"tempChar": "",
 					"ligatures": ""
@@ -272,7 +272,7 @@
 					"order": 11,
 					"id": 10,
 					"prevSize": 32,
-					"code": 8211,
+					"code": 58890,
 					"name": "negi",
 					"tempChar": "",
 					"ligatures": ""
@@ -290,7 +290,7 @@
 					"order": 13,
 					"id": 8,
 					"prevSize": 32,
-					"code": 40,
+					"code": 58892,
 					"name": "lparen",
 					"tempChar": "",
 					"ligatures": ""
@@ -317,7 +317,7 @@
 					"order": 16,
 					"id": 5,
 					"prevSize": 32,
-					"code": 61,
+					"code": 58895,
 					"name": "equals",
 					"tempChar": "",
 					"ligatures": ""
@@ -326,7 +326,7 @@
 					"order": 17,
 					"id": 4,
 					"prevSize": 32,
-					"code": 247,
+					"code": 58896,
 					"name": "divide",
 					"tempChar": "",
 					"ligatures": ""
@@ -344,7 +344,7 @@
 					"order": 3,
 					"id": 2,
 					"prevSize": 32,
-					"code": 179,
+					"code": 58882,
 					"name": "cube",
 					"tempChar": "",
 					"ligatures": ""
@@ -353,7 +353,7 @@
 					"order": 4,
 					"id": 1,
 					"prevSize": 32,
-					"code": 94,
+					"code": 58883,
 					"name": "caret",
 					"tempChar": "",
 					"ligatures": ""
@@ -362,7 +362,7 @@
 					"order": 5,
 					"id": 0,
 					"prevSize": 32,
-					"code": 43,
+					"code": 58884,
 					"name": "add",
 					"tempChar": "",
 					"ligatures": ""
@@ -383,7 +383,7 @@
 				"baseline": 6.25,
 				"whitespace": 50
 			},
-			"resetPoint": 33,
+			"resetPoint": 58880,
 			"showQuickUse": false,
 			"showMetrics": true,
 			"showMetadata": false
