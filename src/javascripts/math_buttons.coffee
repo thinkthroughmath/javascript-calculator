@@ -10,105 +10,105 @@ class ButtonBuilder
       do (num)=>
         @button({
           value: "#{num}"
-          class: 'jc--button jc--button-number'
+          class: "jc--button jc--button-number"
         }, opts)
 
   decimal: (opts)->
     @button({
-      value: '.'
-      class: 'jc--button jc--button-decimal'
+      value: "."
+      class: "jc--button jc--button-decimal"
     }, opts)
 
   negative: (opts)->
     @button({
-      value: 'negative'
-      label: '(&#x2013;)'
-      class: 'jc--button jc--button-negative'
+      value: "negative"
+      label: "(&#x2013;)"
+      class: "jc--button jc--button-negative"
     }, opts)
 
   # Operations
   addition: (opts)->
     @button({
-      value: '+'
-      class: 'jc--button jc--button-operation jc--button-add'
+      value: "+"
+      class: "jc--button jc--button-operation jc--button-add"
     }, opts)
 
   subtraction: (opts)->
     @button({
-      value: '-'
-      label: '&#x2212;'
-      class: 'jc--button jc--button-operation jc--button-subtract'
+      value: "-"
+      label: "&#x2212;"
+      class: "jc--button jc--button-operation jc--button-subtract"
     }, opts)
 
   multiplication: (opts)->
     @button({
-      value: '*'
-      label: '&#xd7;'
-      class: 'jc--button jc--button-operation jc--button-multiply'
+      value: "*"
+      label: "&#xd7;"
+      class: "jc--button jc--button-operation jc--button-multiply"
     }, opts)
 
   division: (opts)->
     @button({
-      value: '/'
-      label: '&#xf7;'
-      class: 'jc--button jc--button-operation jc--button-divide'
+      value: "/"
+      label: "&#xf7;"
+      class: "jc--button jc--button-operation jc--button-divide"
     }, opts)
 
   equals: (opts)->
     @button({
-      value: '='
-      class: 'jc--button jc--button-operation jc--button-equal'
+      value: "="
+      class: "jc--button jc--button-operation jc--button-equal"
     }, opts)
 
   # Other functions
   lparen: (opts)->
     @button({
-      value: '('
-      class: 'jc--button jc--button-other jc--button-rParen'
+      value: "("
+      class: "jc--button jc--button-other jc--button-rParen"
     }, opts)
 
   rparen: (opts)->
     @button({
-      value: ')'
-      class: 'jc--button jc--button-other jc--button-lParen'
+      value: ")"
+      class: "jc--button jc--button-other jc--button-lParen"
     }, opts)
 
   pi: (opts)->
     @button({
-      value: 'pi'
-      label: '&#x3c0;'
-      class: 'jc--button jc--button-other jc--button-pi'
+      value: "pi"
+      label: "&#x3c0;"
+      class: "jc--button jc--button-other jc--button-pi"
     }, opts)
 
   fraction: (opts)->
     @button({
-      value: 'fraction'
+      value: "fraction"
       label: "<sup>a</sup>/<sub>b</sub>"
-      class: 'jc--button jc--button-other jc--button-fraction'
+      class: "jc--button jc--button-other jc--button-fraction"
     }, opts)
 
   caret: (opts)->
     @button({
-      value: '^'
-      class: 'jc--button jc--button-other jc--button-caret'
+      value: "^"
+      class: "jc--button jc--button-other jc--button-caret"
     }, opts)
 
   exponent: (opts)->
-    base = opts.base || 'x'
-    power = opts.power || 'y'
+    base = opts.base || "x"
+    power = opts.power || "y"
     @button({
-      value: 'exponent'
+      value: "exponent"
       label: "#{base}<sup>#{power}</sup>"
-      class: 'jc--button jc--button-other jc--button-exponent jc--button-exponent-#{base}to#{power}'
+      class: "jc--button jc--button-other jc--button-exponent jc--button-exponent-#{base}to#{power}"
     }, opts)
 
   root: (opts)->
     degree = if opts.degree then "<sup>#{opts.degree}</sup>" else ""
-    radicand = opts.radicand || 'x'
+    radicand = opts.radicand || "x"
     @button({
-      value: 'root'
+      value: "root"
       label: "#{degree}&#x221a;#{radicand}"
-      class: 'jc--button jc--button-other jc--button-root jc--button-root-#{degree}of#{radicand}'
+      class: "jc--button jc--button-other jc--button-root jc--button-root-#{degree}of#{radicand}"
     }, opts)
 
   # EQ builder vars
@@ -118,7 +118,7 @@ class ButtonBuilder
         do (v)=>
           @button({
             value: "#{v.name}"
-            class: 'jc--button jc--button-other jc--button-variable'
+            class: "jc--button jc--button-other jc--button-variable"
             variable: v
           }, opts)
     variables
@@ -126,14 +126,14 @@ class ButtonBuilder
   # Operational
   del: (opts)->
     @button({
-      value: 'del'
-      class: 'jc--button jc--button-del'
+      value: "del"
+      class: "jc--button jc--button-del"
     }, opts)
 
   clear: (opts)->
     @button({
-      value: 'clear'
-      class: 'jc--button jc--button-clear'
+      value: "clear"
+      class: "jc--button jc--button-clear"
     }, opts)
 
   button: (type_opts, opts)->
