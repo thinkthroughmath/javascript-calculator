@@ -29,8 +29,8 @@
 }
 
 .jc--button-number,
-.jc--button-numberspecifier,
 .jc--button-negative,
+.jc--button-negativepositive,
 .jc--button-decimal {
   background: #3e6372;
   /* Old browsers */
@@ -47,14 +47,14 @@
   border-color: #869da7;
 }
 .jc--button-number:hover,
-.jc--button-numberspecifier:hover,
 .jc--button-negative:hover,
+.jc--button-negativepositive:hover,
 .jc--button-decimal:hover {
   box-shadow: inset 0 0 10px #869da7;
 }
 .jc--button-number:active,
-.jc--button-numberspecifier:active,
 .jc--button-negative:active,
+.jc--button-negativepositive:active,
 .jc--button-decimal:active {
   background: #1e2f36;
   /* Old browsers */
@@ -103,7 +103,9 @@
   /* W3C */
 }
 
-.jc--button-other {
+.jc--button-other,
+.jc--button-clear,
+.jc--button-del {
   background: #7c7c7c;
   /* Old browsers */
   background: -o-linear-gradient(top, #7c7c7c 0%, #454545 100%);
@@ -118,10 +120,14 @@
   /* W3C */
   border-color: #adadad;
 }
-.jc--button-other:hover {
+.jc--button-other:hover,
+.jc--button-clear:hover,
+.jc--button-del:hover {
   box-shadow: inset 0 0 10px #adadad;
 }
-.jc--button-other:active {
+.jc--button-other:active,
+.jc--button-clear:active,
+.jc--button-del:active {
   background: #454545;
   /* Old browsers */
   background: -o-linear-gradient(top, #454545 0%, #7c7c7c 100%);
