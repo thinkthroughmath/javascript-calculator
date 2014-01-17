@@ -43,6 +43,7 @@ module.exports = function (grunt) {
         ],
         tasks: [
           'coffee:dist',
+          'browserify:serve',
           'sass:serve'
         ]
       }
