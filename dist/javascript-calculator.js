@@ -271,7 +271,9 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           return _this.calc.clearClick();
         }
       });
-      buttons.square = math_button_builder.square({
+      buttons.square = math_button_builder.exponent({
+        value: "square",
+        power: "2",
         click: function() {
           return _this.calc.squareClick();
         }
@@ -332,13 +334,9 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 },{}],3:[function(require,module,exports){
 (function() {
-  var ButtonBuilder, math_var, ttm;
+  var ButtonBuilder, ttm;
 
   ttm = thinkthroughmath;
-
-  math_var = function(name) {
-    return "" + name;
-  };
 
   ButtonBuilder = (function() {
     function ButtonBuilder() {}
@@ -376,23 +374,15 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     ButtonBuilder.prototype.negative = function(opts) {
       return this.button({
         value: 'negative',
-        label: '&#x2013;',
+        label: '(&#x2013;)',
         "class": 'jc--button jc--button-negative'
-      }, opts);
-    };
-
-    ButtonBuilder.prototype.negative_slash_positive = function(opts) {
-      return this.button({
-        value: '-/+',
-        label: '&#xb1;',
-        "class": 'jc--button jc--button-negativepositive'
       }, opts);
     };
 
     ButtonBuilder.prototype.addition = function(opts) {
       return this.button({
         value: '+',
-        "class": 'jc--button jc--button-operation'
+        "class": 'jc--button jc--button-operation jc--button-add'
       }, opts);
     };
 
@@ -400,7 +390,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: '-',
         label: '&#x2212;',
-        "class": 'jc--button jc--button-operation'
+        "class": 'jc--button jc--button-operation jc--button-subtract'
       }, opts);
     };
 
@@ -408,7 +398,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: '*',
         label: '&#xd7;',
-        "class": 'jc--button jc--button-operation'
+        "class": 'jc--button jc--button-operation jc--button-multiply'
       }, opts);
     };
 
@@ -416,7 +406,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: '/',
         label: '&#xf7;',
-        "class": 'jc--button jc--button-operation'
+        "class": 'jc--button jc--button-operation jc--button-divide'
       }, opts);
     };
 
@@ -430,14 +420,14 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     ButtonBuilder.prototype.lparen = function(opts) {
       return this.button({
         value: '(',
-        "class": 'jc--button jc--button-other jc--button-parentheses'
+        "class": 'jc--button jc--button-other jc--button-rParen'
       }, opts);
     };
 
     ButtonBuilder.prototype.rparen = function(opts) {
       return this.button({
         value: ')',
-        "class": 'jc--button jc--button-other jc--button-parentheses'
+        "class": 'jc--button jc--button-other jc--button-lParen'
       }, opts);
     };
 
@@ -457,14 +447,6 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       }, opts);
     };
 
-    ButtonBuilder.prototype.square = function(opts) {
-      return this.button({
-        value: 'square',
-        label: 'x<sup>2</sup>',
-        "class": 'jc--button jc--button-other jc--button-square'
-      }, opts);
-    };
-
     ButtonBuilder.prototype.caret = function(opts) {
       return this.button({
         value: '^',
@@ -479,7 +461,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: 'exponent',
         label: "" + base + "<sup>" + power + "</sup>",
-        "class": 'jc--button jc--button-other jc--button-exponent'
+        "class": 'jc--button jc--button-other jc--button-exponent jc--button-exponent-#{base}to#{power}'
       }, opts);
     };
 
@@ -490,7 +472,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: 'root',
         label: "" + degree + "&#x221a;" + radicand,
-        "class": 'jc--button jc--button-other jc--button-root'
+        "class": 'jc--button jc--button-other jc--button-root jc--button-root-#{degree}of#{radicand}'
       }, opts);
     };
 
@@ -530,16 +512,6 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       }, opts);
     };
 
-    ButtonBuilder.prototype.fn = function(opts) {
-      var value;
-      value = opts.name ? "function[" + opts.name + "]" : "function";
-      return this.button({
-        value: value,
-        label: '&fnof;',
-        "class": 'jc--button jc--button-other jc--button-function'
-      }, opts);
-    };
-
     ButtonBuilder.prototype.button = function(type_opts, opts) {
       return this.ui_elements.button_builder.build(_.extend({}, type_opts, this.opts, opts || {}));
     };
@@ -571,7 +543,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
         opts = {};
       }
       opts = _.extend({}, this.opts, opts);
-      button = $("<button class='" + opts["class"] + "' value='" + opts.value + "'>" + (opts.label || opts.value) + "</button>");
+      button = $("<button class='" + opts["class"] + "' value='" + opts.value + "'>\n  <span class=\"jc--buttonLabel\">\n    " + (opts.label || opts.value) + "\n  </span>\n</button>");
       button.on("click", function() {
         return opts.click && opts.click(opts);
       });
