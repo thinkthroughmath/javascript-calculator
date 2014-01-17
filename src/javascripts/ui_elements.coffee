@@ -1,6 +1,4 @@
-
 ttm = thinkthroughmath
-
 
 class Button
   initialize: (@opts={})->
@@ -22,8 +20,6 @@ class MathDisplay
   update: (value)->
     @figure.html(value)
 ttm.class_mixer(MathDisplay)
-
-
 
 class UIElements
   button_builder: Button

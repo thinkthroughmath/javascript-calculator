@@ -124,7 +124,6 @@ class ButtonLayout
 
 class_mixer(ButtonLayout)
 
-
 class CalculatorView
   initialize: (@calc, @element, @math, @buttonsToRender)->
 
@@ -134,7 +133,6 @@ class CalculatorView
 
     # for button layout
     buttons = {}
-
 
     numbers = math_button_builder.base10Digits click: (val)=>@calc.numberClick(val)
     for num in [0..9]
