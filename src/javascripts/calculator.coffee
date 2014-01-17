@@ -30,12 +30,10 @@ class Calculator
       else
         val
     else
-      # @logger.warn("display value is error")
       @errorMsg()
 
   display: ->
     to_disp = @displayValue()
-    # @logger.info("calculator display #{to_disp}")
     @view.display(to_disp)
 
   errorMsg: -> "Error"
