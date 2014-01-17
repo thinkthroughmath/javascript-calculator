@@ -1,9 +1,5 @@
 ttm = thinkthroughmath
 
-# Temp
-math_var = (name)->
-  "#{name}"
-
 class ButtonBuilder
   initialize: (@opts={})->
     @ui_elements = @opts.ui_elements
