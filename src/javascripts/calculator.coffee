@@ -147,7 +147,7 @@ class CalculatorView
     buttons.equals = math_button_builder.equals click: => @calc.equalsClick()
 
     buttons.clear = math_button_builder.clear click: => @calc.clearClick()
-    buttons.square = math_button_builder.square click: => @calc.squareClick()
+    buttons.square = math_button_builder.exponent value: "square", power: "2", click: => @calc.squareClick()
     buttons.square_root = math_button_builder.root click: => @calc.squareRootClick()
     buttons.exponent = math_button_builder.caret click: => @calc.exponentClick()
 

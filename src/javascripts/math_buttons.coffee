@@ -102,12 +102,6 @@ class ButtonBuilder
       class: 'jc--button jc--button-other jc--button-exponent jc--button-exponent-#{base}to#{power}'
     }, opts)
 
-  square: (opts)->
-    opts ||= {}
-    opts.base = 'x'
-    opts.power = '2'
-    @exponent(opts)
-
   root: (opts)->
     degree = if opts.degree then "<sup>#{opts.degree}</sup>" else ""
     radicand = opts.radicand || 'x'
