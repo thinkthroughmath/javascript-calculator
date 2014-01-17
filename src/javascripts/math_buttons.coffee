@@ -22,15 +22,8 @@ class ButtonBuilder
   negative: (opts)->
     @button({
       value: 'negative'
-      label: '&#x2013;'
+      label: '(&#x2013;)'
       class: 'jc--button jc--button-negative'
-    }, opts)
-
-  negative_slash_positive: (opts)-> # EQ builder
-    @button({
-      value: '-/+'
-      label: '&#xb1;'
-      class: 'jc--button jc--button-negativepositive'
     }, opts)
 
   # Operations
