@@ -30,28 +30,28 @@ class ButtonBuilder
   addition: (opts)->
     @button({
       value: '+'
-      class: 'jc--button jc--button-operation'
+      class: 'jc--button jc--button-operation jc--button-add'
     }, opts)
 
   subtraction: (opts)->
     @button({
       value: '-'
       label: '&#x2212;'
-      class: 'jc--button jc--button-operation'
+      class: 'jc--button jc--button-operation jc--button-subtract'
     }, opts)
 
   multiplication: (opts)->
     @button({
       value: '*'
       label: '&#xd7;'
-      class: 'jc--button jc--button-operation'
+      class: 'jc--button jc--button-operation jc--button-multiply'
     }, opts)
 
   division: (opts)->
     @button({
       value: '/'
       label: '&#xf7;'
-      class: 'jc--button jc--button-operation'
+      class: 'jc--button jc--button-operation jc--button-divide'
     }, opts)
 
   equals: (opts)->
@@ -64,13 +64,13 @@ class ButtonBuilder
   lparen: (opts)->
     @button({
       value: '('
-      class: 'jc--button jc--button-other jc--button-parentheses'
+      class: 'jc--button jc--button-other jc--button-rParen'
     }, opts)
 
   rparen: (opts)->
     @button({
       value: ')'
-      class: 'jc--button jc--button-other jc--button-parentheses'
+      class: 'jc--button jc--button-other jc--button-lParen'
     }, opts)
 
   pi: (opts)->
@@ -87,13 +87,6 @@ class ButtonBuilder
       class: 'jc--button jc--button-other jc--button-fraction'
     }, opts)
 
-  square: (opts)->
-    @button({
-      value: 'square'
-      label: 'x<sup>2</sup>'
-      class: 'jc--button jc--button-other jc--button-square'
-    }, opts)
-
   caret: (opts)->
     @button({
       value: '^'
@@ -106,17 +99,22 @@ class ButtonBuilder
     @button({
       value: 'exponent'
       label: "#{base}<sup>#{power}</sup>"
-      class: 'jc--button jc--button-other jc--button-exponent'
+      class: 'jc--button jc--button-other jc--button-exponent jc--button-exponent-#{base}to#{power}'
     }, opts)
+
+  square: (opts)->
+    opts ||= {}
+    opts.base = 'x'
+    opts.power = '2'
+    @exponent(opts)
 
   root: (opts)->
     degree = if opts.degree then "<sup>#{opts.degree}</sup>" else ""
     radicand = opts.radicand || 'x'
-
     @button({
       value: 'root'
       label: "#{degree}&#x221a;#{radicand}"
-      class: 'jc--button jc--button-other jc--button-root'
+      class: 'jc--button jc--button-other jc--button-root jc--button-root-#{degree}of#{radicand}'
     }, opts)
 
   # EQ builder vars
@@ -145,10 +143,7 @@ class ButtonBuilder
     }, opts)
 
   fn: (opts)->
-    value = if opts.name
-      "function[#{opts.name}]"
-    else
-      "function"
+    value = if opts.name then "function[#{opts.name}]" else "function"
     @button({
       value: value
       label: '&fnof;'
