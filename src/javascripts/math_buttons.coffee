@@ -94,7 +94,7 @@ class ButtonBuilder
   fraction: (opts)->
     @button({
       value: 'fraction'
-      label: "a/b"
+      label: "<sup>a</sup>/<sub>b</sub>"
       class: 'jc--button jc--button-other jc--button-fraction'
     }, opts)
 
@@ -121,7 +121,7 @@ class ButtonBuilder
     }, opts)
 
   root: (opts)->
-    degree = if opts.degree then "<sup>#{opts.degree}</div>" else ""
+    degree = if opts.degree then "<sup>#{opts.degree}</sup>" else ""
     radicand = opts.radicand || 'x'
 
     @button({
