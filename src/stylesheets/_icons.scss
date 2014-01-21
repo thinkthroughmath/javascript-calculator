@@ -1,0 +1,95 @@
+@font-face {
+  font-style: normal;
+  font-weight: normal;
+  font-family: 'javascript-calculator-icons';
+  src: url("fonts/javascript-calculator-icons.eot");
+  src: url("fonts/javascript-calculator-icons.eot?#iefix") format("embedded-opentype"),
+    url("fonts/javascript-calculator-icons.ttf") format("truetype"),
+    url("fonts/javascript-calculator-icons.woff") format("woff"),
+    url("fonts/javascript-calculator-icons.svg#javascript-calculator-icons") format("svg");
+}
+
+.jc--button {
+  -webkit-font-smoothing: antialiased;
+}
+
+.jc--button-negative,
+.jc--button-pi,
+.jc--button-fraction,
+.jc--button-caret,
+.jc--button-exponent-xto2,
+.jc--button-exponent-xto3,
+.jc--button-exponent-ytox,
+.jc--button-root-ofx,
+.jc--button-root-3ofx,
+.jc--button-root-xofy {
+  &:before {
+    font-family: 'javascript-calculator-icons';
+    display: inline-block;
+    font-size: 1.33em;
+  }
+
+  .jc--buttonLabel {
+    @include visually-hidden();
+  }
+}
+
+.jc--button-negative {
+  &:before {
+    content: "\e604";
+  }
+}
+
+.jc--button-pi {
+  &:before {
+    content: "\e603";
+  }
+}
+
+.jc--button-fraction {
+  &:before {
+    content: "\e605";
+  }
+}
+
+.jc--button-caret {
+  &:before {
+    content: "\e601";
+  }
+}
+
+.jc--button-exponent-xto2 {
+  &:before {
+    content: "\e609";
+  }
+}
+
+.jc--button-exponent-xto3 {
+  &:before {
+    content: "\e608";
+  }
+}
+
+.jc--button-exponent-ytox {
+  &:before {
+    content: "\e606";
+  }
+}
+
+.jc--button-root-ofx {
+  &:before {
+    content: "\e602";
+  }
+}
+
+.jc--button-root-3ofx {
+  &:before {
+    content: "\e607";
+  }
+}
+
+.jc--button-root-xofy {
+  &:before {
+    content: "\e600";
+  }
+}
