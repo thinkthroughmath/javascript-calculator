@@ -1,3 +1,13 @@
+.jc--display {
+  display: block;
+  padding-bottom: 15px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: right;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
 @font-face {
   font-style: normal;
   font-weight: normal;
@@ -6,26 +16,127 @@
   src: url("fonts/javascript-calculator-icons.eot?#iefix") format("embedded-opentype"), url("fonts/javascript-calculator-icons.ttf") format("truetype"), url("fonts/javascript-calculator-icons.woff") format("woff"), url("fonts/javascript-calculator-icons.svg#javascript-calculator-icons") format("svg");
 }
 
+.jc--button {
+  -webkit-font-smoothing: antialiased;
+}
+
+.jc--button-negative:before,
+.jc--button-pi:before,
+.jc--button-fraction:before,
+.jc--button-caret:before,
+.jc--button-exponent-xto2:before,
+.jc--button-exponent-xto3:before,
+.jc--button-exponent-ytox:before,
+.jc--button-root-ofx:before,
+.jc--button-root-3ofx:before,
+.jc--button-root-xofy:before {
+  font-family: 'javascript-calculator-icons';
+  display: inline-block;
+  font-size: 1.33em;
+}
+.jc--button-negative .jc--buttonLabel,
+.jc--button-pi .jc--buttonLabel,
+.jc--button-fraction .jc--buttonLabel,
+.jc--button-caret .jc--buttonLabel,
+.jc--button-exponent-xto2 .jc--buttonLabel,
+.jc--button-exponent-xto3 .jc--buttonLabel,
+.jc--button-exponent-ytox .jc--buttonLabel,
+.jc--button-root-ofx .jc--buttonLabel,
+.jc--button-root-3ofx .jc--buttonLabel,
+.jc--button-root-xofy .jc--buttonLabel {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.jc--button-negative:before {
+  content: "\e604";
+}
+
+.jc--button-pi:before {
+  content: "\e603";
+}
+
+.jc--button-fraction:before {
+  content: "\e605";
+}
+
+.jc--button-caret:before {
+  content: "\e601";
+}
+
+.jc--button-exponent-xto2:before {
+  content: "\e609";
+}
+
+.jc--button-exponent-xto3:before {
+  content: "\e608";
+}
+
+.jc--button-exponent-ytox:before {
+  content: "\e606";
+}
+
+.jc--button-root-ofx:before {
+  content: "\e602";
+}
+
+.jc--button-root-3ofx:before {
+  content: "\e607";
+}
+
+.jc--button-root-xofy:before {
+  content: "\e600";
+}
+
 .jc {
+  *zoom: 1;
+  width: 224px;
+  padding: 7px;
+  border: 1px solid black;
   border-radius: 2px;
   background-color: #444444;
-  -webkit-box-shadow: 0 0 5px black;
-  -moz-box-shadow: 0 0 5px black;
   box-shadow: 0 0 5px black;
+  -moz-box-shadow: 0 0 5px black;
+  -webkit-box-shadow: 0 0 5px black;
+}
+.jc:before, .jc:after {
+  display: table;
+  content: " ";
+  clear: both;
 }
 
 .jc--display {
+  margin: 0 0 14px;
+  padding-top: 1px;
+  padding-right: 8px;
+  padding-left: 8px;
   border: 1px solid black;
   border-radius: 2px;
+  font-size: 37px;
   background-color: white;
-  -webkit-box-shadow: inset 0 0 5px black;
-  -moz-box-shadow: inset 0 0 5px black;
   box-shadow: inner 0 0 5px black;
+  -moz-box-shadow: inset 0 0 5px black;
+  -webkit-box-shadow: inset 0 0 5px black;
 }
 
 .jc--button {
+  width: 50px;
+  height: 40px;
+  margin: 3px;
+  padding: 0px;
   border: 1px solid;
   color: white;
+  font-size: 25px;
+  vertical-align: top;
+}
+.jc--button:focus {
+  outline: none;
 }
 
 .jc--button-number,
@@ -140,4 +251,10 @@
   /* Chrome10+,Safari5.1+ */
   background: linear-gradient(to bottom, #454545 0%, #7c7c7c 100%);
   /* W3C */
+}
+
+.jc--button-del,
+.jc--button-clear {
+  font-size: 8px;
+  text-transform: uppercase;
 }

@@ -357,7 +357,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
         _results.push((function(num) {
           return _this.button({
             value: "" + num,
-            "class": 'jc--button jc--button-number'
+            "class": "jc--button jc--button-number"
           }, opts);
         })(num));
       }
@@ -366,113 +366,113 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
     ButtonBuilder.prototype.decimal = function(opts) {
       return this.button({
-        value: '.',
-        "class": 'jc--button jc--button-decimal'
+        value: ".",
+        "class": "jc--button jc--button-decimal"
       }, opts);
     };
 
     ButtonBuilder.prototype.negative = function(opts) {
       return this.button({
-        value: 'negative',
-        label: '(&#x2013;)',
-        "class": 'jc--button jc--button-negative'
+        value: "negative",
+        label: "(&#x2013;)",
+        "class": "jc--button jc--button-negative"
       }, opts);
     };
 
     ButtonBuilder.prototype.addition = function(opts) {
       return this.button({
-        value: '+',
-        "class": 'jc--button jc--button-operation jc--button-add'
+        value: "+",
+        "class": "jc--button jc--button-operation jc--button-add"
       }, opts);
     };
 
     ButtonBuilder.prototype.subtraction = function(opts) {
       return this.button({
-        value: '-',
-        label: '&#x2212;',
-        "class": 'jc--button jc--button-operation jc--button-subtract'
+        value: "-",
+        label: "&#x2212;",
+        "class": "jc--button jc--button-operation jc--button-subtract"
       }, opts);
     };
 
     ButtonBuilder.prototype.multiplication = function(opts) {
       return this.button({
-        value: '*',
-        label: '&#xd7;',
-        "class": 'jc--button jc--button-operation jc--button-multiply'
+        value: "*",
+        label: "&#xd7;",
+        "class": "jc--button jc--button-operation jc--button-multiply"
       }, opts);
     };
 
     ButtonBuilder.prototype.division = function(opts) {
       return this.button({
-        value: '/',
-        label: '&#xf7;',
-        "class": 'jc--button jc--button-operation jc--button-divide'
+        value: "/",
+        label: "&#xf7;",
+        "class": "jc--button jc--button-operation jc--button-divide"
       }, opts);
     };
 
     ButtonBuilder.prototype.equals = function(opts) {
       return this.button({
-        value: '=',
-        "class": 'jc--button jc--button-operation jc--button-equal'
+        value: "=",
+        "class": "jc--button jc--button-operation jc--button-equal"
       }, opts);
     };
 
     ButtonBuilder.prototype.lparen = function(opts) {
       return this.button({
-        value: '(',
-        "class": 'jc--button jc--button-other jc--button-rParen'
+        value: "(",
+        "class": "jc--button jc--button-other jc--button-rParen"
       }, opts);
     };
 
     ButtonBuilder.prototype.rparen = function(opts) {
       return this.button({
-        value: ')',
-        "class": 'jc--button jc--button-other jc--button-lParen'
+        value: ")",
+        "class": "jc--button jc--button-other jc--button-lParen"
       }, opts);
     };
 
     ButtonBuilder.prototype.pi = function(opts) {
       return this.button({
-        value: 'pi',
-        label: '&#x3c0;',
-        "class": 'jc--button jc--button-other jc--button-pi'
+        value: "pi",
+        label: "&#x3c0;",
+        "class": "jc--button jc--button-other jc--button-pi"
       }, opts);
     };
 
     ButtonBuilder.prototype.fraction = function(opts) {
       return this.button({
-        value: 'fraction',
+        value: "fraction",
         label: "<sup>a</sup>/<sub>b</sub>",
-        "class": 'jc--button jc--button-other jc--button-fraction'
+        "class": "jc--button jc--button-other jc--button-fraction"
       }, opts);
     };
 
     ButtonBuilder.prototype.caret = function(opts) {
       return this.button({
-        value: '^',
-        "class": 'jc--button jc--button-other jc--button-caret'
+        value: "^",
+        "class": "jc--button jc--button-other jc--button-caret"
       }, opts);
     };
 
     ButtonBuilder.prototype.exponent = function(opts) {
       var base, power;
-      base = opts.base || 'x';
-      power = opts.power || 'y';
+      base = opts.base || "x";
+      power = opts.power || "y";
       return this.button({
-        value: 'exponent',
+        value: "exponent",
         label: "" + base + "<sup>" + power + "</sup>",
-        "class": 'jc--button jc--button-other jc--button-exponent jc--button-exponent-#{base}to#{power}'
+        "class": "jc--button jc--button-other jc--button-exponent jc--button-exponent-" + base + "to" + power
       }, opts);
     };
 
     ButtonBuilder.prototype.root = function(opts) {
       var degree, radicand;
-      degree = opts.degree ? "<sup>" + opts.degree + "</sup>" : "";
-      radicand = opts.radicand || 'x';
+      degree = opts.degree ? "" + opts.degree : "";
+      radicand = opts.radicand || "x";
       return this.button({
-        value: 'root',
-        label: "" + degree + "&#x221a;" + radicand,
-        "class": 'jc--button jc--button-other jc--button-root jc--button-root-#{degree}of#{radicand}'
+        value: "root",
+        label: degree ? "<sup>" + degree + "</sup>&#x221a;" + radicand : "&#x221a;" + radicand,
+        "class": "jc--button jc--button-other jc--button-root jc--button-root-" + degree + "of" + radicand
       }, opts);
     };
 
@@ -488,7 +488,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           _results.push((function(v) {
             return _this.button({
               value: "" + v.name,
-              "class": 'jc--button jc--button-other jc--button-variable',
+              "class": "jc--button jc--button-other jc--button-variable",
               variable: v
             }, opts);
           })(v));
@@ -500,15 +500,15 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
     ButtonBuilder.prototype.del = function(opts) {
       return this.button({
-        value: 'del',
-        "class": 'jc--button jc--button-del'
+        value: "del",
+        "class": "jc--button jc--button-del"
       }, opts);
     };
 
     ButtonBuilder.prototype.clear = function(opts) {
       return this.button({
-        value: 'clear',
-        "class": 'jc--button jc--button-clear'
+        value: "clear",
+        "class": "jc--button jc--button-clear"
       }, opts);
     };
 
