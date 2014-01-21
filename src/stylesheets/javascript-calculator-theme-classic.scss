@@ -3,6 +3,17 @@
 @import "display";
 @import "icons";
 
+@font-face {
+  font-style: normal;
+  font-weight: normal;
+  font-family: 'javascript-calculator-icons';
+  src: url("fonts/javascript-calculator-icons.eot");
+  src: url("fonts/javascript-calculator-icons.eot?#iefix") format("embedded-opentype"),
+    url("fonts/javascript-calculator-icons.ttf") format("truetype"),
+    url("fonts/javascript-calculator-icons.woff") format("woff"),
+    url("fonts/javascript-calculator-icons.svg#javascript-calculator-icons") format("svg");
+}
+
 $calculator_border_radius: 2px;
 $box_shadow_color: #000;
 $background_color: #444;
