@@ -103,11 +103,11 @@ class ButtonBuilder
     }, opts)
 
   root: (opts)->
-    degree = if opts.degree then "<sup>#{opts.degree}</sup>" else ""
+    degree = if opts.degree then "#{opts.degree}" else ""
     radicand = opts.radicand || "x"
     @button({
       value: "root"
-      label: "#{degree}&#x221a;#{radicand}"
+      label: if degree then "<sup>#{degree}</sup>&#x221a;#{radicand}" else "&#x221a;#{radicand}"
       class: "jc--button jc--button-other jc--button-root jc--button-root-#{degree}of#{radicand}"
     }, opts)
 
