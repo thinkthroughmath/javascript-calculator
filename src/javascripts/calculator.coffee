@@ -30,12 +30,10 @@ class Calculator
       else
         val
     else
-      # @logger.warn("display value is error")
       @errorMsg()
 
   display: ->
     to_disp = @displayValue()
-    # @logger.info("calculator display #{to_disp}")
     @view.display(to_disp)
 
   errorMsg: -> "Error"
@@ -126,7 +124,6 @@ class ButtonLayout
 
 class_mixer(ButtonLayout)
 
-
 class CalculatorView
   initialize: (@calc, @element, @math, @buttonsToRender)->
 
@@ -136,7 +133,6 @@ class CalculatorView
 
     # for button layout
     buttons = {}
-
 
     numbers = math_button_builder.base10Digits click: (val)=>@calc.numberClick(val)
     for num in [0..9]
@@ -151,7 +147,7 @@ class CalculatorView
     buttons.equals = math_button_builder.equals click: => @calc.equalsClick()
 
     buttons.clear = math_button_builder.clear click: => @calc.clearClick()
-    buttons.square = math_button_builder.square click: => @calc.squareClick()
+    buttons.square = math_button_builder.exponent value: "square", power: "2", click: => @calc.squareClick()
     buttons.square_root = math_button_builder.root click: => @calc.squareRootClick()
     buttons.exponent = math_button_builder.caret click: => @calc.exponentClick()
 

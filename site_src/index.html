@@ -5,8 +5,7 @@
   <meta charset="utf-8">
 
   <title>Think Through Math Calculator</title>
-  <link href="javascript-calculator.css" media="all" rel="stylesheet" type="text/css">
-  <link href="javascript-calculator-theme.css" media="all" rel="stylesheet" type="text/css">
+  <link href="javascript-calculator-theme-classic.css" media="all" rel="stylesheet" type="text/css">
 
   <style>
     * {
@@ -128,11 +127,7 @@
   <div class="location-to-render-calculator"></div>
 
   <p>
-    There are three options to style the calculator:
-
-    1. Don't include any of the stylesheets provided, and write your own
-    2. Include javascript-calculator.css for the structure without any styling
-    3. Include javascript-calculator.css and javascript-calculator-theme.css for the styling you see in the examples on this page.
+    To style the calculator you can include a precompiled theme file (css/javascript-calculator-theme-classic.css) or build your own. Theme-agnostic Sass partials are available in src/stylesheets to use in your own themes if you like.
   </p>
 
   <p>
@@ -199,17 +194,15 @@
   <script src="javascript-calculator.js"></script>
   <script>
     $(function(){
-    var ttm = thinkthroughmath;
+      var ttm = thinkthroughmath;
 
-    $(".location-to-render-calculator").each(function(){
-      ttm.widgets.Calculator.build_widget($(this));
-    });
+      $(".location-to-render-calculator").each(function(){
+        ttm.widgets.Calculator.build_widget($(this));
+      });
 
-    $(".location-to-render-calculator-with-fewer-buttons").each(function(){
-      ttm.widgets.Calculator.build_widget($(this), ['0','1','2']);
-    });
-
-
+      $(".location-to-render-calculator-with-fewer-buttons").each(function(){
+        ttm.widgets.Calculator.build_widget($(this), ['0','1','2']);
+      });
     });
   </script>
 

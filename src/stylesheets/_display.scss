@@ -1,0 +1,9 @@
+.jc--display {
+  display: block;
+  padding-bottom: 15px; // width of browser horizontal scrollbars
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: right;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}

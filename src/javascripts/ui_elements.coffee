@@ -1,12 +1,16 @@
-
 ttm = thinkthroughmath
-
 
 class Button
   initialize: (@opts={})->
   render: (opts={})->
     opts = _.extend({}, @opts, opts)
-    button = $("<button class='#{opts.class}' value='#{opts.value}'>#{opts.label || opts.value}</button>")
+    button = $("""
+      <button class='#{opts.class}' value='#{opts.value}'>
+        <span class="jc--buttonLabel">
+          #{opts.label || opts.value}
+        </span>
+      </button>
+    """)
     button.on "click", ->
       opts.click && opts.click(opts)
     opts.element.append button
@@ -22,8 +26,6 @@ class MathDisplay
   update: (value)->
     @figure.html(value)
 ttm.class_mixer(MathDisplay)
-
-
 
 class UIElements
   button_builder: Button
