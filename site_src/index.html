@@ -199,17 +199,15 @@
   <script src="javascript-calculator.js"></script>
   <script>
     $(function(){
-    var ttm = thinkthroughmath;
+      var ttm = thinkthroughmath;
 
-    $(".location-to-render-calculator").each(function(){
-      ttm.widgets.Calculator.build_widget($(this));
-    });
+      $(".location-to-render-calculator").each(function(){
+        ttm.widgets.Calculator.build_widget($(this));
+      });
 
-    $(".location-to-render-calculator-with-fewer-buttons").each(function(){
-      ttm.widgets.Calculator.build_widget($(this), ['0','1','2']);
-    });
-
-
+      $(".location-to-render-calculator-with-fewer-buttons").each(function(){
+        ttm.widgets.Calculator.build_widget($(this), ['0','1','2']);
+      });
     });
   </script>
 
