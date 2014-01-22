@@ -118,7 +118,7 @@ class ButtonBuilder
         do (v)=>
           @button({
             value: "#{v.name}"
-            class: "jc--button jc--button-other jc--button-variable"
+            class: "jc--button jc--button-variable"
             variable: v
           }, opts)
     variables
