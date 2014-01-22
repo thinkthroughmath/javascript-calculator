@@ -127,12 +127,14 @@ class ButtonBuilder
   del: (opts)->
     @button({
       value: "del"
+      label: "Delete"
       class: "jc--button jc--button-del"
     }, opts)
 
   clear: (opts)->
     @button({
       value: "clear"
+      label: "Clear"
       class: "jc--button jc--button-clear"
     }, opts)
 
