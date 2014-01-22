@@ -501,6 +501,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     ButtonBuilder.prototype.del = function(opts) {
       return this.button({
         value: "del",
+        label: "Delete",
         "class": "jc--button jc--button-del"
       }, opts);
     };
@@ -508,6 +509,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     ButtonBuilder.prototype.clear = function(opts) {
       return this.button({
         value: "clear",
+        label: "Clear",
         "class": "jc--button jc--button-clear"
       }, opts);
     };
