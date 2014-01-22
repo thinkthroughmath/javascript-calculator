@@ -8,14 +8,6 @@
   -webkit-overflow-scrolling: touch;
 }
 
-@font-face {
-  font-style: normal;
-  font-weight: normal;
-  font-family: 'javascript-calculator-icons';
-  src: url("fonts/javascript-calculator-icons.eot");
-  src: url("fonts/javascript-calculator-icons.eot?#iefix") format("embedded-opentype"), url("fonts/javascript-calculator-icons.ttf") format("truetype"), url("fonts/javascript-calculator-icons.woff") format("woff"), url("fonts/javascript-calculator-icons.svg#javascript-calculator-icons") format("svg");
-}
-
 .jc--button {
   -webkit-font-smoothing: antialiased;
 }
@@ -92,6 +84,14 @@
 
 .jc--button-root-xofy:before {
   content: "\e600";
+}
+
+@font-face {
+  font-style: normal;
+  font-weight: normal;
+  font-family: 'javascript-calculator-icons';
+  src: url("fonts/javascript-calculator-icons.eot");
+  src: url("fonts/javascript-calculator-icons.eot?#iefix") format("embedded-opentype"), url("fonts/javascript-calculator-icons.ttf") format("truetype"), url("fonts/javascript-calculator-icons.woff") format("woff"), url("fonts/javascript-calculator-icons.svg#javascript-calculator-icons") format("svg");
 }
 
 .jc {

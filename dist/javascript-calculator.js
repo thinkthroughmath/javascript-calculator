@@ -488,7 +488,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           _results.push((function(v) {
             return _this.button({
               value: "" + v.name,
-              "class": "jc--button jc--button-other jc--button-variable",
+              "class": "jc--button jc--button-variable",
               variable: v
             }, opts);
           })(v));
