@@ -1,3 +1,6 @@
 -/.grunt
 -/.tmp
 -/dist
+-/bower_components
+-/font_src
+-/node_modules
