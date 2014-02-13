@@ -545,7 +545,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
         opts = {};
       }
       opts = _.extend({}, this.opts, opts);
-      button = $("<button class='" + opts["class"] + "' value='" + opts.value + "'>\n  <span class=\"jc--buttonLabel\">\n    " + (opts.label || opts.value) + "\n  </span>\n</button>");
+      button = $("<button type='button' class='" + opts["class"] + "' value='" + opts.value + "'>\n  <span class=\"jc--buttonLabel\">\n    " + (opts.label || opts.value) + "\n  </span>\n</button>");
       button.on("click", function() {
         return opts.click && opts.click(opts);
       });

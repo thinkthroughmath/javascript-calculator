@@ -93,7 +93,6 @@
   src: url("fonts/javascript-calculator-icons.eot");
   src: url("fonts/javascript-calculator-icons.eot?#iefix") format("embedded-opentype"), url("fonts/javascript-calculator-icons.ttf") format("truetype"), url("fonts/javascript-calculator-icons.woff") format("woff"), url("fonts/javascript-calculator-icons.svg#javascript-calculator-icons") format("svg");
 }
-
 .jc {
   *zoom: 1;
   width: 224px;
