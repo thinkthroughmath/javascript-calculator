@@ -5,7 +5,7 @@
     "jquery": "~1.10.2",
     "underscore": "~1.5.2",
     "ttm-coffeescript-utilities": "git@github.com:thinkthroughmath/ttm-coffeescript-utilities.git#~0.0.1",
-    "ttm-coffeescript-math": "git@github.com:thinkthroughmath/ttm-coffeescript-math.git#~0.1.0",
+    "ttm-coffeescript-math": "git@github.com:thinkthroughmath/ttm-coffeescript-math.git#~0.2.0",
     "jasmine-jquery": "~1.5.1"
   },
   "devDependencies": {}
