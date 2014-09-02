@@ -131,6 +131,10 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     };
 
     Calculator.prototype.decimalClick = function() {
+      if (this.reset_on_next_number) {
+        this.reset_on_next_number = false;
+        this.updateCurrentExpressionWithCommand(this.math.commands.build_reset());
+      }
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_append_decimal());
     };
 

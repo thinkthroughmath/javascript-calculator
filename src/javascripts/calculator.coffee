@@ -73,6 +73,10 @@ class Calculator
     @updateCurrentExpressionWithCommand @math.commands.build_append_subtraction()
 
   decimalClick: ->
+    if @reset_on_next_number
+      @reset_on_next_number = false
+      @updateCurrentExpressionWithCommand @math.commands.build_reset()
+
     @updateCurrentExpressionWithCommand @math.commands.build_append_decimal()
 
   # command actions
