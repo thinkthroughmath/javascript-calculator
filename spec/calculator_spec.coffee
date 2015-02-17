@@ -86,6 +86,10 @@ describe "Calculator Widget features", ->
     @handle.press_buttons("1 0 square =")
     expect(@handle.output_content()).toEqual("100")
 
+  it "crashes on roots followed by another operation", ->
+    @handle.press_buttons("9 root + 1 =")
+    expect(@handle.output_content()).toEqual("4")
+
   it "will negate a nuber that is already entered" , ->
     @handle.press_buttons("1 1 negative")
     expect(@handle.output_content()).toEqual("-11")
