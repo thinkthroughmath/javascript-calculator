@@ -4,3 +4,4 @@
 node_modules
 site_dist
 bower_components
+tests

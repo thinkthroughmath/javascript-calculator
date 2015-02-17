@@ -202,16 +202,26 @@ module.exports = function (grunt) {
     },
 
     jasmine: {
-      specs: [
-        'bower_components/jquery/jquery.js',
-        'bower_components/underscore/underscore.js',
-        'bower_components/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
-        'bower_components/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
-        '<%= yeoman.dist %>/<%= pkg.name %>.js',
-        'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
-        '.tmp/spec/support/spec_helpers.js',
-        '.tmp/spec/**/*.js'
-      ]
+      options:{
+        specs: [
+          'bower_components/jquery/jquery.js',
+          'bower_components/underscore/underscore.js',
+          'bower_components/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
+          'bower_components/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
+          '<%= yeoman.dist %>/<%= pkg.name %>.js',
+          'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+          '.tmp/spec/support/spec_helpers.js',
+          '.tmp/spec/**/*.js'
+        ]
+      },
+      ci:{
+        options: {
+          junit:{
+            path: 'tests',
+            consolidate: true
+          }
+        }
+      }
     },
 
     'gh-pages': {
