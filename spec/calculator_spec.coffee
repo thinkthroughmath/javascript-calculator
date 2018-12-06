@@ -20,6 +20,10 @@ describe "Calculator Widget features", ->
     @handle.press_buttons("2 ^ 2 =")
     expect(@handle.output_content()).toEqual("4")
 
+  it "handles multiple exponentiation buttons in a row", ->
+    @handle.press_buttons("2 ^ ^ ^ 2 )")
+    expect(@handle.output_content()).toEqual(parseEntities "2 ˆ ( 2 )")
+
   it "example for debugging", ->
      @handle.press_buttons("2 ^ 5 + 1 ) 4")
      expect(@handle.output_content()).toEqual(parseEntities "2 &circ; ( 5 + 1 ) &times; 4")
@@ -234,4 +238,3 @@ jqueryAppendableElementMock = ->
 
 logicMock = ->
   jasmine.createSpyObj('logic_controller_mock', ['addPart', 'calculate', 'msg']);
-
