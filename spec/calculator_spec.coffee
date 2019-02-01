@@ -24,6 +24,10 @@ describe "Calculator Widget features", ->
     @handle.press_buttons("2 ^ ^ ^ 2 )")
     expect(@handle.output_content()).toEqual(parseEntities "2 ˆ ( 2 )")
 
+  it "handles exponentiation after lparent button in a row", ->
+    @handle.press_buttons("( ^ ^ 9 ^ 2 )")
+    expect(@handle.output_content()).toEqual(parseEntities "9 ˆ ( 2 )")
+
   it "example for debugging", ->
      @handle.press_buttons("2 ^ 5 + 1 ) 4")
      expect(@handle.output_content()).toEqual(parseEntities "2 &circ; ( 5 + 1 ) &times; 4")

@@ -56,7 +56,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       this.view = CalculatorView.build(this, this.element, this.math, this.buttonsToRender);
       this.expression_position = historic_value.build();
       this.updateCurrentExpressionWithCommand(this.math.commands.build_reset());
-      return this.exponentLastPressed = false;
+      return this.typeLastPressed = "";
     };
 
     Calculator.prototype.displayValue = function() {
@@ -97,7 +97,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
     Calculator.prototype.numberClick = function(button_options) {
       var cmd;
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "number";
       if (this.reset_on_next_number) {
         this.reset_on_next_number = false;
         this.updateCurrentExpressionWithCommand(this.math.commands.build_reset());
@@ -109,39 +109,40 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     };
 
     Calculator.prototype.exponentClick = function() {
-      if (this.exponentLastPressed) {
+      if (this.typeLastPressed === "exponent" || this.typeLastPressed === "lparen") {
         return;
       }
-      this.exponentLastPressed = true;
+      this.typeLastPressed = "exponent";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_exponentiate_last());
     };
 
     Calculator.prototype.negativeClick = function() {
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "negative";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_negate_last());
     };
 
     Calculator.prototype.additionClick = function() {
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "addition";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_append_addition());
     };
 
     Calculator.prototype.multiplicationClick = function() {
+      this.typeLastPressed = "multiplication";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_append_multiplication());
     };
 
     Calculator.prototype.divisionClick = function() {
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "division";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_append_division());
     };
 
     Calculator.prototype.subtractionClick = function() {
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "subtraction";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_append_subtraction());
     };
 
     Calculator.prototype.decimalClick = function() {
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "decimal";
       if (this.reset_on_next_number) {
         this.reset_on_next_number = false;
         this.updateCurrentExpressionWithCommand(this.math.commands.build_reset());
@@ -150,40 +151,40 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     };
 
     Calculator.prototype.clearClick = function() {
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "clear";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_reset());
     };
 
     Calculator.prototype.equalsClick = function() {
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "equals";
       this.updateCurrentExpressionWithCommand(this.math.commands.build_calculate());
       return this.reset_on_next_number = true;
     };
 
     Calculator.prototype.squareClick = function() {
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "square";
       this.updateCurrentExpressionWithCommand(this.math.commands.build_square());
       return this.reset_on_next_number = true;
     };
 
     Calculator.prototype.squareRootClick = function() {
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "squareRoot";
       this.updateCurrentExpressionWithCommand(this.math.commands.build_square_root());
       return this.reset_on_next_number = true;
     };
 
     Calculator.prototype.lparenClick = function() {
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "lparen";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_append_sub_expression());
     };
 
     Calculator.prototype.rparenClick = function() {
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "rparen";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_exit_sub_expression());
     };
 
     Calculator.prototype.piClick = function() {
-      this.exponentLastPressed = false;
+      this.typeLastPressed = "pi";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_append_pi());
     };
 

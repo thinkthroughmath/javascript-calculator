@@ -18,7 +18,7 @@ class Calculator
     @view = CalculatorView.build(@, @element, @math, @buttonsToRender)
     @expression_position = historic_value.build()
     @updateCurrentExpressionWithCommand @math.commands.build_reset()
-    @exponentLastPressed = false
+    @typeLastPressed = ""
 
   displayValue: ->
     exp_pos = @expression_position.current()
@@ -48,7 +48,7 @@ class Calculator
 
   # specification actions
   numberClick: (button_options)->
-    @exponentLastPressed = false
+    @typeLastPressed = "number"
     if @reset_on_next_number
       @reset_on_next_number = false
       @updateCurrentExpressionWithCommand @math.commands.build_reset()
@@ -57,32 +57,33 @@ class Calculator
     @updateCurrentExpressionWithCommand cmd
 
   exponentClick: ->
-    if @exponentLastPressed
+    if @typeLastPressed == "exponent" || @typeLastPressed == "lparen"
       return
-    @exponentLastPressed = true
+    @typeLastPressed = "exponent"
     @updateCurrentExpressionWithCommand @math.commands.build_exponentiate_last()
 
   negativeClick: ->
-    @exponentLastPressed = false
+    @typeLastPressed = "negative"
     @updateCurrentExpressionWithCommand @math.commands.build_negate_last()
 
   additionClick: ->
-    @exponentLastPressed = false
+    @typeLastPressed = "addition"
     @updateCurrentExpressionWithCommand @math.commands.build_append_addition()
 
   multiplicationClick: ->
+    @typeLastPressed = "multiplication"
     @updateCurrentExpressionWithCommand @math.commands.build_append_multiplication()
 
   divisionClick: ->
-    @exponentLastPressed = false
+    @typeLastPressed = "division"
     @updateCurrentExpressionWithCommand @math.commands.build_append_division()
 
   subtractionClick: ->
-    @exponentLastPressed = false
+    @typeLastPressed = "subtraction"
     @updateCurrentExpressionWithCommand @math.commands.build_append_subtraction()
 
   decimalClick: ->
-    @exponentLastPressed = false
+    @typeLastPressed = "decimal"
     if @reset_on_next_number
       @reset_on_next_number = false
       @updateCurrentExpressionWithCommand @math.commands.build_reset()
@@ -91,34 +92,34 @@ class Calculator
 
   # command actions
   clearClick: ->
-    @exponentLastPressed = false
+    @typeLastPressed = "clear"
     @updateCurrentExpressionWithCommand @math.commands.build_reset()
 
   equalsClick: ->
-    @exponentLastPressed = false
+    @typeLastPressed = "equals"
     @updateCurrentExpressionWithCommand @math.commands.build_calculate()
     @reset_on_next_number = true
 
   squareClick: ->
-    @exponentLastPressed = false
+    @typeLastPressed = "square"
     @updateCurrentExpressionWithCommand @math.commands.build_square()
     @reset_on_next_number = true
 
   squareRootClick: ->
-    @exponentLastPressed = false
+    @typeLastPressed = "squareRoot"
     @updateCurrentExpressionWithCommand @math.commands.build_square_root()
     @reset_on_next_number = true
 
   lparenClick: ->
-    @exponentLastPressed = false
+    @typeLastPressed = "lparen"
     @updateCurrentExpressionWithCommand @math.commands.build_append_sub_expression()
 
   rparenClick: ->
-    @exponentLastPressed = false
+    @typeLastPressed = "rparen"
     @updateCurrentExpressionWithCommand @math.commands.build_exit_sub_expression()
 
   piClick: ->
-    @exponentLastPressed = false
+    @typeLastPressed = "pi"
     @updateCurrentExpressionWithCommand @math.commands.build_append_pi()
 
 class_mixer(Calculator)
