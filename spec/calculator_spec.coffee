@@ -16,17 +16,34 @@ describe "Calculator Widget features", ->
     @handle.press_buttons("8 * 8")
     expect(@handle.output_content()).not.toMatch /\*/
 
-  it "performs exponentiation", ->
-    @handle.press_buttons("2 ^ 2 =")
-    expect(@handle.output_content()).toEqual("4")
+  describe "exponentiation", ->
+    it "performs exponentiation", ->
+      @handle.press_buttons("2 ^ 2 =")
+      expect(@handle.output_content()).toEqual("4")
 
-  it "handles multiple exponentiation buttons in a row", ->
-    @handle.press_buttons("2 ^ ^ ^ 2 )")
-    expect(@handle.output_content()).toEqual(parseEntities "2 ˆ ( 2 )")
+    it "handles multiple exponentiation buttons in a row", ->
+      @handle.press_buttons("2 ^ ^ ^ 2 )")
+      expect(@handle.output_content()).toEqual(parseEntities "2 ˆ ( 2 )")
 
-  it "handles exponentiation after lparent button in a row", ->
-    @handle.press_buttons("( ^ ^ 9 ^ 2 )")
-    expect(@handle.output_content()).toEqual(parseEntities "9 ˆ ( 2 )")
+    it "handles exponentiation after lparent button in a row", ->
+      @handle.press_buttons("(^ ^ 9 ^ 2 ))=")
+      expect(@handle.output_content()).toEqual(parseEntities "81")
+
+    it "handles exponentiation after sum button ", ->
+      @handle.press_buttons("+ ^")
+      expect(@handle.output_content()).toEqual(parseEntities "0")
+
+    it "handles exponentiation after subtrac button ", ->
+      @handle.press_buttons("- ^")
+      expect(@handle.output_content()).toEqual(parseEntities "0")
+
+    it "handles exponentiation after multiplication button ", ->
+      @handle.press_buttons("* ^")
+      expect(@handle.output_content()).toEqual(parseEntities "0")
+
+    it "handles exponentiation after division button ", ->
+      @handle.press_buttons("/ ^")
+      expect(@handle.output_content()).toEqual(parseEntities "0")
 
   it "example for debugging", ->
      @handle.press_buttons("2 ^ 5 + 1 ) 4")
