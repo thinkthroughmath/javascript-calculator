@@ -63,22 +63,32 @@ class Calculator
     @updateCurrentExpressionWithCommand @math.commands.build_exponentiate_last()
 
   negativeClick: ->
+    if @typeLastPressed == "lparen"
+      return
     @typeLastPressed = "negative"
     @updateCurrentExpressionWithCommand @math.commands.build_negate_last()
 
   additionClick: ->
+    if @typeLastPressed == "lparen"
+      return
     @typeLastPressed = "addition"
     @updateCurrentExpressionWithCommand @math.commands.build_append_addition()
 
   multiplicationClick: ->
+    if @typeLastPressed == "lparen"
+      return
     @typeLastPressed = "multiplication"
     @updateCurrentExpressionWithCommand @math.commands.build_append_multiplication()
 
   divisionClick: ->
+    if @typeLastPressed == "lparen"
+      return
     @typeLastPressed = "division"
     @updateCurrentExpressionWithCommand @math.commands.build_append_division()
 
   subtractionClick: ->
+    if @typeLastPressed == "lparen"
+      return
     @typeLastPressed = "subtraction"
     @updateCurrentExpressionWithCommand @math.commands.build_append_subtraction()
 

@@ -117,26 +117,41 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     };
 
     Calculator.prototype.negativeClick = function() {
+      if (this.typeLastPressed === "lparen") {
+        return;
+      }
       this.typeLastPressed = "negative";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_negate_last());
     };
 
     Calculator.prototype.additionClick = function() {
+      if (this.typeLastPressed === "lparen") {
+        return;
+      }
       this.typeLastPressed = "addition";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_append_addition());
     };
 
     Calculator.prototype.multiplicationClick = function() {
+      if (this.typeLastPressed === "lparen") {
+        return;
+      }
       this.typeLastPressed = "multiplication";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_append_multiplication());
     };
 
     Calculator.prototype.divisionClick = function() {
+      if (this.typeLastPressed === "lparen") {
+        return;
+      }
       this.typeLastPressed = "division";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_append_division());
     };
 
     Calculator.prototype.subtractionClick = function() {
+      if (this.typeLastPressed === "lparen") {
+        return;
+      }
       this.typeLastPressed = "subtraction";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_append_subtraction());
     };
@@ -623,5 +638,5 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(this);
 
-},{}]},{},[1,2,3,4])
+},{}]},{},[1,3,2,4])
 ;
