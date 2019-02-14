@@ -117,7 +117,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     };
 
     Calculator.prototype.negativeClick = function() {
-      if (this.typeLastPressed === "lparen") {
+      if (this.typeLastPressed === "exponent" || this.typeLastPressed === "lparen") {
         return;
       }
       this.typeLastPressed = "negative";
@@ -125,7 +125,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     };
 
     Calculator.prototype.additionClick = function() {
-      if (this.typeLastPressed === "lparen") {
+      if (this.typeLastPressed === "exponent" || this.typeLastPressed === "lparen") {
         return;
       }
       this.typeLastPressed = "addition";
@@ -133,7 +133,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     };
 
     Calculator.prototype.multiplicationClick = function() {
-      if (this.typeLastPressed === "lparen") {
+      if (this.typeLastPressed === "exponent" || this.typeLastPressed === "lparen") {
         return;
       }
       this.typeLastPressed = "multiplication";
@@ -141,7 +141,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     };
 
     Calculator.prototype.divisionClick = function() {
-      if (this.typeLastPressed === "lparen") {
+      if (this.typeLastPressed === "exponent" || this.typeLastPressed === "lparen") {
         return;
       }
       this.typeLastPressed = "division";
@@ -149,7 +149,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     };
 
     Calculator.prototype.subtractionClick = function() {
-      if (this.typeLastPressed === "lparen") {
+      if (this.typeLastPressed === "exponent" || this.typeLastPressed === "lparen") {
         return;
       }
       this.typeLastPressed = "subtraction";
@@ -638,5 +638,5 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(this);
 
-},{}]},{},[1,3,2,4])
+},{}]},{},[1,2,3,4])
 ;
