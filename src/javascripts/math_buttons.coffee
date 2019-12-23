@@ -16,7 +16,7 @@ class ButtonBuilder
   decimal: (opts)->
     @button({
       value: "."
-      class: "jc--button jc--button-decimal"
+      class: "jc--button jc--button-decimal decimalButton"
     }, opts)
 
   negative: (opts)->
@@ -30,7 +30,7 @@ class ButtonBuilder
   addition: (opts)->
     @button({
       value: "+"
-      class: "jc--button jc--button-operation jc--button-add"
+      class: "jc--button jc--button-operation jc--button-add addButton"
     }, opts)
 
   subtraction: (opts)->
