@@ -428,7 +428,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: "-",
         label: "&#x2212;",
-        "class": "jc--button jc--button-operation jc--button-subtract"
+        "class": "jc--button jc--button-operation jc--button-subtract subsub"
       }, opts);
     };
 
