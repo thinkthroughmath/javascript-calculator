@@ -125,6 +125,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     };
 
     Calculator.prototype.additionClick = function() {
+      console.log("okay");
       if (this.typeLastPressed === "exponent" || this.typeLastPressed === "lparen") {
         return;
       }
@@ -451,7 +452,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     ButtonBuilder.prototype.equals = function(opts) {
       return this.button({
         value: "=",
-        "class": "jc--button jc--button-operation jc--button-equal"
+        "class": "jc--button jc--button-operation jc--button-equal equalButton"
       }, opts);
     };
 
@@ -638,5 +639,5 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 }).call(this);
 
-},{}]},{},[2,4,1,3])
+},{}]},{},[1,2,3,4])
 ;

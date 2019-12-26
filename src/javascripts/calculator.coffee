@@ -69,6 +69,7 @@ class Calculator
     @updateCurrentExpressionWithCommand @math.commands.build_negate_last()
 
   additionClick: ->
+    console.log "okay"
     if @typeLastPressed == "exponent" || @typeLastPressed == "lparen"
       return
     @typeLastPressed = "addition"

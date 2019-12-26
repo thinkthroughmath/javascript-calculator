@@ -57,7 +57,7 @@ class ButtonBuilder
   equals: (opts)->
     @button({
       value: "="
-      class: "jc--button jc--button-operation jc--button-equal"
+      class: "jc--button jc--button-operation jc--button-equal equalButton"
     }, opts)
 
   # Other functions
