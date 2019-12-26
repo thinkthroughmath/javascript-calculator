@@ -405,7 +405,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     ButtonBuilder.prototype.decimal = function(opts) {
       return this.button({
         value: ".",
-        "class": "jc--button jc--button-decimal"
+        "class": "jc--button jc--button-decimal decimalButton"
       }, opts);
     };
 
@@ -420,7 +420,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     ButtonBuilder.prototype.addition = function(opts) {
       return this.button({
         value: "+",
-        "class": "jc--button jc--button-operation jc--button-add"
+        "class": "jc--button jc--button-operation jc--button-add addButton"
       }, opts);
     };
 
