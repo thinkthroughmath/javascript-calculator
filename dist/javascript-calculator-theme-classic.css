@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .jc--display {
   display: block;
   padding-bottom: 15px;
@@ -22,7 +23,7 @@
 .jc--button-root-ofx:before,
 .jc--button-root-3ofx:before,
 .jc--button-root-xofy:before {
-  font-family: 'javascript-calculator-icons';
+  font-family: "javascript-calculator-icons";
   display: inline-block;
   font-size: 1.33em;
 }
@@ -47,63 +48,62 @@
 }
 
 .jc--button-negative:before {
-  content: "\e604";
+  content: "";
 }
 
 .jc--button-pi:before {
-  content: "\e603";
+  content: "";
 }
 
 .jc--button-fraction:before {
-  content: "\e605";
+  content: "";
 }
 
 .jc--button-caret:before {
-  content: "\e609";
+  content: "";
 }
 
 .jc--button-exponent-xto2:before {
-  content: "\e601";
+  content: "";
 }
 
 .jc--button-exponent-xto3:before {
-  content: "\e608";
+  content: "";
 }
 
 .jc--button-exponent-ytox:before {
-  content: "\e606";
+  content: "";
 }
 
 .jc--button-root-ofx:before {
-  content: "\e602";
+  content: "";
 }
 
 .jc--button-root-3ofx:before {
-  content: "\e607";
+  content: "";
 }
 
 .jc--button-root-xofy:before {
-  content: "\e600";
+  content: "";
 }
 
 @font-face {
   font-style: normal;
   font-weight: normal;
-  font-family: 'javascript-calculator-icons';
+  font-family: "javascript-calculator-icons";
   src: url("fonts/javascript-calculator-icons.eot");
   src: url("fonts/javascript-calculator-icons.eot?#iefix") format("embedded-opentype"), url("fonts/javascript-calculator-icons.ttf") format("truetype"), url("fonts/javascript-calculator-icons.woff") format("woff"), url("fonts/javascript-calculator-icons.svg#javascript-calculator-icons") format("svg");
 }
-
 .jc {
   *zoom: 1;
   width: 224px;
   padding: 7px;
   border: 1px solid black;
   border-radius: 2px;
-  background-color: #444444;
-  box-shadow: 0 0 5px black;
-  -moz-box-shadow: 0 0 5px black;
-  -webkit-box-shadow: 0 0 5px black;
+  background-color: #444;
+  box-shadow: 0 0 5px #000;
+  -moz-box-shadow: 0 0 5px #000;
+  -webkit-box-shadow: 0 0 5px #000;
 }
 .jc:before, .jc:after {
   display: table;
@@ -120,9 +120,9 @@
   border-radius: 2px;
   font-size: 37px;
   background-color: white;
-  box-shadow: inner 0 0 5px black;
-  -moz-box-shadow: inset 0 0 5px black;
-  -webkit-box-shadow: inset 0 0 5px black;
+  box-shadow: inner 0 0 5px #000;
+  -moz-box-shadow: inset 0 0 5px #000;
+  -webkit-box-shadow: inset 0 0 5px #000;
 }
 
 .jc--button {
@@ -258,3 +258,5 @@
   font-size: 8px;
   text-transform: uppercase;
 }
+
+/*# sourceMappingURL=javascript-calculator-theme-classic.css.map */
