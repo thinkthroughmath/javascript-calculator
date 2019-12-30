@@ -125,7 +125,6 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     };
 
     Calculator.prototype.additionClick = function() {
-      console.log("okay");
       if (this.typeLastPressed === "exponent" || this.typeLastPressed === "lparen") {
         return;
       }
