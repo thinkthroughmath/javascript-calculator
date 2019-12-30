@@ -69,7 +69,6 @@ class Calculator
     @updateCurrentExpressionWithCommand @math.commands.build_negate_last()
 
   additionClick: ->
-    console.log "okay"
     if @typeLastPressed == "exponent" || @typeLastPressed == "lparen"
       return
     @typeLastPressed = "addition"
@@ -196,6 +195,7 @@ class CalculatorView
     disp = @element.find("figure.jc--display")
     disp.html(content)
     disp.scrollLeft(9999999)
+    $('#statusMessageContent').html(content)
 
   render: ->
     @element.append "<div class='#{calculator_wrapper_class}'></div>"

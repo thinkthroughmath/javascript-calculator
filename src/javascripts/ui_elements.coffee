@@ -5,7 +5,7 @@ class Button
   render: (opts={})->
     opts = _.extend({}, @opts, opts)
     button = $("""
-      <button type='button' class='#{opts.class}' value='#{opts.value}'>
+      <button type='button' class='#{opts.class}' value='#{opts.value}' aria-label='#{opts.ariaLabel}'>
         <span class="jc--buttonLabel">
           #{opts.label || opts.value}
         </span>
