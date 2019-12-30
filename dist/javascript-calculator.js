@@ -349,7 +349,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       var disp;
       disp = this.element.find("figure.jc--display");
       disp.html(content);
-      return disp.scrollLeft(9999999);
+      disp.scrollLeft(9999999);
+      return $('#statusMessageContent').html(content);
     };
 
     CalculatorView.prototype.render = function() {
@@ -395,7 +396,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
         _results.push((function(num) {
           return _this.button({
             value: "" + num,
-            "class": "jc--button jc--button-number"
+            "class": "jc--button jc--button-number",
+            ariaLabel: "" + num
           }, opts);
         })(num));
       }
@@ -405,7 +407,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     ButtonBuilder.prototype.decimal = function(opts) {
       return this.button({
         value: ".",
-        "class": "jc--button jc--button-decimal decimalButton"
+        "class": "jc--button jc--button-decimal",
+        ariaLabel: "Decimal Separator"
       }, opts);
     };
 
@@ -413,14 +416,16 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: "negative",
         label: "(&#x2013;)",
-        "class": "jc--button jc--button-negative"
+        "class": "jc--button jc--button-negative",
+        ariaLabel: "Negative"
       }, opts);
     };
 
     ButtonBuilder.prototype.addition = function(opts) {
       return this.button({
         value: "+",
-        "class": "jc--button jc--button-operation jc--button-add addButton"
+        "class": "jc--button jc--button-operation jc--button-add",
+        ariaLabel: "Plus"
       }, opts);
     };
 
@@ -428,7 +433,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: "-",
         label: "&#x2212;",
-        "class": "jc--button jc--button-operation jc--button-subtract"
+        "class": "jc--button jc--button-operation jc--button-subtract",
+        ariaLabel: "Minus"
       }, opts);
     };
 
@@ -436,7 +442,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: "*",
         label: "&#xd7;",
-        "class": "jc--button jc--button-operation jc--button-multiply"
+        "class": "jc--button jc--button-operation jc--button-multiply",
+        ariaLabel: "Multiply by"
       }, opts);
     };
 
@@ -444,28 +451,32 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: "/",
         label: "&#xf7;",
-        "class": "jc--button jc--button-operation jc--button-divide"
+        "class": "jc--button jc--button-operation jc--button-divide",
+        ariaLabel: "Divide by"
       }, opts);
     };
 
     ButtonBuilder.prototype.equals = function(opts) {
       return this.button({
         value: "=",
-        "class": "jc--button jc--button-operation jc--button-equal equalButton"
+        "class": "jc--button jc--button-operation jc--button-equal",
+        ariaLabel: "Equals"
       }, opts);
     };
 
     ButtonBuilder.prototype.lparen = function(opts) {
       return this.button({
         value: "(",
-        "class": "jc--button jc--button-other jc--button-rParen"
+        "class": "jc--button jc--button-other jc--button-rParen",
+        ariaLabel: "Left parenthesis"
       }, opts);
     };
 
     ButtonBuilder.prototype.rparen = function(opts) {
       return this.button({
         value: ")",
-        "class": "jc--button jc--button-other jc--button-lParen"
+        "class": "jc--button jc--button-other jc--button-lParen",
+        ariaLabel: "Right parenthesis"
       }, opts);
     };
 
@@ -473,7 +484,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: "pi",
         label: "&#x3c0;",
-        "class": "jc--button jc--button-other jc--button-pi"
+        "class": "jc--button jc--button-other jc--button-pi",
+        ariaLabel: "Pi"
       }, opts);
     };
 
@@ -488,7 +500,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     ButtonBuilder.prototype.caret = function(opts) {
       return this.button({
         value: "^",
-        "class": "jc--button jc--button-other jc--button-caret"
+        "class": "jc--button jc--button-other jc--button-caret",
+        ariaLabel: "Caret"
       }, opts);
     };
 
@@ -499,7 +512,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: "exponent",
         label: "" + base + "<sup>" + power + "</sup>",
-        "class": "jc--button jc--button-other jc--button-exponent jc--button-exponent-" + base + "to" + power
+        "class": "jc--button jc--button-other jc--button-exponent jc--button-exponent-" + base + "to" + power,
+        ariaLabel: "Square"
       }, opts);
     };
 
@@ -510,7 +524,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: "root",
         label: degree ? "<sup>" + degree + "</sup>&#x221a;" + radicand : "&#x221a;" + radicand,
-        "class": "jc--button jc--button-other jc--button-root jc--button-root-" + degree + "of" + radicand
+        "class": "jc--button jc--button-other jc--button-root jc--button-root-" + degree + "of" + radicand,
+        ariaLabel: "Square root"
       }, opts);
     };
 
@@ -548,7 +563,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.button({
         value: "clear",
         label: "Clear",
-        "class": "jc--button jc--button-clear"
+        "class": "jc--button jc--button-clear",
+        ariaLabel: "Clear"
       }, opts);
     };
 
@@ -583,7 +599,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
         opts = {};
       }
       opts = _.extend({}, this.opts, opts);
-      button = $("<button type='button' class='" + opts["class"] + "' value='" + opts.value + "'>\n  <span class=\"jc--buttonLabel\">\n    " + (opts.label || opts.value) + "\n  </span>\n</button>");
+      button = $("<button type='button' class='" + opts["class"] + "' value='" + opts.value + "' aria-label='" + opts.ariaLabel + "'>\n  <span class=\"jc--buttonLabel\">\n    " + (opts.label || opts.value) + "\n  </span>\n</button>");
       button.on("click", function() {
         return opts.click && opts.click(opts);
       });
