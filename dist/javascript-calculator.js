@@ -346,11 +346,12 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     };
 
     CalculatorView.prototype.display = function(content) {
-      var disp;
+      var disp, display_text;
       disp = this.element.find("figure.jc--display");
       disp.html(content);
       disp.scrollLeft(9999999);
-      return $('#statusMessageContent').html(content);
+      display_text = content.replace(/-/g, "minus");
+      return $('#statusMessageContent').html(display_text);
     };
 
     CalculatorView.prototype.render = function() {

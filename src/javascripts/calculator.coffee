@@ -195,7 +195,8 @@ class CalculatorView
     disp = @element.find("figure.jc--display")
     disp.html(content)
     disp.scrollLeft(9999999)
-    $('#statusMessageContent').html(content)
+    display_text = content.replace(/-/g, "minus");
+    $('#statusMessageContent').html(display_text)
 
   render: ->
     @element.append "<div class='#{calculator_wrapper_class}'></div>"
