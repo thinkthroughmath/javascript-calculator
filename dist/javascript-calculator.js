@@ -350,7 +350,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       disp = this.element.find("figure.jc--display");
       disp.html(content);
       disp.scrollLeft(9999999);
-      display_text = content.replace(/-/g, "minus");
+      display_text = content.replace(/-/g, "minus").replace(/\(/g, "left paranthesis").replace(/\)/g, "right paranthesis").replace(/&circ;/g, "to the power of");
       return $('#statusMessageContent').html(display_text);
     };
 
