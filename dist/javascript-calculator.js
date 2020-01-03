@@ -351,7 +351,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       disp.html(content);
       disp.scrollLeft(9999999);
       display_text = content.replace(/-/g, "minus").replace(/\(/g, "left paranthesis").replace(/\)/g, "right paranthesis").replace(/&circ;/g, "to the power of");
-      return $('#statusMessageContent').html(display_text);
+      $('#statusMessageContent').html(display_text);
+      return $('#messageDescription').html('The following statements are used as status messages and can be ignored.');
     };
 
     CalculatorView.prototype.render = function() {

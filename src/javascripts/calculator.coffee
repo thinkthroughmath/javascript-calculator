@@ -197,6 +197,7 @@ class CalculatorView
     disp.scrollLeft(9999999)
     display_text = content.replace(/-/g, "minus").replace(/\(/g, "left paranthesis").replace(/\)/g, "right paranthesis").replace(/&circ;/g, "to the power of")
     $('#statusMessageContent').html(display_text)
+    $('#messageDescription').html('The following statements are used as status messages and can be ignored.')
 
   render: ->
     @element.append "<div class='#{calculator_wrapper_class}'></div>"
