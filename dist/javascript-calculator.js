@@ -165,27 +165,60 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_append_decimal());
     };
 
+    Calculator.prototype.updateStatusMessage = function(expText, answerText, operation) {
+      var statusMessage_text;
+      if (expText !== "Error" && expText !== "0" && expText !== answerText) {
+        switch (operation) {
+          case "equal":
+            statusMessage_text = expText + " equals " + answerText;
+            break;
+          case "square":
+            statusMessage_text = " square of " + expText + " is " + answerText;
+            break;
+          case "squareroot":
+            statusMessage_text = " squareroot of " + expText + " is " + answerText;
+        }
+        statusMessage_text = statusMessage_text.replace(/-/g, "minus").replace(/\(/g, "left paranthesis").replace(/\)/g, "right paranthesis").replace(/&circ;/g, "to the power of");
+      } else {
+        statusMessage_text = answerText;
+      }
+      $('#statusMessageContent').html(statusMessage_text);
+      return $('#messageDescription').html('The following statements are used as status messages and can be ignored.');
+    };
+
     Calculator.prototype.clearClick = function() {
       this.typeLastPressed = "clear";
       return this.updateCurrentExpressionWithCommand(this.math.commands.build_reset());
     };
 
     Calculator.prototype.equalsClick = function() {
+      var answerText, expText;
       this.typeLastPressed = "equals";
+      expText = this.element.find("figure.jc--display").html();
       this.updateCurrentExpressionWithCommand(this.math.commands.build_calculate());
-      return this.reset_on_next_number = true;
+      this.reset_on_next_number = true;
+      answerText = this.element.find("figure.jc--display").html();
+      return this.updateStatusMessage(expText, answerText, "equal");
     };
 
     Calculator.prototype.squareClick = function() {
+      var answerText, expText;
       this.typeLastPressed = "square";
+      expText = this.element.find("figure.jc--display").html();
       this.updateCurrentExpressionWithCommand(this.math.commands.build_square());
-      return this.reset_on_next_number = true;
+      this.reset_on_next_number = true;
+      answerText = this.element.find("figure.jc--display").html();
+      return this.updateStatusMessage(expText, answerText, "square");
     };
 
     Calculator.prototype.squareRootClick = function() {
+      var answerText, expText;
       this.typeLastPressed = "squareRoot";
+      expText = this.element.find("figure.jc--display").html();
       this.updateCurrentExpressionWithCommand(this.math.commands.build_square_root());
-      return this.reset_on_next_number = true;
+      this.reset_on_next_number = true;
+      answerText = this.element.find("figure.jc--display").html();
+      return this.updateStatusMessage(expText, answerText, "squareroot");
     };
 
     Calculator.prototype.lparenClick = function() {

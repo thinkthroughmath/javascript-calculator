@@ -101,25 +101,49 @@ class Calculator
     @updateCurrentExpressionWithCommand @math.commands.build_append_decimal()
 
   # command actions
+  updateStatusMessage: (expText, answerText, operation) ->
+    if expText != "Error" && expText != "0" && expText != answerText
+      switch operation
+        when "equal"
+          statusMessage_text = expText + " equals " + answerText
+        when "square"
+          statusMessage_text = " square of " + expText + " is " + answerText
+        when "squareroot"
+          statusMessage_text = " squareroot of " + expText + " is " + answerText
+      statusMessage_text = statusMessage_text.replace(/-/g, "minus").replace(/\(/g, "left paranthesis").replace(/\)/g, "right paranthesis").replace(/&circ;/g, "to the power of")
+    else
+      statusMessage_text = answerText
+    $('#statusMessageContent').html(statusMessage_text)
+    $('#messageDescription').html('The following statements are used as status messages and can be ignored.')
+
   clearClick: ->
     @typeLastPressed = "clear"
     @updateCurrentExpressionWithCommand @math.commands.build_reset()
 
   equalsClick: ->
     @typeLastPressed = "equals"
+    expText = @element.find("figure.jc--display").html()
     @updateCurrentExpressionWithCommand @math.commands.build_calculate()
     @reset_on_next_number = true
+    answerText = @element.find("figure.jc--display").html()
+    @updateStatusMessage(expText, answerText, "equal")
 
   squareClick: ->
     @typeLastPressed = "square"
+    expText = @element.find("figure.jc--display").html()
     @updateCurrentExpressionWithCommand @math.commands.build_square()
     @reset_on_next_number = true
-
+    answerText = @element.find("figure.jc--display").html()
+    @updateStatusMessage(expText, answerText, "square")
+    
   squareRootClick: ->
     @typeLastPressed = "squareRoot"
+    expText = @element.find("figure.jc--display").html()
     @updateCurrentExpressionWithCommand @math.commands.build_square_root()
     @reset_on_next_number = true
-
+    answerText = @element.find("figure.jc--display").html()
+    @updateStatusMessage(expText, answerText, "squareroot")
+  
   lparenClick: ->
     @typeLastPressed = "lparen"
     @updateCurrentExpressionWithCommand @math.commands.build_append_sub_expression()
