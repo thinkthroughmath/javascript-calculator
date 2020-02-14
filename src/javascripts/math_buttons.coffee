@@ -11,12 +11,14 @@ class ButtonBuilder
         @button({
           value: "#{num}"
           class: "jc--button jc--button-number"
+          ariaLabel: "#{num}"
         }, opts)
 
   decimal: (opts)->
     @button({
       value: "."
       class: "jc--button jc--button-decimal"
+      ariaLabel: "Decimal Separator"
     }, opts)
 
   negative: (opts)->
@@ -24,6 +26,7 @@ class ButtonBuilder
       value: "negative"
       label: "(&#x2013;)"
       class: "jc--button jc--button-negative"
+      ariaLabel: "Negative"
     }, opts)
 
   # Operations
@@ -31,6 +34,7 @@ class ButtonBuilder
     @button({
       value: "+"
       class: "jc--button jc--button-operation jc--button-add"
+      ariaLabel: "Plus"
     }, opts)
 
   subtraction: (opts)->
@@ -38,6 +42,7 @@ class ButtonBuilder
       value: "-"
       label: "&#x2212;"
       class: "jc--button jc--button-operation jc--button-subtract"
+      ariaLabel: "Minus"
     }, opts)
 
   multiplication: (opts)->
@@ -45,6 +50,7 @@ class ButtonBuilder
       value: "*"
       label: "&#xd7;"
       class: "jc--button jc--button-operation jc--button-multiply"
+      ariaLabel: "Multiply by"
     }, opts)
 
   division: (opts)->
@@ -52,12 +58,14 @@ class ButtonBuilder
       value: "/"
       label: "&#xf7;"
       class: "jc--button jc--button-operation jc--button-divide"
+      ariaLabel: "Divide by"
     }, opts)
 
   equals: (opts)->
     @button({
       value: "="
       class: "jc--button jc--button-operation jc--button-equal"
+      ariaLabel: "Equals"
     }, opts)
 
   # Other functions
@@ -65,12 +73,14 @@ class ButtonBuilder
     @button({
       value: "("
       class: "jc--button jc--button-other jc--button-rParen"
+      ariaLabel: "Left parenthesis"
     }, opts)
 
   rparen: (opts)->
     @button({
       value: ")"
       class: "jc--button jc--button-other jc--button-lParen"
+      ariaLabel: "Right parenthesis"
     }, opts)
 
   pi: (opts)->
@@ -78,6 +88,7 @@ class ButtonBuilder
       value: "pi"
       label: "&#x3c0;"
       class: "jc--button jc--button-other jc--button-pi"
+      ariaLabel: "Pi"
     }, opts)
 
   fraction: (opts)->
@@ -91,6 +102,7 @@ class ButtonBuilder
     @button({
       value: "^"
       class: "jc--button jc--button-other jc--button-caret"
+      ariaLabel: "Caret"
     }, opts)
 
   exponent: (opts)->
@@ -100,6 +112,7 @@ class ButtonBuilder
       value: "exponent"
       label: "#{base}<sup>#{power}</sup>"
       class: "jc--button jc--button-other jc--button-exponent jc--button-exponent-#{base}to#{power}"
+      ariaLabel: "Square"
     }, opts)
 
   root: (opts)->
@@ -109,6 +122,7 @@ class ButtonBuilder
       value: "root"
       label: if degree then "<sup>#{degree}</sup>&#x221a;#{radicand}" else "&#x221a;#{radicand}"
       class: "jc--button jc--button-other jc--button-root jc--button-root-#{degree}of#{radicand}"
+      ariaLabel: "Square root"
     }, opts)
 
   # EQ builder vars
@@ -136,6 +150,7 @@ class ButtonBuilder
       value: "clear"
       label: "Clear"
       class: "jc--button jc--button-clear"
+      ariaLabel: "Clear"
     }, opts)
 
   button: (type_opts, opts)->
