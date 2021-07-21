@@ -204,12 +204,12 @@ module.exports = function (grunt) {
     jasmine: {
       options:{
         specs: [
-          'bower_components/jquery/jquery.js',
-          'bower_components/underscore/underscore.js',
+          'node_modules/jquery/dist/jquery.js',
+          'node_modules/underscore/underscore.js',
           'bower_components/ttm-coffeescript-utilities/dist/ttm-coffeescript-utilities.js',
           'bower_components/ttm-coffeescript-math/dist/ttm-coffeescript-math.js',
           '<%= yeoman.dist %>/<%= pkg.name %>.js',
-          'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
+          'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
           '.tmp/spec/support/spec_helpers.js',
           '.tmp/spec/**/*.js'
         ]

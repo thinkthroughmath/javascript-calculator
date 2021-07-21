@@ -1,4 +1,3 @@
-@charset "UTF-8";
 .jc--display {
   display: block;
   padding-bottom: 15px;
@@ -23,7 +22,7 @@
 .jc--button-root-ofx:before,
 .jc--button-root-3ofx:before,
 .jc--button-root-xofy:before {
-  font-family: "javascript-calculator-icons";
+  font-family: 'javascript-calculator-icons';
   display: inline-block;
   font-size: 1.33em;
 }
@@ -48,49 +47,49 @@
 }
 
 .jc--button-negative:before {
-  content: "";
+  content: "\e604";
 }
 
 .jc--button-pi:before {
-  content: "";
+  content: "\e603";
 }
 
 .jc--button-fraction:before {
-  content: "";
+  content: "\e605";
 }
 
 .jc--button-caret:before {
-  content: "";
+  content: "\e609";
 }
 
 .jc--button-exponent-xto2:before {
-  content: "";
+  content: "\e601";
 }
 
 .jc--button-exponent-xto3:before {
-  content: "";
+  content: "\e608";
 }
 
 .jc--button-exponent-ytox:before {
-  content: "";
+  content: "\e606";
 }
 
 .jc--button-root-ofx:before {
-  content: "";
+  content: "\e602";
 }
 
 .jc--button-root-3ofx:before {
-  content: "";
+  content: "\e607";
 }
 
 .jc--button-root-xofy:before {
-  content: "";
+  content: "\e600";
 }
 
 @font-face {
   font-style: normal;
   font-weight: normal;
-  font-family: "javascript-calculator-icons";
+  font-family: 'javascript-calculator-icons';
   src: url("fonts/javascript-calculator-icons.eot");
   src: url("fonts/javascript-calculator-icons.eot?#iefix") format("embedded-opentype"), url("fonts/javascript-calculator-icons.ttf") format("truetype"), url("fonts/javascript-calculator-icons.woff") format("woff"), url("fonts/javascript-calculator-icons.svg#javascript-calculator-icons") format("svg");
 }

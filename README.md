@@ -27,33 +27,44 @@ git clone git@github.com:thinkthroughmath/javascript-calculator.git
 cd javascript-calculator
 ```
 
-3. Install grunt, grunt-cli, and bower globally:
+2. Start a Docker Container
+Run all the following commands within the container session
+This assumes you use SSH keys to clone github repos
+```
+docker run --rm -it -e OPENSSL_CONF=/dev/null  -v ~/.ssh:/root/.ssh:ro -v `pwd`:/srv/javascript-calculator -w /srv/javascript-calculator ruby:2.7.3-buster bash
+```
+
+3. Install pre-resquisites:
 
 ```
-npm install -g grunt grunt-cli bower
+gem install sass
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash && . ~/.bashrc
+nvm install 0.10
+npm install -g grunt@0.4.1 grunt-cli@1.2 bower
 ```
 
-2. Install the required packages:
+4. Install the required packages:
 
 ```
 npm install
 ```
 
-4. Install the bower packages:
+5. Install the bower packages:
 ```
 bower install
 ```
 
-5. Start the development server:
+6. Start the development server:
 ```
 grunt serve
 ```
 
-6. In order to run the tests:
+7. In order to run the tests:
 
 ```
 grunt test
 ```
+This will also rebuild the dist/production version of the JS
 
 ## License
 
