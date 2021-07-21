@@ -3,7 +3,7 @@
   "version": "0.4.19",
   "dependencies": {
     "ttm-coffeescript-utilities": "git@github.com:thinkthroughmath/ttm-coffeescript-utilities.git#~0.0.1",
-    "ttm-coffeescript-math": "git@github.com:thinkthroughmath/ttm-coffeescript-math.git#fix/MATH-5741-corrupted-expression-position"
+    "ttm-coffeescript-math": "git@github.com:thinkthroughmath/ttm-coffeescript-math.git#0.3.6"
   },
   "devDependencies": {}
 }
