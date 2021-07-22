@@ -39,29 +39,33 @@ window.parsedDomText = (txt)->
 
 
 beforeEach ->
-  @addMatchers(
-    toBeInstanceOf: (type)->
-      @message = ->
-        if @actual == undefined
-          "Expected undefined to be an instance of #{type.name}"
-        else
-          "Expected #{@actual.constructor.name}(#{jasmine.pp @actual}) to be an instance of #{type.name}"
+  jasmine.addMatchers(
+    toBeInstanceOf: (util, customEqualityTesters)->
+      return {
+        compare: (actual, expected)->
+          result = {}
+          result.pass = actual && actual instanceof expected
+          if actual == undefined
+            result.message = "Expected undefined to be an instance of #{expected.name}"
+          else
+            result.message = "Expected #{actual.constructor.name}(#{jasmine.pp actual}) to be an instance of #{expected.name}"
+          result
+      }
 
-      @actual && @actual instanceof type
+    toBeAnEqualExpressionTo: (util, customEqualityTesters)->
+      return {
+          compare: (actual, expected)->
+            result = {}
 
-    toBeAnEqualExpressionTo: (other)->
-      @message = ->
-        msg = "Expected #{@actual.toString()} to be equal to #{other.toString()}"
-        if @check.report_saved
-          msg += ", but failed on #{@check.a.toString()}, #{@check.b.toString()}, #{@check.not_eql_msg}"
-        msg
+            if actual and expected
+              @check = ttm.lib.math.ExpressionEquality.equalityCalculation(actual, expected)
+              result.pass = @check.isEqual()
+            else
+              result.pass = false
 
-      if @actual and other
-        @check = ttm.lib.math.ExpressionEquality.equalityCalculation(@actual, other)
-        @check.isEqual()
-      else
-        false
-
+            if @check.report_saved
+              result.message = "Expected #{actual.toString()} to be equal to #{expected.toString()}"
+              result.message += ", but failed on #{@check.a.toString()}, #{@check.b.toString()}, #{@check.not_eql_msg}"
+            result
+      }
   )
-
-
