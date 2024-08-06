@@ -195,6 +195,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       var answerText, expText;
       this.typeLastPressed = "equals";
       expText = this.element.find("figure.jc--display").html();
+      this.updateCurrentExpressionWithCommand(this.math.commands.build_exit_sub_expression());
       this.updateCurrentExpressionWithCommand(this.math.commands.build_calculate());
       this.reset_on_next_number = true;
       answerText = this.element.find("figure.jc--display").html();
