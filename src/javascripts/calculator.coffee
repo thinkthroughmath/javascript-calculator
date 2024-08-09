@@ -123,6 +123,7 @@ class Calculator
   equalsClick: ->
     @typeLastPressed = "equals"
     expText = @element.find("figure.jc--display").html()
+    @updateCurrentExpressionWithCommand @math.commands.build_exit_sub_expression()
     @updateCurrentExpressionWithCommand @math.commands.build_calculate()
     @reset_on_next_number = true
     answerText = @element.find("figure.jc--display").html()
@@ -135,7 +136,7 @@ class Calculator
     @reset_on_next_number = true
     answerText = @element.find("figure.jc--display").html()
     @updateStatusMessage(expText, answerText, "square")
-    
+
   squareRootClick: ->
     @typeLastPressed = "squareRoot"
     expText = @element.find("figure.jc--display").html()
@@ -143,7 +144,7 @@ class Calculator
     @reset_on_next_number = true
     answerText = @element.find("figure.jc--display").html()
     @updateStatusMessage(expText, answerText, "squareroot")
-  
+
   lparenClick: ->
     @typeLastPressed = "lparen"
     @updateCurrentExpressionWithCommand @math.commands.build_append_sub_expression()
