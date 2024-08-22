@@ -1,6 +1,6 @@
 {
   "name": "javascript-calculator",
-  "version": "0.4.19",
+  "version": "0.4.22",
   "dependencies": {
     "ttm-coffeescript-utilities": "git@github.com:thinkthroughmath/ttm-coffeescript-utilities.git#~0.0.1",
     "ttm-coffeescript-math": "git@github.com:thinkthroughmath/ttm-coffeescript-math.git#0.3.7"
